@@ -38,11 +38,11 @@ De bachelorproef kan als succes beschouwd worden wanneer een werkende implementa
 
 \subsection{Single Source of Truth in Netwerkbeheer}
 
-Het concept van een ``single source of truth'' (SSOT) verwijst naar het principe waarbij alle data afkomstig is uit één gecentraliseerde, betrouwbare bron~\autocite{Astera2025}. In de context van netwerkbeheer betekent dit dat alle netwerkdocumentatie, inventarisaties en configuratie-informatie op één plaats wordt bijgehouden en beheerd. Astera Marketing Team benadrukt dat een SSOT essentieel is voor het voorkomen van inconsistente data en het verbeteren van besluitvorming binnen organisaties~\autocite{Astera2025}. Het ontbreken van een betrouwbare SSOT leidt tot verouderde documentatie, wat op zijn beurt problemen veroorzaakt bij netwerkbeheer, troubleshooting en beveiligingsaudits.
+Het concept van een ``single source of truth'' (SSOT) verwijst naar het principe waarbij alle data afkomstig is uit één gecentraliseerde, betrouwbare bron~\autocite{Astera2025}. In de context van netwerkbeheer betekent dit dat alle netwerkdocumentatie, inventarisaties en configuratieinformatie op één plaats wordt bijgehouden en beheerd. Astera Marketing Team benadrukt dat een SSOT essentieel is voor het voorkomen van inconsistente data en het verbeteren van besluitvorming binnen organisaties~\autocite{Astera2025}. Het ontbreken van een betrouwbare SSOT leidt tot verouderde documentatie, wat op zijn beurt problemen veroorzaakt bij netwerkbeheer, troubleshooting en beveiligingsaudits.
 
 \subsection{Automatische Netwerkdetectie}
 
-Automatische netwerkdetectie vormt een technologie die het mogelijk maakt om netwerkapparaten, configuraties en topologie automatisch te ontdekken en te documenteren. NetBox Discovery is een voorbeeld van een real-time network discovery tool die continu het netwerk scant en wijzigingen detecteert~\autocite{NetBoxLabs2025}. Dergelijke tools kunnen verschillende protocollen gebruiken zoals SNMP, LLDP, CDP en andere netwerkprotocollen om informatie over apparaten te verzamelen en automatisch te synchroniseren met een centrale documentatie- of inventory-systeem.
+Automatische netwerkdetectie vormt een technologie die het mogelijk maakt om netwerkapparaten, configuraties en topologie automatisch te ontdekken en te documenteren. NetBox Discovery is een voorbeeld van een real-time network discovery tool die continu het netwerk scant en wijzigingen detecteert~\autocite{NetBoxLabs2025}. Dergelijke tools kunnen verschillende protocollen gebruiken zoals SNMP, LLDP, CDP en andere netwerkprotocollen om informatie over apparaten te verzamelen en automatisch te synchroniseren met een centrale documentatie- of inventorysysteem.
 
 \subsection{Bestaand Onderzoek}
 
@@ -58,8 +58,8 @@ Dit onderzoek combineert een vergelijkende studie met een praktische implementat
 
 \subsection{Onderzoeksfasen}
 
-\subsubsection{Fase 1: Literatuurstudie en Requirements-analyse}
-In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd naar automatische netwerkdetectietools en hun functionaliteiten. Tevens worden interviews afgenomen met netwerkbeheerders om de concrete requirements en pijnpunten binnen de organisatiecontext te identificeren. Deze fase resulteert in een overzicht van beschikbare tools en een requirements-document.
+\subsubsection{Fase 1: Literatuurstudie en Requirementsanalyse}
+In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd naar automatische netwerkdetectietools en hun functionaliteiten. Tevens worden interviews afgenomen met netwerkbeheerders om de concrete requirements en pijnpunten binnen de organisatiecontext te identificeren. Deze fase resulteert in een overzicht van beschikbare tools en een requirementsdocument.
 
 \textbf{Tijdschatting:} 2 weken
 
@@ -68,8 +68,8 @@ Op basis van de literatuurstudie en requirements worden verschillende automatisc
 
 \textbf{Tijdschatting:} 1 week
 
-\subsubsection{Fase 3: Baseline-metingen en Implementatievoorbereiding}
-Voorafgaand aan de implementatie worden baseline-metingen uitgevoerd om de huidige staat van de netwerkdocumentatie binnen Citymesh vast te leggen:
+\subsubsection{Fase 3: Baselinemetingen en Implementatievoorbereiding}
+Voorafgaand aan de implementatie worden baselinemetingen uitgevoerd om de huidige staat van de netwerkdocumentatie binnen Citymesh vast te leggen:
 \begin{itemize}
   \item Aantal verouderde items in de huidige inventarisatie
   \item Tijd nodig voor handmatige updates
@@ -81,7 +81,7 @@ Tegelijkertijd wordt de implementatie voorbereid door de benodigde infrastructuu
 \textbf{Tijdschatting:} 1 week
 
 \subsubsection{Fase 4: Implementatie en Configuratie}
-De geselecteerde tool wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, configuratie van discovery-protocollen (SNMP, LLDP, etc.), integratie met bestaande netwerkdocumentatiesystemen binnen Citymesh, en het opzetten van automatische synchronisatieprocessen.
+De geselecteerde tool wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, configuratie van discoveryprotocollen (SNMP, LLDP, etc.), integratie met bestaande netwerkdocumentatiesystemen binnen Citymesh, en het opzetten van automatische synchronisatieprocessen.
 
 \textbf{Tijdschatting:} 2 weken
 
@@ -108,17 +108,17 @@ De verzamelde data wordt geanalyseerd en geïnterpreteerd. Op basis van de resul
 Voor dit onderzoek zullen de volgende tools en technologieën gebruikt worden:
 \begin{itemize}
   \item \textbf{NetBox Discovery:} Voor automatische netwerkdetectie en real-time monitoring
-  \item \textbf{SNMP/Linux tools:} Voor netwerkprotocol-communicatie en verificatie
-  \item \textbf{Documentatie- en inventory-systemen:} Afhankelijk van de organisatiecontext (bijv. NetBox, Confluence, of andere bestaande systemen)
-  \item \textbf{Monitoring tools:} Voor het verzamelen van kwantitatieve data over documentatie-updates
+  \item \textbf{SNMP/Linux tools:} Voor netwerkprotocol communicatie en verificatie
+  \item \textbf{Documentatie- en inventorysystemen:} Afhankelijk van de organisatiecontext (bijv. NetBox, Confluence, of andere bestaande systemen)
+  \item \textbf{Monitoring tools:} Voor het verzamelen van kwantitatieve data over documentatieupdates
 \end{itemize}
 
 \subsection{Beantwoording Onderzoeksvragen}
 
 De verschillende onderzoeksvragen worden als volgt beantwoord:
 \begin{itemize}
-  \item \textbf{Probleemdomein-vragen:} Beantwoord via baseline-metingen en interviews met netwerkbeheerders
-  \item \textbf{Oplossingsdomein-vragen:} Beantwoord via vergelijkende tool-evaluatie, praktische implementatie en kwantitatieve metingen na implementatie
+  \item \textbf{Probleemdomeinvragen:} Beantwoord via baselinemetingen en interviews met netwerkbeheerders
+  \item \textbf{Oplossingsdomeinvragen:} Beantwoord via vergelijkende tool-evaluatie, praktische implementatie en kwantitatieve metingen na implementatie
 \end{itemize}
 
 %---------- Verwachte resultaten ----------------------------------------------
@@ -134,7 +134,7 @@ Op basis van bestaand onderzoek en de verwachte impact van automatische detectie
   
   \item \textbf{Tijdswinst:} Een reductie van 70-90\% in de tijd nodig voor het bijwerken van documentatie, van handmatige processen (mogelijk uren per week) naar geautomatiseerde updates (minuten per week voor verificatie).
   
-  \item \textbf{Foutreductie:} Een afname van 50-70\% in het aantal foutieve of onvolledige registraties, gemeten door vergelijking van baseline-metingen met post-implementatie metingen.
+  \item \textbf{Foutreductie:} Een afname van 50-70\% in het aantal foutieve of onvolledige registraties, gemeten door vergelijking van baselinemetingen met postimplementatie metingen.
   
   \item \textbf{Onderhoudsvereisten:} Na initiële configuratie wordt verwacht dat automatische detectie slechts beperkt onderhoud vereist (mogelijk 1-2 uur per maand voor verificatie en correcties), vergeleken met regelmatige handmatige updates.
 \end{itemize}
@@ -148,7 +148,7 @@ Het onderzoek resulteert in:
   \item Kwantitatieve metingen en grafieken die de impact van automatische detectie visualiseren:
   \begin{itemize}
     \item Grafiek: Actualiteit van documentatie over tijd (X-as: tijd in weken, Y-as: percentage actuele items)
-    \item Grafiek: Tijd nodig voor documentatie-updates (X-as: methode, Y-as: tijd in uren/minuten)
+    \item Grafiek: Tijd nodig voor documentatieupdates (X-as: methode, Y-as: tijd in uren/minuten)
     \item Grafiek: Aantal foutieve registraties (X-as: tijd, Y-as: aantal items)
   \end{itemize}
   \item Een implementatiegids met concrete stappen voor netwerkbeheerders
