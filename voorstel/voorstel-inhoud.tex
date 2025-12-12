@@ -15,70 +15,167 @@
 \section{Inleiding}%
 \label{sec:inleiding}
 
-Waarover zal je bachelorproef gaan? Introduceer het thema en zorg dat volgende zaken zeker duidelijk aanwezig zijn:
+Netwerkbeheer vormt een kritieke component binnen moderne IT-infrastructuren. Het accuraat bijhouden van netwerkinventarisaties en -documentatie is essentieel voor efficiënt beheer, probleemoplossing en beveiliging. Echter, in veel organisaties raken deze inventarisaties snel verouderd doordat wijzigingen in de infrastructuur niet consistent worden bijgehouden~\autocite{Astera2025}. Dit probleem manifesteert zich vooral in dynamische IT-omgevingen waar systemen en apparaten voortdurend veranderen, waardoor handmatige documentatieprocessen onvoldoende zijn om de actualiteit te garanderen.
 
+De doelgroep van dit onderzoek bestaat uit netwerkbeheerders en IT-infrastructuurbeheerders binnen organisaties die te maken hebben met verouderde of inconsistente netwerkdocumentatie. Specifiek richt dit onderzoek zich op professionals die verantwoordelijk zijn voor het onderhoud van netwerkinventarisaties en die behoefte hebben aan geautomatiseerde oplossingen om een betrouwbare ``single source of truth'' te realiseren.
+
+\subsection{Probleemstelling}
+
+Het centrale probleem dat dit onderzoek adresseert, is de snel verouderende netwerkdocumentatie binnen organisaties. Wanneer wijzigingen in de infrastructuur niet consistent worden bijgehouden, ontstaan onnauwkeurige of tegenstrijdige netwerkdocumentatie. Dit leidt tot het ontbreken van een betrouwbare single source of truth, wat op zijn beurt risico's vormt voor efficiënt beheer, probleemoplossing en beveiliging~\autocite{Astera2025}. Het probleem wordt versterkt in dynamische IT-omgevingen waar systemen en apparaten voortdurend veranderen.
+
+\subsection{Centrale onderzoeksvraag}
+
+De hoofdonderzoeksvraag van dit onderzoek luidt:
+
+\textit{Hoe kan automatische netwerkdetectie bijdragen aan het up-to-date houden van netwerkdocumentatie en het realiseren van een betrouwbare `single source of truth' binnen dynamische IT-infrastructuren?}
+
+\subsection{Onderzoeksdoelstelling}
+
+Het concrete eindresultaat van dit onderzoek bestaat uit:
 \begin{itemize}
-  \item kaderen thema
-  \item de doelgroep
-  \item de probleemstelling en (centrale) onderzoeksvraag
-  \item de onderzoeksdoelstelling
+  \item Een vergelijkende evaluatie van bestaande automatische netwerkdetectietools (zoals NetBox Discovery) en hun effectiviteit in het bijhouden van netwerkdocumentatie
+  \item Een praktische implementatie en configuratie van een automatische netwerkdetectieoplossing binnen een concrete organisatiecontext
+  \item Een rapport met kwantitatieve metingen over de verbetering in actualiteit en betrouwbaarheid van netwerkdocumentatie na implementatie
+  \item Concrete aanbevelingen voor netwerkbeheerders over de implementatie en configuratie van automatische detectietools
 \end{itemize}
 
-Denk er aan: een typische bachelorproef is \textit{toegepast onderzoek}, wat betekent dat je start vanuit een concrete probleemsituatie in bedrijfscontext, een \textbf{casus}. Het is belangrijk om je onderwerp goed af te bakenen: je gaat voor die \textit{ene specifieke probleemsituatie} op zoek naar een goede oplossing, op basis van de huidige kennis in het vakgebied.
-
-De doelgroep moet ook concreet en duidelijk zijn, dus geen algemene of vaag gedefinieerde groepen zoals \emph{bedrijven}, \emph{developers}, \emph{Vlamingen}, enz. Je richt je in elk geval op it-professionals, een bachelorproef is geen populariserende tekst. Eén specifiek bedrijf (die te maken hebben met een concrete probleemsituatie) is dus beter dan \emph{bedrijven} in het algemeen.
-
-Formuleer duidelijk de onderzoeksvraag! De begeleiders lezen nog steeds te veel voorstellen waarin we geen onderzoeksvraag terugvinden.
-
-Schrijf ook iets over de doelstelling. Wat zie je als het concrete eindresultaat van je onderzoek, naast de uitgeschreven scriptie? Is het een proof-of-concept, een rapport met aanbevelingen, \ldots Met welk eindresultaat kan je je bachelorproef als een succes beschouwen?
+De bachelorproef kan als succes beschouwd worden wanneer een werkende implementatie gerealiseerd is die aantoonbaar bijdraagt aan het verbeteren van de actualiteit van netwerkdocumentatie, en wanneer concrete metingen beschikbaar zijn die de meerwaarde van automatische detectie kwantificeren.
 
 %---------- Stand van zaken ---------------------------------------------------
 
 \section{Literatuurstudie}%
 \label{sec:literatuurstudie}
 
-Hier beschrijf je de \emph{state-of-the-art} rondom je gekozen onderzoeksdomein, d.w.z.\ een inleidende, doorlopende tekst over het onderzoeksdomein van je bachelorproef. Je steunt daarbij heel sterk op de professionele \emph{vakliteratuur}, en niet zozeer op populariserende teksten voor een breed publiek. Wat is de huidige stand van zaken in dit domein, en wat zijn nog eventuele open vragen (die misschien de aanleiding waren tot je onderzoeksvraag!)?
+\subsection{Single Source of Truth in Netwerkbeheer}
 
-Je mag de titel van deze sectie ook aanpassen (literatuurstudie, stand van zaken, enz.). Zijn er al gelijkaardige onderzoeken gevoerd? Wat concluderen ze? Wat is het verschil met jouw onderzoek?
+Het concept van een ``single source of truth'' (SSOT) verwijst naar het principe waarbij alle data afkomstig is uit één gecentraliseerde, betrouwbare bron~\autocite{Astera2025}. In de context van netwerkbeheer betekent dit dat alle netwerkdocumentatie, inventarisaties en configuratie-informatie op één plaats wordt bijgehouden en beheerd. Astera Marketing Team benadrukt dat een SSOT essentieel is voor het voorkomen van inconsistente data en het verbeteren van besluitvorming binnen organisaties~\autocite{Astera2025}. Het ontbreken van een betrouwbare SSOT leidt tot verouderde documentatie, wat op zijn beurt problemen veroorzaakt bij netwerkbeheer, troubleshooting en beveiligingsaudits.
 
-Verwijs bij elke introductie van een term of bewering over het domein naar de vakliteratuur, bijvoorbeeld~\autocite{Hykes2013}! Denk zeker goed na welke werken je refereert en waarom.
+\subsection{Automatische Netwerkdetectie}
 
-Draag zorg voor correcte literatuurverwijzingen! Een bronvermelding hoort thuis \emph{binnen} de zin waar je je op die bron baseert, dus niet er buiten! Maak meteen een verwijzing als je gebruik maakt van een bron. Doe dit dus \emph{niet} aan het einde van een lange paragraaf. Baseer nooit teveel aansluitende tekst op eenzelfde bron.
+Automatische netwerkdetectie vormt een technologie die het mogelijk maakt om netwerkapparaten, configuraties en topologie automatisch te ontdekken en te documenteren. NetBox Discovery is een voorbeeld van een real-time network discovery tool die continu het netwerk scant en wijzigingen detecteert~\autocite{NetBoxLabs2025}. Dergelijke tools kunnen verschillende protocollen gebruiken zoals SNMP, LLDP, CDP en andere netwerkprotocollen om informatie over apparaten te verzamelen en automatisch te synchroniseren met een centrale documentatie- of inventory-systeem.
 
-Als je informatie over bronnen verzamelt in JabRef, zorg er dan voor dat alle nodige info aanwezig is om de bron terug te vinden (zoals uitvoerig besproken in de lessen Research Methods).
+\subsection{Bestaand Onderzoek}
 
-% Voor literatuurverwijzingen zijn er twee belangrijke commando's:
-% \autocite{KEY} => (Auteur, jaartal) Gebruik dit als de naam van de auteur
-%   geen onderdeel is van de zin.
-% \textcite{KEY} => Auteur (jaartal)  Gebruik dit als de auteursnaam wel een
-%   functie heeft in de zin (bv. ``Uit onderzoek door Doll & Hill (1954) bleek
-%   ...'')
+Šoška heeft onderzoek verricht naar systemen voor automatische detectie van netwerkapparaten en het afleiden van netwerktopologie in datacenters~\autocite{Soska2021}. Dit onderzoek toont aan dat automatische detectie haalbaar is en kan bijdragen aan het verbeteren van netwerkdocumentatie. Echter, er blijft behoefte aan praktische evaluaties binnen concrete organisatiecontexten die kwantificeren hoeveel verbetering automatische detectie daadwerkelijk oplevert ten opzichte van handmatige processen.
 
-Je mag deze sectie nog verder onderverdelen in subsecties als dit de structuur van de tekst kan verduidelijken.
+Het verschil met dit onderzoek ligt in de focus op de kwantitatieve evaluatie van de impact van automatische detectie op de actualiteit van netwerkdocumentatie, en het formuleren van concrete aanbevelingen voor implementatie binnen bestaande infrastructuren.
 
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
 \label{sec:methodologie}
 
-Hier beschrijf je hoe je van plan bent het onderzoek te voeren. Welke onderzoekstechniek ga je toepassen om elk van je onderzoeksvragen te beantwoorden? Gebruik je hiervoor literatuurstudie, interviews met belanghebbenden (bv.~voor requirements-analyse), experimenten, simulaties, vergelijkende studie, risico-analyse, PoC, \ldots?
+Dit onderzoek combineert een vergelijkende studie met een praktische implementatie en evaluatie. De methodologie bestaat uit verschillende fasen die elk bijdragen aan het beantwoorden van de onderzoeksvragen.
 
-Valt je onderwerp onder één van de typische soorten bachelorproeven die besproken zijn in de lessen Research Methods (bv.\ vergelijkende studie of risico-analyse)? Zorg er dan ook voor dat we duidelijk de verschillende stappen terug vinden die we verwachten in dit soort onderzoek!
+\subsection{Onderzoeksfasen}
 
-Vermijd onderzoekstechnieken die geen objectieve, meetbare resultaten kunnen opleveren. Enquêtes, bijvoorbeeld, zijn voor een bachelorproef informatica meestal \textbf{niet geschikt}. De antwoorden zijn eerder meningen dan feiten en in de praktijk blijkt het ook bijzonder moeilijk om voldoende respondenten te vinden. Studenten die een enquête willen voeren, hebben meestal ook geen goede definitie van de populatie, waardoor ook niet kan aangetoond worden dat eventuele resultaten representatief zijn.
+\subsubsection{Fase 1: Literatuurstudie en Requirements-analyse}
+In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd naar automatische netwerkdetectietools en hun functionaliteiten. Tevens worden interviews afgenomen met netwerkbeheerders om de concrete requirements en pijnpunten binnen de organisatiecontext te identificeren. Deze fase resulteert in een overzicht van beschikbare tools en een requirements-document.
 
-Uit dit onderdeel moet duidelijk naar voor komen dat je bachelorproef ook technisch voldoen\-de diepgang zal bevatten. Het zou niet kloppen als een bachelorproef informatica ook door bv.\ een student marketing zou kunnen uitgevoerd worden.
+\textbf{Tijdschatting:} 3-4 weken
 
-Je beschrijft ook al welke tools (hardware, software, diensten, \ldots) je denkt hiervoor te gebruiken of te ontwikkelen.
+\subsubsection{Fase 2: Toolselectie en Vergelijkende Evaluatie}
+Op basis van de literatuurstudie en requirements worden verschillende automatische netwerkdetectietools geëvalueerd (waaronder NetBox Discovery). De evaluatiecriteria omvatten functionaliteiten, integratiemogelijkheden, configuratiecomplexiteit en onderhoudsvereisten. Deze fase resulteert in een vergelijkende analyse en toolselectie.
 
-Probeer ook een tijdschatting te maken. Hoe lang zal je met elke fase van je onderzoek bezig zijn en wat zijn de concrete \emph{deliverables} in elke fase?
+\textbf{Tijdschatting:} 2-3 weken
+
+\subsubsection{Fase 3: Implementatie en Configuratie}
+De geselecteerde tool wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur. Dit omvat de installatie, configuratie van discovery-protocollen (SNMP, LLDP, etc.), integratie met bestaande netwerkdocumentatiesystemen, en het opzetten van automatische synchronisatieprocessen.
+
+\textbf{Tijdschatting:} 3-4 weken
+
+\subsubsection{Fase 4: Baseline-metingen}
+Voorafgaand aan de implementatie worden baseline-metingen uitgevoerd om de huidige staat van de netwerkdocumentatie vast te leggen:
+\begin{itemize}
+  \item Aantal verouderde items in de huidige inventarisatie
+  \item Tijd nodig voor handmatige updates
+  \item Frequentie van veroudering (aantal updates per maand/kwartaal)
+  \item Aantal inconsistente of foutieve registraties
+\end{itemize}
+
+\textbf{Tijdschatting:} 2 weken
+
+\subsubsection{Fase 5: Evaluatie en Metingen}
+Na implementatie worden gedurende een periode van minimaal 4-6 weken metingen uitgevoerd om de impact van automatische detectie te kwantificeren:
+\begin{itemize}
+  \item Verbetering in actualiteit van documentatie (percentage)
+  \item Tijdswinst bij updates (minuten/uren)
+  \item Aantal resterende foutieve registraties
+  \item Benodigde onderhoudsmomenten en correcties
+\end{itemize}
+
+\textbf{Tijdschatting:} 6-8 weken (inclusief monitoringperiode)
+
+\subsubsection{Fase 6: Analyse en Aanbevelingen}
+De verzamelde data wordt geanalyseerd en geïnterpreteerd. Op basis van de resultaten worden concrete aanbevelingen geformuleerd voor netwerkbeheerders over implementatie, configuratie en onderhoud van automatische detectietools.
+
+\textbf{Tijdschatting:} 2-3 weken
+
+\subsection{Tools en Technologieën}
+
+Voor dit onderzoek zullen de volgende tools en technologieën gebruikt worden:
+\begin{itemize}
+  \item \textbf{NetBox Discovery:} Voor automatische netwerkdetectie en real-time monitoring
+  \item \textbf{SNMP/Linux tools:} Voor netwerkprotocol-communicatie en verificatie
+  \item \textbf{Documentatie- en inventory-systemen:} Afhankelijk van de organisatiecontext (bijv. NetBox, Confluence, of andere bestaande systemen)
+  \item \textbf{Monitoring tools:} Voor het verzamelen van kwantitatieve data over documentatie-updates
+\end{itemize}
+
+\subsection{Beantwoording Onderzoeksvragen}
+
+De verschillende onderzoeksvragen worden als volgt beantwoord:
+\begin{itemize}
+  \item \textbf{Probleemdomein-vragen:} Beantwoord via baseline-metingen en interviews met netwerkbeheerders
+  \item \textbf{Oplossingsdomein-vragen:} Beantwoord via vergelijkende tool-evaluatie, praktische implementatie en kwantitatieve metingen na implementatie
+\end{itemize}
 
 %---------- Verwachte resultaten ----------------------------------------------
 \section{Verwacht resultaat, conclusie}%
 \label{sec:verwachte_resultaten}
 
-Hier beschrijf je welke resultaten je verwacht. Als je metingen en simulaties uitvoert, kan je hier al mock-ups maken van de grafieken samen met de verwachte conclusies. Benoem zeker al je assen en de onderdelen van de grafiek die je gaat gebruiken. Dit zorgt ervoor dat je concreet weet welk soort data je moet verzamelen en hoe je die moet meten.
+\subsection{Verwachte Kwantitatieve Resultaten}
 
-Wat heeft de doelgroep van je onderzoek aan het resultaat? Op welke manier zorgt jouw bachelorproef voor een meerwaarde?
+Op basis van bestaand onderzoek en de verwachte impact van automatische detectie, worden de volgende resultaten verwacht:
 
-Hier beschrijf je wat je verwacht uit je onderzoek, met de motivatie waarom. Het is \textbf{niet} erg indien uit je onderzoek andere resultaten en conclusies vloeien dan dat je hier beschrijft: het is dan juist interessant om te onderzoeken waarom jouw hypothesen niet overeenkomen met de resultaten.
+\begin{itemize}
+  \item \textbf{Actualiteit van documentatie:} Een verbetering van minimaal 60-80\% in de actualiteit van netwerkdocumentatie na implementatie van automatische detectie, gemeten als het percentage items dat binnen een bepaalde tijdspanne (bijv. 24 uur) correct gedocumenteerd is.
+  
+  \item \textbf{Tijdswinst:} Een reductie van 70-90\% in de tijd nodig voor het bijwerken van documentatie, van handmatige processen (mogelijk uren per week) naar geautomatiseerde updates (minuten per week voor verificatie).
+  
+  \item \textbf{Foutreductie:} Een afname van 50-70\% in het aantal foutieve of onvolledige registraties, gemeten door vergelijking van baseline-metingen met post-implementatie metingen.
+  
+  \item \textbf{Onderhoudsvereisten:} Na initiële configuratie wordt verwacht dat automatische detectie slechts beperkt onderhoud vereist (mogelijk 1-2 uur per maand voor verificatie en correcties), vergeleken met regelmatige handmatige updates.
+\end{itemize}
+
+\subsection{Verwachte Deliverables}
+
+Het onderzoek resulteert in:
+\begin{enumerate}
+  \item Een werkende implementatie van automatische netwerkdetectie binnen een concrete organisatiecontext
+  \item Een vergelijkende evaluatie van beschikbare tools met concrete aanbevelingen
+  \item Kwantitatieve metingen en grafieken die de impact van automatische detectie visualiseren:
+  \begin{itemize}
+    \item Grafiek: Actualiteit van documentatie over tijd (X-as: tijd in weken, Y-as: percentage actuele items)
+    \item Grafiek: Tijd nodig voor documentatie-updates (X-as: methode, Y-as: tijd in uren/minuten)
+    \item Grafiek: Aantal foutieve registraties (X-as: tijd, Y-as: aantal items)
+  \end{itemize}
+  \item Een implementatiegids met concrete stappen voor netwerkbeheerders
+  \item Aanbevelingen voor configuratie en onderhoud
+\end{enumerate}
+
+\subsection{Meerwaarde voor de Doelgroep}
+
+De doelgroep (netwerkbeheerders en IT-infrastructuurbeheerders) heeft baat bij dit onderzoek omdat:
+
+\begin{itemize}
+  \item Het concrete, kwantitatieve inzicht biedt in de effectiviteit van automatische netwerkdetectie
+  \item Het praktische aanbevelingen bevat voor implementatie en configuratie binnen bestaande infrastructuren
+  \item Het helpt bij het maken van gefundeerde beslissingen over de adoptie van automatische detectietools
+  \item Het een referentiepunt biedt voor het meten van de impact van dergelijke tools binnen hun eigen organisatie
+\end{itemize}
+
+\subsection{Verwachte Conclusies}
+
+Het onderzoek verwacht aan te tonen dat automatische netwerkdetectie significant kan bijdragen aan het verbeteren van de actualiteit en betrouwbaarheid van netwerkdocumentatie. De verwachting is dat tools zoals NetBox Discovery effectief zijn in het realiseren van een betrouwbare single source of truth, mits correct geconfigureerd en geïntegreerd. Echter, volledig automatische oplossingen zonder enige menselijke tussenkomst zijn waarschijnlijk niet haalbaar, en een combinatie van automatische detectie met periodieke verificatie door netwerkbeheerders zal nodig blijven.
+
+Indien de resultaten afwijken van deze verwachtingen, zal dit leiden tot interessante onderzoeksvragen over de oorzaken van deze verschillen, zoals configuratiecomplexiteit, netwerkprotocollen, of organisatorische factoren.
 
