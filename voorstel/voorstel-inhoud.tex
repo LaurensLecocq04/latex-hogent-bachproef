@@ -61,19 +61,14 @@ Dit onderzoek combineert een vergelijkende studie met een praktische implementat
 \subsubsection{Fase 1: Literatuurstudie en Requirements-analyse}
 In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd naar automatische netwerkdetectietools en hun functionaliteiten. Tevens worden interviews afgenomen met netwerkbeheerders om de concrete requirements en pijnpunten binnen de organisatiecontext te identificeren. Deze fase resulteert in een overzicht van beschikbare tools en een requirements-document.
 
-\textbf{Tijdschatting:} 3-4 weken
+\textbf{Tijdschatting:} 2 weken
 
 \subsubsection{Fase 2: Toolselectie en Vergelijkende Evaluatie}
 Op basis van de literatuurstudie en requirements worden verschillende automatische netwerkdetectietools geëvalueerd (waaronder NetBox Discovery). De evaluatiecriteria omvatten functionaliteiten, integratiemogelijkheden, configuratiecomplexiteit en onderhoudsvereisten. Deze fase resulteert in een vergelijkende analyse en toolselectie.
 
-\textbf{Tijdschatting:} 2-3 weken
+\textbf{Tijdschatting:} 1 week
 
-\subsubsection{Fase 3: Implementatie en Configuratie}
-De geselecteerde tool wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, configuratie van discovery-protocollen (SNMP, LLDP, etc.), integratie met bestaande netwerkdocumentatiesystemen binnen Citymesh, en het opzetten van automatische synchronisatieprocessen.
-
-\textbf{Tijdschatting:} 3-4 weken
-
-\subsubsection{Fase 4: Baseline-metingen}
+\subsubsection{Fase 3: Baseline-metingen en Implementatievoorbereiding}
 Voorafgaand aan de implementatie worden baseline-metingen uitgevoerd om de huidige staat van de netwerkdocumentatie binnen Citymesh vast te leggen:
 \begin{itemize}
   \item Aantal verouderde items in de huidige inventarisatie
@@ -81,11 +76,17 @@ Voorafgaand aan de implementatie worden baseline-metingen uitgevoerd om de huidi
   \item Frequentie van veroudering (aantal updates per maand/kwartaal)
   \item Aantal inconsistente of foutieve registraties
 \end{itemize}
+Tegelijkertijd wordt de implementatie voorbereid door de benodigde infrastructuur en toegang te regelen.
+
+\textbf{Tijdschatting:} 1 week
+
+\subsubsection{Fase 4: Implementatie en Configuratie}
+De geselecteerde tool wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, configuratie van discovery-protocollen (SNMP, LLDP, etc.), integratie met bestaande netwerkdocumentatiesystemen binnen Citymesh, en het opzetten van automatische synchronisatieprocessen.
 
 \textbf{Tijdschatting:} 2 weken
 
 \subsubsection{Fase 5: Evaluatie en Metingen}
-Na implementatie worden gedurende een periode van minimaal 4-6 weken metingen uitgevoerd om de impact van automatische detectie te kwantificeren:
+Na implementatie worden gedurende een periode van 3-4 weken metingen uitgevoerd om de impact van automatische detectie te kwantificeren. Deze monitoringperiode loopt parallel met het schrijven van de scriptie:
 \begin{itemize}
   \item Verbetering in actualiteit van documentatie (percentage)
   \item Tijdswinst bij updates (minuten/uren)
@@ -93,12 +94,14 @@ Na implementatie worden gedurende een periode van minimaal 4-6 weken metingen ui
   \item Benodigde onderhoudsmomenten en correcties
 \end{itemize}
 
-\textbf{Tijdschatting:} 6-8 weken (inclusief monitoringperiode)
+\textbf{Tijdschatting:} 3-4 weken (monitoring loopt parallel met fase 6)
 
-\subsubsection{Fase 6: Analyse en Aanbevelingen}
-De verzamelde data wordt geanalyseerd en geïnterpreteerd. Op basis van de resultaten worden concrete aanbevelingen geformuleerd voor netwerkbeheerders over implementatie, configuratie en onderhoud van automatische detectietools.
+\subsubsection{Fase 6: Analyse, Aanbevelingen en Scriptie}
+De verzamelde data wordt geanalyseerd en geïnterpreteerd. Op basis van de resultaten worden concrete aanbevelingen geformuleerd voor netwerkbeheerders over implementatie, configuratie en onderhoud van automatische detectietools. Tegelijkertijd wordt de scriptie geschreven en afgerond.
 
-\textbf{Tijdschatting:} 2-3 weken
+\textbf{Tijdschatting:} 3-4 weken (loopt parallel met fase 5)
+
+\textbf{Totale tijdsduur:} 12 weken (met parallelle uitvoering van fasen 5 en 6)
 
 \subsection{Tools en Technologieën}
 
