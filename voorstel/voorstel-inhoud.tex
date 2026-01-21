@@ -3,30 +3,42 @@
 \section{Inleiding}%
 \label{sec:inleiding}
 
-Netwerkbeheer vormt een kritieke component binnen moderne IT-infrastructuren. Het accuraat bijhouden van netwerkinventarisaties en -documentatie is essentieel voor efficiënt beheer, probleemoplossing en beveiliging. Echter, in veel organisaties raken deze inventarisaties snel verouderd omdat wijzigingen in de infrastructuur niet consistent worden bijgehouden~\autocite{Astera2025}. Dit probleem manifesteert zich vooral in dynamische IT-omgevingen waar systemen en apparaten voortdurend veranderen, waardoor handmatige documentatieprocessen onvoldoende zijn om de actualiteit te garanderen.
+Netwerkbeheer vormt een kritieke component binnen moderne IT-infrastructuren. Het accuraat bijhouden van netwerkinventarisaties en -documentatie is essentieel voor efficiënt beheer, probleemoplossing en beveiliging. Echter, in veel organisaties raken deze inventarisaties snel verouderd omdat wijzigingen in de infrastructuur niet consistent worden bijgehouden. Dit probleem manifesteert zich vooral in dynamische IT-omgevingen waar systemen en apparaten voortdurend veranderen, waardoor handmatige documentatieprocessen onvoldoende zijn om de actualiteit te garanderen.\autocite{Campbell2007,Johansson2007}
 
-Dit onderzoek wordt uitgevoerd binnen de context van Citymesh, een organisatie die gespecialiseerd is in netwerkinfrastructuur en draadloze connectiviteit. Binnen deze dynamische IT-omgeving vormt het bijhouden van accurate netwerkdocumentatie een uitdaging, gezien de continue wijzigingen en uitbreidingen van de netwerkinfrastructuur. Deze concrete casus biedt een ideale context om de effectiviteit van automatische netwerkdetectie te evalueren en te meten.
+Dit onderzoek wordt uitgevoerd binnen de context van Citymesh, een Belgische telecomoperator en technologiebedrijf dat gespecialiseerd is in grootschalige draadloze netwerken en connectiviteitsoplossingen voor de zakelijke markt.\autocite{CitymeshAbout,CitymeshLinkedIn} Citymesh focust op zowel permanente als tijdelijke connectiviteit op basis van WiFi/WLAN, 0G/IoT, 4G en 5G en treedt op als vierde mobiele operator in België.\autocite{CitymeshAbout,Mice2022} Het bedrijf bouwt onder meer private 4G/5G-netwerken voor kritieke omgevingen zoals luchthavens en industriële sites, evenals grootschalige campus- en stadsbrede WiFi-deployments.\autocite{CitymeshPrivate5G,CitymeshWiFi,BrusselsAirport2019} Deze heterogene en sterk gedistribueerde draadloze infrastructuren veranderen frequent door nieuwe sites, tijdelijke events en uitbreidingen, waardoor het bijhouden van accurate netwerkdocumentatie een bijzondere uitdaging vormt.
 
-De doelgroep van dit onderzoek bestaat uit netwerkbeheerders en IT-infrastructuurbeheerders binnen organisaties die te maken hebben met verouderde of inconsistente netwerkdocumentatie. Specifiek richt dit onderzoek zich op professionals binnen Citymesh die verantwoordelijk zijn voor het onderhoud van netwerkinventarisaties en die behoefte hebben aan geautomatiseerde oplossingen om een betrouwbare ``single source of truth'' te realiseren.
+De doelgroep van dit onderzoek bestaat uit netwerkbeheerders en IT-infrastructuurbeheerders binnen organisaties die te maken hebben met verouderde of inconsistente netwerkdocumentatie. Specifiek richt dit onderzoek zich op professionals binnen Citymesh die verantwoordelijk zijn voor het onderhoud van netwerkinventarisaties in complexe draadloze omgevingen en die behoefte hebben aan geautomatiseerde oplossingen om een betrouwbare ``single source of truth'' te realiseren.
 
 \subsection{Probleemstelling}
 
-Het centrale probleem dat dit onderzoek adresseert, is de snel verouderende netwerkdocumentatie binnen organisaties. Wanneer wijzigingen in de infrastructuur niet consistent worden bijgehouden, ontstaan onnauwkeurige of tegenstrijdige netwerkdocumentatie. Dit leidt tot het ontbreken van een betrouwbare single source of truth, wat op zijn beurt risico's vormt voor efficiënt beheer, probleemoplossing en beveiliging~\autocite{Astera2025}. Het probleem wordt versterkt in dynamische IT-omgevingen waar systemen en apparaten voortdurend veranderen.
+Het centrale probleem dat dit onderzoek adresseert, is de snel verouderende netwerkdocumentatie binnen organisaties. Wanneer wijzigingen in de infrastructuur niet consistent worden bijgehouden, ontstaan onnauwkeurige of tegenstrijdige netwerkdocumentatie. Dit leidt tot het ontbreken van een betrouwbare single source of truth (SSOT), wat op zijn beurt risico's vormt voor efficiënt beheer, probleemoplossing en beveiliging.\autocite{Campbell2007,Johansson2007} Het probleem wordt versterkt in dynamische IT-omgevingen zoals die van Citymesh, waar draadloze technologieën zoals grootschalige WiFi/WLAN, private 4G/5G-netwerken en IoT- of 0G-sensornetwerken continu evolueren en waar apparaten en sites frequent toegevoegd, verhuisd of verwijderd worden.\autocite{CitymeshAbout,CitymeshWiFi,CitymeshPrivate5G}
 
 \subsection{Centrale onderzoeksvraag}
 
 De hoofdonderzoeksvraag van dit onderzoek luidt:
 
-\textit{Hoe kan automatische netwerkdetectie bijdragen aan het up-to-date houden van netwerkdocumentatie en het realiseren van een betrouwbare `single source of truth' binnen dynamische IT-infrastructuren?}
+\textit{Hoe kan automatische netwerkdetectie bijdragen aan het up-to-date houden van netwerkdocumentatie en het realiseren van een betrouwbare `single source of truth' binnen de dynamische, draadloze IT-infrastructuren van Citymesh?}
+
+\subsection{Deelonderzoeksvragen}
+
+Om de centrale onderzoeksvraag te beantwoorden, worden de volgende deelonderzoeksvragen geformuleerd:
+
+\begin{enumerate}
+  \item Hoe manifesteert het probleem van verouderde netwerkdocumentatie zich specifiek binnen de draadloze (WiFi/WLAN, private 4G/5G, IoT/0G) infrastructuur van Citymesh?
+  \item Welke bestaande technieken en tools voor automatische netwerkdetectie bestaan er, en in welke mate ondersteunen zij grootschalige draadloze omgevingen zoals die van Citymesh?
+  \item Hoe presteren geselecteerde automatische netwerkdetectietools qua nauwkeurigheid, dekking, integratiemogelijkheden en beheerlast in de context van Citymesh?
+  \item In welke mate verbetert een gekozen automatische netwerkdetectieoplossing de actualiteit, foutgraad en onderhoudstijd van de netwerkdocumentatie ten opzichte van de huidige werkwijze?
+  \item Welke organisatorische processen, best practices en configuratie-aanpassingen zijn nodig om een duurzame SSOT voor netwerkdocumentatie te waarborgen?
+\end{enumerate}
 
 \subsection{Onderzoeksdoelstelling}
 
 Het concrete eindresultaat van dit onderzoek bestaat uit:
 \begin{itemize}
-  \item Een vergelijkende evaluatie van bestaande automatische netwerkdetectietools (zoals NetBox Discovery) en hun effectiviteit in het bijhouden van netwerkdocumentatie
-  \item Een praktische implementatie en configuratie van een automatische netwerkdetectieoplossing binnen een concrete organisatiecontext
+  \item Een vergelijkende evaluatie van bestaande automatische netwerkdetectietools (zoals NetBox Discovery en alternatieve oplossingen) en hun effectiviteit in het bijhouden van netwerkdocumentatie
+  \item Een praktische implementatie en configuratie van een automatische netwerkdetectieoplossing binnen de draadloze infrastructuur van Citymesh
   \item Een rapport met kwantitatieve metingen over de verbetering in actualiteit en betrouwbaarheid van netwerkdocumentatie na implementatie
-  \item Concrete aanbevelingen voor netwerkbeheerders over de implementatie en configuratie van automatische detectietools
+  \item Concrete aanbevelingen voor netwerkbeheerders over de implementatie, configuratie en organisatorische inbedding van automatische detectietools
 \end{itemize}
 
 De bachelorproef kan als succes beschouwd worden wanneer een werkende implementatie gerealiseerd is die aantoonbaar bijdraagt aan het verbeteren van de actualiteit van netwerkdocumentatie, en wanneer concrete metingen beschikbaar zijn die de meerwaarde van automatische detectie kwantificeren.
@@ -38,137 +50,142 @@ De bachelorproef kan als succes beschouwd worden wanneer een werkende implementa
 
 \subsection{Single Source of Truth in Netwerkbeheer}
 
-Het concept van een ``single source of truth'' (SSOT) verwijst naar het principe waarbij alle data afkomstig is uit één gecentraliseerde, betrouwbare bron~\autocite{Astera2025}. In de context van netwerkbeheer betekent dit dat alle netwerkdocumentatie, inventarisaties en configuratieinformatie op één plaats wordt bijgehouden en beheerd. Astera Marketing Team benadrukt dat een SSOT essentieel is voor het voorkomen van inconsistente data en het verbeteren van besluitvorming binnen organisaties~\autocite{Astera2025}. Het ontbreken van een betrouwbare SSOT leidt tot verouderde documentatie, wat op zijn beurt problemen veroorzaakt bij netwerkbeheer, troubleshooting en beveiligingsaudits.
+Het concept van een ``single source of truth'' (SSOT) verwijst naar het principe waarbij alle data afkomstig is uit één gecentraliseerde, betrouwbare bron.\autocite{Campbell2007} In de context van netwerkbeheer betekent dit dat alle netwerkdocumentatie, inventarisaties en configuratieinformatie op één plaats wordt bijgehouden en beheerd, bijvoorbeeld in een centraal IPAM/DCIM- of CMDB-systeem.\autocite{Campbell2007,AutomatingDoc2017} Verschillende studies benadrukken dat een SSOT essentieel is voor het voorkomen van inconsistente data, het verminderen van beheerkosten en het verbeteren van besluitvorming binnen organisaties.\autocite{Campbell2007,AutomatingDoc2017} Het ontbreken van een betrouwbare SSOT leidt tot verouderde documentatie en topologiemodellen, wat op zijn beurt problemen veroorzaakt bij netwerkbeheer, troubleshooting en beveiligingsaudits.\autocite{Campbell2007,AutomatingDoc2017}
 
-\subsection{Automatische Netwerkdetectie}
+\subsection{Automatische netwerkdetectie}
 
-Automatische netwerkdetectie vormt een technologie die het mogelijk maakt om netwerkapparaten, configuraties en topologie automatisch te ontdekken en te documenteren. NetBox Discovery is een voorbeeld van een real-time network discovery tool die continu het netwerk scant en wijzigingen detecteert~\autocite{NetBoxLabs2025}. Dergelijke tools kunnen verschillende protocollen gebruiken zoals SNMP, LLDP, CDP en andere netwerkprotocollen om informatie over apparaten te verzamelen en automatisch te synchroniseren met een centrale documentatie- of inventorysysteem.
+Automatische netwerkdetectie omvat technieken en systemen waarmee netwerkapparaten, configuraties en topologie automatisch ontdekt, geanalyseerd en gedocumenteerd kunnen worden. In academische literatuur worden architecturen beschreven die discovery-agents inzetten om netwerkapparaten via standaardprotocollen (zoals SNMP, LLDP, CDP of ARP-scans) te detecteren, waarna de verzamelde gegevens vergeleken worden met een off-line netwerkmodel om afwijkingen op te sporen en documentatie automatisch bij te werken.\autocite{Johansson2007,Campbell2007,AutomaticTopology2013} Deze architecturen ondersteunen onder meer het automatisch aanmaken en synchroniseren van topologie-informatie, het herkennen van nieuwe of vervangen nodes en het detecteren van rogue-apparaten.\autocite{Johansson2007,AutomaticTopology2013,WirelessTopology2015}
 
-\subsection{Bestaand Onderzoek}
+Naast onderzoeksprototypes bestaan er in de praktijk diverse netwerkbeheersystemen en IPAM/DCIM-oplossingen met ingebouwde discovery-functionaliteit. Voorbeelden zijn open-source tools met discovery-modules (zoals NetBox Discovery) en commerciële Network Management Systems (NMS) of ITSM-platformen (zoals SolarWinds, ManageEngine of ServiceNow Discovery) die met behulp van agents en probes netwerkinventarisaties en CMDB's automatisch bijwerken.\autocite{NetBoxDiscoveryDocs,ServiceNowDiscovery,SoftwareOneNetBox} Deze tools variëren in dekking van technologieën (bijvoorbeeld ondersteuning voor draadloze controllers en 5G-corecomponenten), integratiemogelijkheden, configuratiecomplexiteit en de mate waarin zij integreren met bestaande documentatiesystemen.
 
-ServiceNow benadrukt het belang van automatische netwerkdetectie voor het bijhouden van accurate netwerkinventarisaties en het verbeteren van netwerkdocumentatie~\autocite{ServiceNow2024}. Automatische detectie kan bijdragen aan het realiseren van een betrouwbare netwerkdocumentatie. Echter, er blijft behoefte aan praktische evaluaties binnen concrete organisatiecontexten die kwantificeren hoeveel verbetering automatische detectie daadwerkelijk oplevert ten opzichte van handmatige processen.
+\subsection{Bestaand onderzoek naar automatische documentatie}
 
-Het verschil met dit onderzoek ligt in de focus op de kwantitatieve evaluatie van de impact van automatische detectie op de actualiteit van netwerkdocumentatie, en het formuleren van concrete aanbevelingen voor implementatie binnen bestaande infrastructuren.
+Eerdere mastertheses en onderzoeksprojecten beschrijven frameworks om het proces van netwerkdocumentatie grotendeels te automatiseren. Campbell presenteert bijvoorbeeld een systeem dat netwerkapparaten via open standaardprotocollen bevraagt, de resultaten opslaat in een generiek datamodel en daaruit automatisch HTML- en PDF-documentatie genereert.\autocite{Campbell2007,AutomatingDoc2017} Johansson beschrijft een architectuur voor geautomatiseerde nodediscovery en topologie-analyse die gericht is op het continu synchroniseren van het logische netwerkmodel met de fysieke werkelijkheid en het detecteren van veranderingen in grote netwerken.\autocite{Johansson2007} Verdere studies focussen specifiek op automatische discovery en topologie-inferentie in datacenters en grootschalige (draadloze) netwerken.\autocite{AutomaticTopology2013,WirelessTopology2015}
+
+Deze onderzoeken tonen aan dat automatische netwerkdetectie niet alleen kan helpen bij de initiële opbouw van netwerkdocumentatie, maar ook bij het continu bijwerken en valideren van bestaande documentatie. Er is echter relatief weinig gepubliceerd over praktische, kwantitatieve evaluaties binnen concrete organisatiecontexten en over de specifieke uitdagingen van zeer dynamische, draadloze omgevingen zoals die van Citymesh. Dit onderzoek positioneert zich in dat gat door een casestudy uit te voeren in een operatoromgeving met grootschalige WiFi- en private 4G/5G-netwerken.
 
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
 \label{sec:methodologie}
 
-Dit onderzoek combineert een vergelijkende studie met een praktische implementatie en evaluatie. De methodologie bestaat uit verschillende fasen die elk bijdragen aan het beantwoorden van de onderzoeksvragen.
+Dit onderzoek combineert een vergelijkende studie met een praktische implementatie en evaluatie in de context van Citymesh. De methodologie bestaat uit verschillende fasen die elk bijdragen aan het beantwoorden van de centrale onderzoeksvraag en de deelonderzoeksvragen.
 
 \subsection{Onderzoeksfasen}
 
-\subsubsection{Fase 1: Literatuurstudie en Requirementsanalyse}
-In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd naar automatische netwerkdetectietools en hun functionaliteiten. Tevens worden interviews afgenomen met netwerkbeheerders om de concrete requirements en pijnpunten binnen de organisatiecontext te identificeren. Deze fase resulteert in een overzicht van beschikbare tools en een requirementsdocument.
+\subsubsection{Fase 1: Literatuurstudie en requirementsanalyse}
+
+In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd naar technieken en tools voor automatische netwerkdetectie en hun inzet voor het automatiseren van netwerkdocumentatie.\autocite{Campbell2007,Johansson2007,AutomatingDoc2017,AutomaticTopology2013,WirelessTopology2015} Daarnaast worden interviews afgenomen met netwerkbeheerders en engineers binnen Citymesh om de concrete requirements, bestaande documentatieprocessen en pijnpunten in kaart te brengen, met bijzondere aandacht voor draadloze technologieën (WiFi/WLAN, private 4G/5G, IoT/0G). Deze fase resulteert in een overzicht van relevante tools en een requirementsdocument dat de functionele en niet-functionele eisen voor een automatische detectieoplossing beschrijft.
 
 \textbf{Tijdschatting:} 2 weken
 
-\subsubsection{Fase 2: Toolselectie en Vergelijkende Evaluatie}
-Op basis van de literatuurstudie en requirements worden verschillende automatische netwerkdetectietools geëvalueerd (waaronder NetBox Discovery). De evaluatiecriteria omvatten functionaliteiten, integratiemogelijkheden, configuratiecomplexiteit en onderhoudsvereisten. Deze fase resulteert in een vergelijkende analyse en toolselectie.
+\subsubsection{Fase 2: Toolselectie en vergelijkende evaluatie}
+
+Op basis van de literatuurstudie en de geformuleerde requirements worden meerdere automatische netwerkdetectietools geselecteerd en geëvalueerd. Hierbij wordt onder meer gekeken naar open-source oplossingen (zoals NetBox Discovery) en, indien beschikbaar binnen de organisatie, commerciële NMS- of ITSM-tools met discovery-functionaliteit.\autocite{NetBoxDiscoveryDocs,SoftwareOneNetBox,ServiceNowDiscovery} De evaluatiecriteria omvatten functionaliteiten, ondersteuning voor draadloze infrastructuren (WiFi-controllers, 4G/5G-core, IoT-gateways), integratiemogelijkheden met bestaande documentatiesystemen, configuratiecomplexiteit, schaalbaarheid en onderhoudsvereisten. Deze fase resulteert in een vergelijkende analyse en een gemotiveerde toolselectie.
 
 \textbf{Tijdschatting:} 1 week
 
-\subsubsection{Fase 3: Baselinemetingen en Implementatievoorbereiding}
-Voorafgaand aan de implementatie worden baselinemetingen uitgevoerd om de huidige staat van de netwerkdocumentatie binnen Citymesh vast te leggen:
+\subsubsection{Fase 3: Baselinemetingen en implementatievoorbereiding}
+
+Voorafgaand aan de implementatie worden baselinemetingen uitgevoerd om de huidige staat van de netwerkdocumentatie binnen een afgebakende Citymesh-omgeving vast te leggen. Hierbij wordt onder meer gemeten:
 \begin{itemize}
-  \item Aantal verouderde items in de huidige inventarisatie
-  \item Tijd nodig voor handmatige updates
-  \item Frequentie van veroudering (aantal updates per maand/kwartaal)
-  \item Aantal inconsistente of foutieve registraties
+  \item Het aantal verouderde items in de huidige inventarisatie
+  \item De tijd die netwerkbeheerders besteden aan handmatige updates
+  \item De frequentie waarmee documentatie veroudert (bijvoorbeeld aantal wijzigingen per maand/kwartaal)
+  \item Het aantal inconsistente of foutieve registraties in de documentatie
 \end{itemize}
-Tegelijkertijd wordt de implementatie voorbereid door de benodigde infrastructuur en toegang te regelen.
+Tegelijkertijd wordt de implementatie voorbereid door de benodigde infrastructuur, toegangen en testomgevingen te voorzien, inclusief toegang tot relevante draadloze controllers en managementsystemen.
 
 \textbf{Tijdschatting:} 1 week
 
-\subsubsection{Fase 4: Implementatie en Configuratie}
-De geselecteerde tool wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, configuratie van discoveryprotocollen (SNMP, LLDP, etc.), integratie met bestaande netwerkdocumentatiesystemen binnen Citymesh, en het opzetten van automatische synchronisatieprocessen.
+\subsubsection{Fase 4: Implementatie en configuratie}
+
+De geselecteerde tool wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, de configuratie van discoveryprotocollen (bijvoorbeeld SNMP, LLDP, API-koppelingen met WiFi- en 4G/5G-managementsystemen), de integratie met bestaande netwerkdocumentatiesystemen (zoals IPAM/DCIM of CMDB) en het opzetten van automatische synchronisatie- en validatieprocessen. Waar mogelijk wordt de oplossing zo opgezet dat zowel vaste netwerkcomponenten als draadloze access points, small cells en corecomponenten automatisch ontdekt en bijgewerkt worden.
 
 \textbf{Tijdschatting:} 2 weken
 
-\subsubsection{Fase 5: Evaluatie en Metingen}
-Na implementatie worden gedurende een periode van 3-4 weken metingen uitgevoerd om de impact van automatische detectie te kwantificeren. Deze monitoringperiode loopt parallel met het schrijven van de scriptie:
+\subsubsection{Fase 5: Evaluatie en metingen}
+
+Na implementatie wordt gedurende een periode van 3--4 weken een monitoring- en evaluatiefase uitgevoerd om de impact van automatische detectie te kwantificeren. Deze monitoringperiode loopt parallel met het schrijven van de scriptie. Tijdens deze fase worden onder meer de volgende indicatoren gemeten:
 \begin{itemize}
-  \item Verbetering in actualiteit van documentatie (percentage)
-  \item Tijdswinst bij updates (minuten/uren)
-  \item Aantal resterende foutieve registraties
-  \item Benodigde onderhoudsmomenten en correcties
+  \item Verbetering in actualiteit van documentatie (percentage items dat binnen een vooraf gedefinieerde tijdspanne correct gedocumenteerd is)
+  \item Tijdswinst bij updates (reductie in tijd die beheerders spenderen aan documentatie)
+  \item Aantal resterende foutieve of ontbrekende registraties
+  \item Benodigde onderhoudsmomenten en correcties aan de automatische detectieconfiguratie
 \end{itemize}
 
-\textbf{Tijdschatting:} 3-4 weken (monitoring loopt parallel met fase 6)
+\textbf{Tijdschatting:} 3--4 weken (monitoring loopt parallel met fase 6)
 
-\subsubsection{Fase 6: Analyse, Aanbevelingen en Scriptie}
-De verzamelde data wordt geanalyseerd en geïnterpreteerd. Op basis van de resultaten worden concrete aanbevelingen geformuleerd voor netwerkbeheerders over implementatie, configuratie en onderhoud van automatische detectietools. Tegelijkertijd wordt de scriptie geschreven en afgerond.
+\subsubsection{Fase 6: Analyse, aanbevelingen en scriptie}
 
-\textbf{Tijdschatting:} 3-4 weken (loopt parallel met fase 5)
+De verzamelde data wordt geanalyseerd en geïnterpreteerd met het oog op het beantwoorden van de centrale onderzoeksvraag en de deelonderzoeksvragen. Op basis van de resultaten worden concrete aanbevelingen geformuleerd voor netwerkbeheerders omtrent implementatie, configuratie, monitoring en organisatorische verankering van automatische detectietools in een context zoals die van Citymesh. Tegelijkertijd wordt de scriptie geschreven en afgerond.
+
+\textbf{Tijdschatting:} 3--4 weken (loopt parallel met fase 5)
 
 \textbf{Totale tijdsduur:} 12 weken (met parallelle uitvoering van fasen 5 en 6)
 
-\subsection{Tools en Technologieën}
+\subsection{Tools en technologieën}
 
 Voor dit onderzoek zullen de volgende tools en technologieën gebruikt worden:
 \begin{itemize}
-  \item \textbf{NetBox Discovery:} Voor automatische netwerkdetectie en real-time monitoring
-  \item \textbf{SNMP/Linux tools:} Voor netwerkprotocol communicatie en verificatie
-  \item \textbf{Documentatie- en inventorysystemen:} Afhankelijk van de organisatiecontext (bijv. NetBox, Confluence, of andere bestaande systemen)
-  \item \textbf{Monitoring tools:} Voor het verzamelen van kwantitatieve data over documentatieupdates
+  \item \textbf{Automatische netwerkdetectietools:} Een of meerdere tools, waaronder vermoedelijk NetBox Discovery en eventueel aanvullende NMS- of ITSM-oplossingen met discovery-functionaliteit, afhankelijk van beschikbaarheid binnen Citymesh
+  \item \textbf{SNMP en Linux-tools:} Voor netwerkprotocolcommunicatie, verificatie en het uitvoeren van aanvullende metingen
+  \item \textbf{Documentatie- en inventorysystemen:} Bestaande systemen binnen Citymesh (bijvoorbeeld NetBox, CMDB, Confluence of andere platformen) voor het centraliseren van de SSOT
+  \item \textbf{Monitoring- en analysetools:} Voor het verzamelen en visualiseren van kwantitatieve data over documentatie-updates en foutpercentages
 \end{itemize}
 
-\subsection{Beantwoording Onderzoeksvragen}
+\subsection{Beantwoording onderzoeksvragen}
 
 De verschillende onderzoeksvragen worden als volgt beantwoord:
 \begin{itemize}
-  \item \textbf{Probleemdomeinvragen:} Beantwoord via baselinemetingen en interviews met netwerkbeheerders
-  \item \textbf{Oplossingsdomeinvragen:} Beantwoord via vergelijkende tool-evaluatie, praktische implementatie en kwantitatieve metingen na implementatie
+  \item \textbf{Probleemdomeinvragen:} De eerste deelonderzoeksvraag wordt beantwoord via baselinemetingen (fase 3) en interviews met netwerkbeheerders in fase 1.
+  \item \textbf{Oplossingsdomeinvragen:} De tweede en derde deelonderzoeksvraag worden beantwoord via de literatuurstudie en de vergelijkende tool-evaluatie in fase 1 en 2. De vierde deelvraag wordt beantwoord via de implementatie en kwantitatieve metingen in fase 4 en 5. De vijfde deelvraag wordt geadresseerd in de analyse en aanbevelingen in fase 6.
 \end{itemize}
 
 %---------- Verwachte resultaten ----------------------------------------------
 \section{Verwacht resultaat, conclusie}%
 \label{sec:verwachte_resultaten}
 
-\subsection{Verwachte Kwantitatieve Resultaten}
+\subsection{Verwachte kwantitatieve resultaten}
 
-Op basis van bestaand onderzoek en de verwachte impact van automatische detectie, worden de volgende resultaten verwacht:
+Op basis van bestaand onderzoek naar automatische netwerkdocumentatie en discovery-architecturen worden de volgende resultaten verwacht.\autocite{Campbell2007,Johansson2007,AutomatingDoc2017}
 
 \begin{itemize}
-  \item \textbf{Actualiteit van documentatie:} Een verbetering van minimaal 60-80\% in de actualiteit van netwerkdocumentatie na implementatie van automatische detectie, gemeten als het percentage items dat binnen een bepaalde tijdspanne (bijv. 24 uur) correct gedocumenteerd is.
-  
-  \item \textbf{Tijdswinst:} Een reductie van 70-90\% in de tijd nodig voor het bijwerken van documentatie, van handmatige processen (mogelijk uren per week) naar geautomatiseerde updates (minuten per week voor verificatie).
-  
-  \item \textbf{Foutreductie:} Een afname van 50-70\% in het aantal foutieve of onvolledige registraties, gemeten door vergelijking van baselinemetingen met postimplementatie metingen.
-  
-  \item \textbf{Onderhoudsvereisten:} Na initiële configuratie wordt verwacht dat automatische detectie slechts beperkt onderhoud vereist (mogelijk 1-2 uur per maand voor verificatie en correcties), vergeleken met regelmatige handmatige updates.
+  \item \textbf{Actualiteit van documentatie:} Een verbetering van minimaal 60--80\% in de actualiteit van netwerkdocumentatie na implementatie van automatische detectie, gemeten als het percentage items dat binnen een vooraf gedefinieerde tijdspanne (bijvoorbeeld 24 uur) correct gedocumenteerd is.
+  \item \textbf{Tijdswinst:} Een reductie van 70--90\% in de tijd nodig voor het bijwerken van documentatie, van handmatige processen (mogelijk uren per week) naar geautomatiseerde updates (minuten per week voor verificatie).
+  \item \textbf{Foutreductie:} Een afname van 50--70\% in het aantal foutieve of onvolledige registraties, gemeten door vergelijking van baselinemetingen met postimplementatiemeting.
+  \item \textbf{Onderhoudsvereisten:} Na initiële configuratie wordt verwacht dat automatische detectie slechts beperkt onderhoud vereist (bijvoorbeeld 1--2 uur per maand voor verificatie en correcties), vergeleken met regelmatige handmatige updates.
 \end{itemize}
 
-\subsection{Verwachte Deliverables}
+Deze percentages zijn indicatief en zullen gevalideerd en waar nodig bijgesteld worden op basis van de resultaten van de casestudy.
+
+\subsection{Verwachte deliverables}
 
 Het onderzoek resulteert in:
 \begin{enumerate}
-  \item Een werkende implementatie van automatische netwerkdetectie binnen de infrastructuur van Citymesh
-  \item Een vergelijkende evaluatie van beschikbare tools met concrete aanbevelingen
+  \item Een werkende implementatie van automatische netwerkdetectie binnen een geselecteerde infrastructuur van Citymesh, met focus op draadloze netwerken (WiFi/WLAN en/of private 4G/5G)
+  \item Een vergelijkende evaluatie van beschikbare tools met concrete aanbevelingen voor toolkeuze in een operatorcontext
   \item Kwantitatieve metingen en grafieken die de impact van automatische detectie visualiseren:
   \begin{itemize}
     \item Grafiek: Actualiteit van documentatie over tijd (X-as: tijd in weken, Y-as: percentage actuele items)
     \item Grafiek: Tijd nodig voor documentatieupdates (X-as: methode, Y-as: tijd in uren/minuten)
     \item Grafiek: Aantal foutieve registraties (X-as: tijd, Y-as: aantal items)
   \end{itemize}
-  \item Een implementatiegids met concrete stappen voor netwerkbeheerders
-  \item Aanbevelingen voor configuratie en onderhoud
+  \item Een implementatiegids met concrete stappen voor netwerkbeheerders bij Citymesh en gelijkaardige organisaties
+  \item Aanbevelingen voor configuratie, onderhoud en organisatorische inbedding van automatische detectietools
 \end{enumerate}
 
-\subsection{Meerwaarde voor de Doelgroep}
+\subsection{Meerwaarde voor de doelgroep}
 
 De doelgroep (netwerkbeheerders en IT-infrastructuurbeheerders) heeft baat bij dit onderzoek omdat:
-
 \begin{itemize}
-  \item Het concrete, kwantitatieve inzicht biedt in de effectiviteit van automatische netwerkdetectie
-  \item Het praktische aanbevelingen bevat voor implementatie en configuratie binnen bestaande infrastructuren
-  \item Het helpt bij het maken van gefundeerde beslissingen over de adoptie van automatische detectietools
+  \item Het concrete, kwantitatieve inzichten biedt in de effectiviteit van automatische netwerkdetectie voor het up-to-date houden van netwerkdocumentatie
+  \item Het praktische aanbevelingen bevat voor implementatie en configuratie binnen bestaande infrastructuren, met specifieke aandacht voor draadloze operatoromgevingen zoals die van Citymesh
+  \item Het helpt bij het maken van gefundeerde beslissingen over de adoptie van automatische detectietools en de keuze tussen verschillende oplossingen
   \item Het een referentiepunt biedt voor het meten van de impact van dergelijke tools binnen hun eigen organisatie
 \end{itemize}
 
-\subsection{Verwachte Conclusies}
+\subsection{Verwachte conclusies}
 
-Het onderzoek verwacht aan te tonen dat automatische netwerkdetectie significant kan bijdragen aan het verbeteren van de actualiteit en betrouwbaarheid van netwerkdocumentatie. De verwachting is dat tools zoals NetBox Discovery effectief zijn in het realiseren van een betrouwbare single source of truth, mits correct geconfigureerd en geïntegreerd. Echter, volledig automatische oplossingen zonder enige menselijke tussenkomst zijn waarschijnlijk niet haalbaar, en een combinatie van automatische detectie met periodieke verificatie door netwerkbeheerders zal nodig blijven.
+Het onderzoek verwacht aan te tonen dat automatische netwerkdetectie significant kan bijdragen aan het verbeteren van de actualiteit en betrouwbaarheid van netwerkdocumentatie in dynamische, draadloze infrastructuren. De verwachting is dat moderne discovery-oplossingen, mits correct geconfigureerd en geïntegreerd, effectief kunnen bijdragen aan het realiseren van een betrouwbare SSOT voor netwerkbeheer.\autocite{Campbell2007,Johansson2007,AutomatingDoc2017} Waarschijnlijk blijft een volledig automatische oplossing zonder enige menselijke tussenkomst niet haalbaar, en zal een combinatie van automatische detectie met periodieke verificatie en validatie door netwerkbeheerders nodig blijven.
 
-Indien de resultaten afwijken van deze verwachtingen, zal dit leiden tot interessante onderzoeksvragen over de oorzaken van deze verschillen, zoals configuratiecomplexiteit, netwerkprotocollen, of organisatorische factoren.
-
+Indien de resultaten afwijken van deze verwachtingen, opent dit nieuwe onderzoeksvragen over de oorzaken van deze verschillen, zoals beperkingen in discoveryprotocollen voor draadloze technologieën, integratieproblemen met bestaande documentatiesystemen of organisatorische factoren in de werkprocessen van Citymesh.
