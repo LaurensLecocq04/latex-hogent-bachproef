@@ -27,7 +27,7 @@ Om de centrale onderzoeksvraag te beantwoorden, worden de volgende deelonderzoek
   \item Hoe manifesteert het probleem van verouderde netwerkdocumentatie zich specifiek binnen de draadloze (WiFi/WLAN, private 4G/5G, IoT/0G) infrastructuur van Citymesh?
   \item Welke bestaande technieken en tools voor automatische netwerkdetectie bestaan er, en in welke mate ondersteunen zij grootschalige draadloze omgevingen zoals die van Citymesh?
   \item Hoe presteren geselecteerde automatische netwerkdetectietools qua nauwkeurigheid, dekking, integratiemogelijkheden en beheerlast in de context van Citymesh?
-  \item In welke mate verbetert een gekozen automatische netwerkdetectieoplossing de actualiteit, foutgraad en onderhoudstijd van de netwerkdocumentatie ten opzichte van de huidige werkwijze?
+  \item In welke mate verbetert een gekozen automatische netwerkdetectie oplossing de actualiteit, foutgraad en onderhoudstijd van de netwerkdocumentatie ten opzichte van de huidige werkwijze?
   \item Welke organisatorische processen, best practices en configuratie-aanpassingen zijn nodig om een duurzame SSOT voor netwerkdocumentatie te waarborgen?
 \end{enumerate}
 
@@ -38,7 +38,7 @@ Het concrete eindresultaat van dit onderzoek bestaat uit:
   \item Een evaluatie van NetBox Discovery, inclusief een vergelijking met alternatieve automatische netwerkdetectietools en hun effectiviteit in het bijhouden van netwerkdocumentatie
   \item Een praktische implementatie en configuratie van NetBox Discovery binnen de draadloze infrastructuur van Citymesh
   \item Een rapport met kwantitatieve metingen over de verbetering in actualiteit en betrouwbaarheid van netwerkdocumentatie na implementatie van NetBox Discovery
-  \item Concrete aanbevelingen voor netwerkbeheerders over de implementatie, configuratie en organisatorische inbedding van NetBox Discovery
+  \item Concrete aanbevelingen voor Citymesh over de implementatie, configuratie en organisatorische inbedding van NetBox Discovery
 \end{itemize}
 
 De bachelorproef kan als succes beschouwd worden wanneer een werkende implementatie gerealiseerd is die aantoonbaar bijdraagt aan het verbeteren van de actualiteit van netwerkdocumentatie, en wanneer concrete metingen beschikbaar zijn die de meerwaarde van automatische detectie kwantificeren.
@@ -62,7 +62,7 @@ Naast onderzoeksprototypes bestaan er in de praktijk diverse netwerkbeheersystem
 
 Eerdere mastertheses en onderzoeksprojecten beschrijven frameworks om het proces van netwerkdocumentatie grotendeels te automatiseren. Campbell presenteert bijvoorbeeld een systeem dat netwerkapparaten via open standaardprotocollen bevraagt, de resultaten opslaat in een generiek datamodel en daaruit automatisch HTML- en PDF-documentatie genereert.\autocite{Campbell2007} Sigholm beschrijft een architectuur voor geautomatiseerde nodediscovery en topologie-analyse die gericht is op het continu synchroniseren van het logische netwerkmodel met de fysieke werkelijkheid en het detecteren van veranderingen in grote netwerken.\autocite{JohanSigholm2007} Verdere studies focussen specifiek op automatische discovery en topologie-inferentie in datacenters en grootschalige (draadloze) netwerken.\autocite{AutomaticTopology2013,WirelessTopology2015}
 
-Deze onderzoeken tonen aan dat automatische netwerkdetectie niet alleen kan helpen bij de initiële opbouw van netwerkdocumentatie, maar ook bij het continu bijwerken en valideren van bestaande documentatie. Er is echter relatief weinig gepubliceerd over praktische, kwantitatieve evaluaties binnen concrete organisatiecontexten en over de specifieke uitdagingen van zeer dynamische, draadloze omgevingen zoals die van Citymesh. Dit onderzoek positioneert zich in dat gat door een casestudy uit te voeren in een operatoromgeving met grootschalige WiFi- en private 4G/5G-netwerken.
+Deze onderzoeken tonen aan dat automatische netwerkdetectie niet alleen kan helpen bij de initiële opbouw van netwerkdocumentatie, maar ook bij het continu bijwerken en valideren van bestaande documentatie. Er is echter relatief weinig gepubliceerd over praktische evaluaties met concrete meetbare indicatoren (zoals actualiteitspercentages, tijdswinstmetingen, foutreductie en voor-na vergelijkingen) binnen concrete organisatiecontexten en over de specifieke uitdagingen van zeer dynamische, draadloze omgevingen zoals die van Citymesh. Dit onderzoek positioneert zich in dat gat door een casestudy uit te voeren in een operatoromgeving met grootschalige WiFi- en private 4G/5G-netwerken, waarbij deze kwantitatieve indicatoren worden gemeten en geanalyseerd.
 
 %---------- Methodologie ------------------------------------------------------
 \section{Methodologie}%
@@ -147,16 +147,16 @@ De verschillende onderzoeksvragen worden als volgt beantwoord:
 
 \subsection{Verwachte kwantitatieve resultaten}
 
-Op basis van bestaand onderzoek naar automatische netwerkdocumentatie en discovery-architecturen worden de volgende resultaten verwacht.\autocite{Campbell2007,JohanSigholm2007}
+Op basis van bestaand onderzoek naar automatische netwerkdocumentatie en discovery-architecturen worden de volgende indicatoren gemeten om de effectiviteit van NetBox Discovery te evalueren.\autocite{Campbell2007,JohanSigholm2007}
 
 \begin{itemize}
-  \item \textbf{Actualiteit van documentatie:} Een verbetering van minimaal 60--80\% in de actualiteit van netwerkdocumentatie na implementatie van automatische detectie, gemeten als het percentage items dat binnen een vooraf gedefinieerde tijdspanne (bijvoorbeeld 24 uur) correct gedocumenteerd is.
-  \item \textbf{Tijdswinst:} Een reductie van 70--90\% in de tijd nodig voor het bijwerken van documentatie, van handmatige processen (mogelijk uren per week) naar geautomatiseerde updates (minuten per week voor verificatie).
-  \item \textbf{Foutreductie:} Een afname van 50--70\% in het aantal foutieve of onvolledige registraties, gemeten door vergelijking van baselinemetingen met postimplementatiemeting.
-  \item \textbf{Onderhoudsvereisten:} Na initiële configuratie wordt verwacht dat automatische detectie slechts beperkt onderhoud vereist (bijvoorbeeld 1--2 uur per maand voor verificatie en correcties), vergeleken met regelmatige handmatige updates.
+  \item \textbf{Actualiteit van documentatie:} Het percentage items dat binnen een vooraf gedefinieerde tijdspanne (bijvoorbeeld 24 uur) correct gedocumenteerd is, gemeten voor en na implementatie van NetBox Discovery.
+  \item \textbf{Tijd nodig voor documentatie-updates:} De tijd die netwerkbeheerders besteden aan het bijwerken van documentatie, gemeten voor en na implementatie om eventuele tijdswinst te kwantificeren.
+  \item \textbf{Aantal foutieve of onvolledige registraties:} Het aantal foutieve of onvolledige registraties in de netwerkdocumentatie, gemeten door vergelijking van baselinemetingen met postimplementatiemetingen.
+  \item \textbf{Onderhoudsvereisten:} De tijd en frequentie van onderhoudsmomenten en correcties aan de NetBox Discovery-configuratie, gemeten tijdens de evaluatieperiode.
 \end{itemize}
 
-Deze percentages zijn indicatief en zullen gevalideerd en waar nodig bijgesteld worden op basis van de resultaten van de casestudy.
+Deze metingen zullen worden uitgevoerd en geanalyseerd om concrete inzichten te verkrijgen over de effectiviteit van NetBox Discovery in de context van Citymesh.
 
 \subsection{Verwachte deliverables}
 
