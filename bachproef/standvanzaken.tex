@@ -12,7 +12,46 @@ Het concept van een ``single source of truth'' (SSOT) verwijst naar het principe
 
 Automatische netwerkdetectie omvat technieken en systemen waarmee netwerkapparaten, configuraties en topologie automatisch ontdekt, geanalyseerd en gedocumenteerd kunnen worden. In academische literatuur worden architecturen beschreven die discovery-agents inzetten om netwerkapparaten via standaardprotocollen (zoals SNMP, LLDP, CDP of ARP-scans) te detecteren, waarna de verzamelde gegevens vergeleken worden met een off-line netwerkmodel om afwijkingen op te sporen en documentatie automatisch bij te werken.\autocite{JohanSigholm2007,Campbell2007,AutomaticTopology2013} Deze architecturen ondersteunen onder meer het automatisch aanmaken en synchroniseren van topologie-informatie, het herkennen van nieuwe of vervangen nodes en het detecteren van rogue-apparaten.\autocite{JohanSigholm2007,AutomaticTopology2013,WirelessTopology2015}
 
-Naast onderzoeksprototypes bestaan er in de praktijk diverse netwerkbeheersystemen en IPAM/DCIM-oplossingen met ingebouwde discovery-functionaliteit. Dit onderzoek focust op NetBox Discovery, een open-source discovery-module die netwerkinventarisaties automatisch bijwerkt. Ter vergelijking worden ook commerciële Network Management Systems (NMS) of ITSM-platformen (zoals SolarWinds, ManageEngine of ServiceNow Discovery) in beschouwing genomen.\autocite{NetBoxDiscoveryDocs,ServiceNowDiscovery} Deze tools variëren in dekking van technologieën (bijvoorbeeld ondersteuning voor draadloze controllers en 5G-corecomponenten), integratiemogelijkheden, configuratiecomplexiteit en de mate waarin zij integreren met bestaande documentatiesystemen.
+Naast onderzoeksprototypes bestaan er in de praktijk diverse netwerkbeheersystemen en IPAM/DCIM-oplossingen met ingebouwde discovery-functionaliteit. Ter vergelijking worden commerciële Network Management Systems (NMS) of ITSM-platformen (zoals SolarWinds, ManageEngine of ServiceNow Discovery) in beschouwing genomen.\autocite{ServiceNowDiscovery} Deze tools variëren in dekking van technologieën (bijvoorbeeld ondersteuning voor draadloze controllers en 5G-corecomponenten), integratiemogelijkheden, configuratiecomplexiteit en de mate waarin zij integreren met bestaande documentatiesystemen.
+
+\section{NetBox en NetBox Discovery}
+
+Dit onderzoek focust op NetBox Discovery als primaire oplossing voor automatische netwerkdetectie. Om de keuze voor deze tool te begrijpen, is het belangrijk om eerst inzicht te krijgen in NetBox zelf en vervolgens in de NetBox Discovery-functionaliteit.
+
+\subsection{NetBox als IPAM/DCIM-platform}
+
+NetBox is een open-source IP Address Management (IPAM) en Data Center Infrastructure Management (DCIM) platform dat ontworpen is om netwerkinfrastructuren te documenteren en te beheren.\autocite{NetBoxDiscoveryDocs} Het platform biedt een webgebaseerde interface voor het beheren van netwerkapparaten, IP-adressen, VLAN's, circuits, kabels en andere netwerkcomponenten. NetBox fungeert als een centrale databank voor netwerkinformatie en kan daarmee dienen als single source of truth voor netwerkdocumentatie.
+
+Het platform is gebouwd op Django en biedt een REST API voor programmatische toegang tot de data. Dit maakt integratie mogelijk met andere tools en systemen, wat essentieel is voor geautomatiseerde workflows. NetBox ondersteunt verschillende netwerkcomponenten zoals routers, switches, firewalls, en draadloze access points, en kan zowel fysieke als virtuele apparaten documenteren.
+
+\subsection{NetBox Discovery: automatische netwerkdetectie}
+
+NetBox Discovery is een module die automatische netwerkdetectie toevoegt aan NetBox.\autocite{NetBoxDiscoveryDocs,NetBoxLabs2025} Deze module maakt het mogelijk om netwerkapparaten automatisch te ontdekken en de informatie direct in NetBox te synchroniseren, waardoor de documentatie up-to-date blijft zonder handmatige interventie.
+
+NetBox Discovery werkt door middel van discovery jobs die periodiek worden uitgevoerd. Deze jobs scannen het netwerk op verschillende manieren:
+
+\begin{itemize}
+  \item \textbf{SNMP-discovery:} Via Simple Network Management Protocol (SNMP) worden netwerkapparaten bevraagd om informatie te verzamelen over apparaten, interfaces, en configuraties.
+  \item \textbf{ARP-scanning:} Door ARP-tabellen te analyseren kunnen actieve apparaten in het netwerk worden geïdentificeerd.
+  \item \textbf{API-integraties:} NetBox Discovery kan koppelen met externe systemen zoals WiFi-controllers, cloud management platforms, of andere netwerkbeheertools via hun API's.
+\end{itemize}
+
+Wanneer NetBox Discovery een apparaat ontdekt, wordt automatisch gecontroleerd of dit apparaat al bestaat in NetBox. Indien het apparaat nog niet bestaat, wordt het automatisch aangemaakt met de verzamelde informatie. Bestaande apparaten worden bijgewerkt met nieuwe informatie, waardoor de documentatie actueel blijft.
+
+\subsection{Voordelen van NetBox Discovery}
+
+NetBox Discovery biedt verschillende voordelen voor organisaties die hun netwerkdocumentatie willen automatiseren:
+
+\begin{itemize}
+  \item \textbf{Geïntegreerde oplossing:} Omdat Discovery direct geïntegreerd is met NetBox, is er geen noodzaak voor complexe integraties tussen verschillende systemen. De ontdekte data wordt direct opgeslagen in de centrale NetBox-databank.
+  \item \textbf{Open-source:} NetBox en NetBox Discovery zijn open-source, wat betekent dat organisaties de volledige controle hebben over de implementatie en aanpassingen kunnen maken indien nodig.
+  \item \textbf{Schaalbaarheid:} NetBox Discovery kan geconfigureerd worden om grote netwerken te scannen door gebruik te maken van meerdere discovery workers en gedistribueerde scans.
+  \item \textbf{Configuratie-flexibiliteit:} De discovery-jobs kunnen worden geconfigureerd voor specifieke netwerksegmenten, apparatetypes, of scanfrequenties, afhankelijk van de behoeften van de organisatie.
+\end{itemize}
+
+\subsection{Relevantie voor dit onderzoek}
+
+Voor dit onderzoek bij Citymesh is NetBox Discovery bijzonder relevant omdat het platform specifiek is ontworpen voor netwerkbeheer en kan dienen als single source of truth voor de netwerkdocumentatie. De mogelijkheid om automatisch draadloze apparaten te ontdekken via API-integraties met WiFi-controllers en 5G-managementsystemen maakt het geschikt voor de complexe draadloze omgevingen van Citymesh. Bovendien biedt de open-source aard van NetBox Discovery de flexibiliteit om aan te passen aan specifieke requirements van Citymesh.
 
 \section{Bestaand onderzoek naar automatische documentatie}
 
