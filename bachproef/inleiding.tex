@@ -5,46 +5,58 @@
 \chapter{\IfLanguageName{dutch}{Inleiding}{Introduction}}%
 \label{ch:inleiding}
 
-De inleiding moet de lezer net genoeg informatie verschaffen om het onderwerp te begrijpen en in te zien waarom de onderzoeksvraag de moeite waard is om te onderzoeken. In de inleiding ga je literatuurverwijzingen beperken, zodat de tekst vlot leesbaar blijft. Je kan de inleiding verder onderverdelen in secties als dit de tekst verduidelijkt. Zaken die aan bod kunnen komen in de inleiding~\autocite{Pollefliet2011}:
+Netwerkbeheer vormt een kritieke component binnen moderne IT-infrastructuren. Het accuraat bijhouden van netwerkinventarisaties en -documentatie is essentieel voor efficiënt beheer, probleemoplossing en beveiliging. Echter, in veel organisaties raken deze inventarisaties snel verouderd omdat wijzigingen in de infrastructuur niet consistent worden bijgehouden. Dit probleem manifesteert zich vooral in dynamische IT-omgevingen waar systemen en apparaten voortdurend veranderen, waardoor handmatige documentatieprocessen onvoldoende zijn om de actualiteit te garanderen.\autocite{Campbell2007,JohanSigholm2007}
 
-\begin{itemize}
-  \item context, achtergrond
-  \item afbakenen van het onderwerp
-  \item verantwoording van het onderwerp, methodologie
-  \item probleemstelling
-  \item onderzoeksdoelstelling
-  \item onderzoeksvraag
-  \item \ldots
-\end{itemize}
+Dit onderzoek wordt uitgevoerd binnen de context van Citymesh, een Belgische telecomoperator en technologiebedrijf dat gespecialiseerd is in grootschalige draadloze netwerken en connectiviteitsoplossingen voor de zakelijke markt.\autocite{CitymeshAbout,CitymeshLinkedIn} Citymesh focust op zowel permanente als tijdelijke connectiviteit op basis van WiFi/WLAN, 0G/IoT, 4G en 5G en treedt op als vierde mobiele operator in België.\autocite{CitymeshAbout,Mice2022} Het bedrijf bouwt onder meer private 4G/5G-netwerken voor kritieke omgevingen en industriële sites, evenals grootschalige campus- en stadsbrede WiFi-deployments.\autocite{CitymeshPrivate5G,CitymeshWiFi} Deze heterogene en sterk gedistribueerde draadloze infrastructuren veranderen frequent door nieuwe sites, tijdelijke events en uitbreidingen, waardoor het bijhouden van accurate netwerkdocumentatie een bijzondere uitdaging vormt. Citymesh heeft specifiek gevraagd om een evaluatie en implementatie van NetBox Discovery als oplossing voor deze uitdaging.
+
+De doelgroep van dit onderzoek bestaat uit netwerkbeheerders en IT-infrastructuurbeheerders binnen organisaties die te maken hebben met verouderde of inconsistente netwerkdocumentatie. Specifiek richt dit onderzoek zich op professionals binnen Citymesh die verantwoordelijk zijn voor het onderhoud van netwerkinventarisaties in complexe draadloze omgevingen en die behoefte hebben aan geautomatiseerde oplossingen om een betrouwbare ``single source of truth'' te realiseren.
 
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde heeft voor een concrete doelgroep. De doelgroep moet goed gedefinieerd en afgelijnd zijn. Doelgroepen als ``bedrijven,'' ``KMO's'', systeembeheerders, enz.~zijn nog te vaag. Als je een lijstje kan maken van de personen/organisaties die een meerwaarde zullen vinden in deze bachelorproef (dit is eigenlijk je steekproefkader), dan is dat een indicatie dat de doelgroep goed gedefinieerd is. Dit kan een enkel bedrijf zijn of zelfs één persoon (je co-promotor/opdrachtgever).
+Het centrale probleem dat dit onderzoek adresseert, is de snel verouderende netwerkdocumentatie binnen organisaties. Wanneer wijzigingen in de infrastructuur niet consistent worden bijgehouden, ontstaan onnauwkeurige of tegenstrijdige netwerkdocumentatie. Dit leidt tot het ontbreken van een betrouwbare single source of truth (SSOT), wat op zijn beurt risico's vormt voor efficiënt beheer, probleemoplossing en beveiliging.\autocite{Campbell2007,JohanSigholm2007} Het probleem wordt versterkt in dynamische IT-omgevingen zoals die van Citymesh, waar draadloze technologieën zoals grootschalige WiFi/WLAN, private 4G/5G-netwerken en IoT- of 0G-sensornetwerken continu evolueren en waar apparaten en sites frequent toegevoegd, verhuisd of verwijderd worden.\autocite{CitymeshAbout,CitymeshWiFi,CitymeshPrivate5G}
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
-Wees zo concreet mogelijk bij het formuleren van je onderzoeksvraag. Een onderzoeksvraag is trouwens iets waar nog niemand op dit moment een antwoord heeft (voor zover je kan nagaan). Het opzoeken van bestaande informatie (bv. ``welke tools bestaan er voor deze toepassing?'') is dus geen onderzoeksvraag. Je kan de onderzoeksvraag verder specifiëren in deelvragen. Bv.~als je onderzoek gaat over performantiemetingen, dan 
+\subsection{Centrale onderzoeksvraag}
+
+De hoofdonderzoeksvraag van dit onderzoek luidt:
+
+\textit{Hoe kan automatische netwerkdetectie bijdragen aan het up-to-date houden van netwerkdocumentatie en het realiseren van een betrouwbare `single source of truth' binnen de dynamische, draadloze IT-infrastructuren van Citymesh?}
+
+\subsection{Deelonderzoeksvragen}
+
+Om de centrale onderzoeksvraag te beantwoorden, worden de volgende deelonderzoeksvragen geformuleerd:
+
+\begin{enumerate}
+  \item Hoe manifesteert het probleem van verouderde netwerkdocumentatie zich specifiek binnen de draadloze (WiFi/WLAN, private 4G/5G, IoT/0G) infrastructuur van Citymesh?
+  \item Welke bestaande technieken en tools voor automatische netwerkdetectie bestaan er, en in welke mate ondersteunen zij grootschalige draadloze omgevingen zoals die van Citymesh?
+  \item Hoe presteren geselecteerde automatische netwerkdetectietools qua nauwkeurigheid, dekking, integratiemogelijkheden en beheerlast in de context van Citymesh?
+  \item In welke mate verbetert een gekozen automatische netwerkdetectieoplossing de actualiteit, foutgraad en onderhoudstijd van de netwerkdocumentatie ten opzichte van de huidige werkwijze?
+  \item Welke organisatorische processen, best practices en configuratie-aanpassingen zijn nodig om een duurzame SSOT voor netwerkdocumentatie te waarborgen?
+\end{enumerate}
 
 \section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research objective}}%
 \label{sec:onderzoeksdoelstelling}
 
-Wat is het beoogde resultaat van je bachelorproef? Wat zijn de criteria voor succes? Beschrijf die zo concreet mogelijk. Gaat het bv.\ om een proof-of-concept, een prototype, een verslag met aanbevelingen, een vergelijkende studie, enz.
+Het concrete eindresultaat van dit onderzoek bestaat uit:
+\begin{itemize}
+  \item Een evaluatie van NetBox Discovery, inclusief een vergelijking met alternatieve automatische netwerkdetectietools en hun effectiviteit in het bijhouden van netwerkdocumentatie
+  \item Een praktische implementatie en configuratie van NetBox Discovery binnen de draadloze infrastructuur van Citymesh
+  \item Een rapport met kwantitatieve metingen over de verbetering in actualiteit en betrouwbaarheid van netwerkdocumentatie na implementatie van NetBox Discovery
+  \item Concrete aanbevelingen voor Citymesh over de implementatie, configuratie en organisatorische inbedding van NetBox Discovery
+\end{itemize}
+
+De bachelorproef kan als succes beschouwd worden wanneer een werkende implementatie gerealiseerd is die aantoonbaar bijdraagt aan het verbeteren van de actualiteit van netwerkdocumentatie, en wanneer concrete metingen beschikbaar zijn die de meerwaarde van automatische detectie kwantificeren.
 
 \section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this bachelor thesis}}%
 \label{sec:opzet-bachelorproef}
 
-% Het is gebruikelijk aan het einde van de inleiding een overzicht te
-% geven van de opbouw van de rest van de tekst. Deze sectie bevat al een aanzet
-% die je kan aanvullen/aanpassen in functie van je eigen tekst.
-
 De rest van deze bachelorproef is als volgt opgebouwd:
 
-In Hoofdstuk~\ref{ch:stand-van-zaken} wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein, op basis van een literatuurstudie.
+In Hoofdstuk~\ref{ch:stand-van-zaken} wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein, op basis van een literatuurstudie. Hierbij wordt ingegaan op het concept van single source of truth in netwerkbeheer, automatische netwerkdetectie en bestaand onderzoek naar automatische documentatie.
 
-In Hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht en worden de gebruikte onderzoekstechnieken besproken om een antwoord te kunnen formuleren op de onderzoeksvragen.
-
-% TODO: Vul hier aan voor je eigen hoofstukken, één of twee zinnen per hoofdstuk
+In Hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht en worden de gebruikte onderzoekstechnieken besproken om een antwoord te kunnen formuleren op de onderzoeksvragen. Dit omvat de verschillende onderzoeksfasen, gebruikte tools en technologieën, en hoe de onderzoeksvragen worden beantwoord.
 
 In Hoofdstuk~\ref{ch:conclusie}, tenslotte, wordt de conclusie gegeven en een antwoord geformuleerd op de onderzoeksvragen. Daarbij wordt ook een aanzet gegeven voor toekomstig onderzoek binnen dit domein.

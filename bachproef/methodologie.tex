@@ -5,26 +5,77 @@
 \chapter{\IfLanguageName{dutch}{Methodologie}{Methodology}}%
 \label{ch:methodologie}
 
-%% TODO: In dit hoofstuk geef je een korte toelichting over hoe je te werk bent
-%% gegaan. Verdeel je onderzoek in grote fasen, en licht in elke fase toe wat
-%% de doelstelling was, welke deliverables daar uit gekomen zijn, en welke
-%% onderzoeksmethoden je daarbij toegepast hebt. Verantwoord waarom je
-%% op deze manier te werk gegaan bent.
-%% 
-%% Voorbeelden van zulke fasen zijn: literatuurstudie, opstellen van een
-%% requirements-analyse, opstellen long-list (bij vergelijkende studie),
-%% selectie van geschikte tools (bij vergelijkende studie, "short-list"),
-%% opzetten testopstelling/PoC, uitvoeren testen en verzamelen
-%% van resultaten, analyse van resultaten, ...
-%%
-%% !!!!! LET OP !!!!!
-%%
-%% Het is uitdrukkelijk NIET de bedoeling dat je het grootste deel van de corpus
-%% van je bachelorproef in dit hoofstuk verwerkt! Dit hoofdstuk is eerder een
-%% kort overzicht van je plan van aanpak.
-%%
-%% Maak voor elke fase (behalve het literatuuronderzoek) een NIEUW HOOFDSTUK aan
-%% en geef het een gepaste titel.
+Dit hoofdstuk beschrijft de methodologie die gebruikt wordt om de onderzoeksvragen te beantwoorden. Het onderzoek combineert een vergelijkende studie met een praktische implementatie en evaluatie in de context van Citymesh. De methodologie bestaat uit verschillende fasen die elk bijdragen aan het beantwoorden van de centrale onderzoeksvraag en de deelonderzoeksvragen.
 
-\lipsum[21-25]
+\section{Onderzoeksfasen}
 
+Het onderzoek is opgedeeld in zes fasen die sequentieel en gedeeltelijk parallel worden uitgevoerd. Elke fase heeft specifieke doelstellingen, deliverables en tijdschattingen.
+
+\subsection{Fase 1: Literatuurstudie en requirementsanalyse}
+
+In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd naar technieken en tools voor automatische netwerkdetectie en hun inzet voor het automatiseren van netwerkdocumentatie.\autocite{Campbell2007,JohanSigholm2007,AutomaticTopology2013,WirelessTopology2015} Daarnaast worden interviews afgenomen met netwerkbeheerders en engineers binnen Citymesh om de concrete requirements, bestaande documentatieprocessen en pijnpunten in kaart te brengen, met bijzondere aandacht voor draadloze technologieën (WiFi/WLAN, private 4G/5G, IoT/0G). Deze fase resulteert in een overzicht van relevante tools en een requirementsdocument dat de functionele en niet-functionele eisen voor een automatische detectieoplossing beschrijft.
+
+\textbf{Tijdschatting:} 2 weken
+
+\subsection{Fase 2: Toolselectie en vergelijkende evaluatie}
+
+Op basis van de literatuurstudie en de geformuleerde requirements wordt NetBox Discovery geëvalueerd als primaire oplossing, zoals gevraagd door Citymesh. Ter vergelijking worden ook alternatieve automatische netwerkdetectietools in beschouwing genomen, waaronder commerciële NMS- of ITSM-tools met discovery-functionaliteit indien beschikbaar binnen de organisatie.\autocite{NetBoxDiscoveryDocs,ServiceNowDiscovery} De evaluatiecriteria omvatten functionaliteiten, ondersteuning voor draadloze infrastructuren (WiFi-controllers, 4G/5G-core, IoT-gateways), integratiemogelijkheden met bestaande documentatiesystemen, configuratiecomplexiteit, schaalbaarheid en onderhoudsvereisten. Deze fase resulteert in een vergelijkende analyse waarbij NetBox Discovery als primaire oplossing wordt gevalideerd tegen de requirements van Citymesh.
+
+\textbf{Tijdschatting:} 1 week
+
+\subsection{Fase 3: Baselinemetingen en implementatievoorbereiding}
+
+Voorafgaand aan de implementatie worden baselinemetingen uitgevoerd om de huidige staat van de netwerkdocumentatie binnen een afgebakende Citymesh-omgeving vast te leggen. Hierbij wordt onder meer gemeten:
+\begin{itemize}
+  \item Het aantal verouderde items in de huidige inventarisatie
+  \item De tijd die netwerkbeheerders besteden aan handmatige updates
+  \item De frequentie waarmee documentatie veroudert (bijvoorbeeld aantal wijzigingen per maand/kwartaal)
+  \item Het aantal inconsistente of foutieve registraties in de documentatie
+\end{itemize}
+Tegelijkertijd wordt de implementatie voorbereid door de benodigde infrastructuur, toegangen en testomgevingen te voorzien, inclusief toegang tot relevante draadloze controllers en managementsystemen.
+
+\textbf{Tijdschatting:} 1 week
+
+\subsection{Fase 4: Implementatie en configuratie}
+
+NetBox Discovery wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, de configuratie van discoveryprotocollen (bijvoorbeeld SNMP, LLDP, API-koppelingen met WiFi- en 4G/5G-managementsystemen), de integratie met bestaande netwerkdocumentatiesystemen (zoals IPAM/DCIM of CMDB) en het opzetten van automatische synchronisatie- en validatieprocessen. Waar mogelijk wordt NetBox Discovery zo opgezet dat zowel vaste netwerkcomponenten als draadloze access points, small cells en corecomponenten automatisch ontdekt en bijgewerkt worden.
+
+\textbf{Tijdschatting:} 2 weken
+
+\subsection{Fase 5: Evaluatie en metingen}
+
+Na implementatie wordt gedurende een periode van 3--4 weken een monitoring- en evaluatiefase uitgevoerd om de impact van automatische detectie te kwantificeren. Deze monitoringperiode loopt parallel met het schrijven van de scriptie. Tijdens deze fase worden onder meer de volgende indicatoren gemeten:
+\begin{itemize}
+  \item Verbetering in actualiteit van documentatie (percentage items dat binnen een vooraf gedefinieerde tijdspanne correct gedocumenteerd is)
+  \item Tijdswinst bij updates (reductie in tijd die beheerders spenderen aan documentatie)
+  \item Aantal resterende foutieve of ontbrekende registraties
+  \item Benodigde onderhoudsmomenten en correcties aan de automatische detectieconfiguratie
+\end{itemize}
+
+\textbf{Tijdschatting:} 3--4 weken (monitoring loopt parallel met fase 6)
+
+\subsection{Fase 6: Analyse, aanbevelingen en scriptie}
+
+De verzamelde data wordt geanalyseerd en geïnterpreteerd met het oog op het beantwoorden van de centrale onderzoeksvraag en de deelonderzoeksvragen. Op basis van de resultaten worden concrete aanbevelingen geformuleerd voor netwerkbeheerders omtrent implementatie, configuratie, monitoring en organisatorische verankering van automatische detectietools in een context zoals die van Citymesh. Tegelijkertijd wordt de scriptie geschreven en afgerond.
+
+\textbf{Tijdschatting:} 3--4 weken (loopt parallel met fase 5)
+
+\textbf{Totale tijdsduur:} 12 weken (met parallelle uitvoering van fasen 5 en 6)
+
+\section{Tools en technologieën}
+
+Voor dit onderzoek zullen de volgende tools en technologieën gebruikt worden:
+\begin{itemize}
+  \item \textbf{Automatische netwerkdetectietools:} NetBox Discovery als primaire oplossing, zoals gevraagd door Citymesh. Ter vergelijking kunnen aanvullende NMS- of ITSM-oplossingen met discovery-functionaliteit worden geëvalueerd indien beschikbaar binnen de organisatie
+  \item \textbf{SNMP en Linux-tools:} Voor netwerkprotocolcommunicatie, verificatie en het uitvoeren van aanvullende metingen
+  \item \textbf{Documentatie- en inventorysystemen:} Bestaande systemen binnen Citymesh (bijvoorbeeld NetBox, CMDB, Confluence of andere platformen) voor het centraliseren van de SSOT
+  \item \textbf{Monitoring- en analysetools:} Voor het verzamelen en visualiseren van kwantitatieve data over documentatie-updates en foutpercentages
+\end{itemize}
+
+\section{Beantwoording onderzoeksvragen}
+
+De verschillende onderzoeksvragen worden als volgt beantwoord:
+\begin{itemize}
+  \item \textbf{Probleemdomeinvragen:} De eerste deelonderzoeksvraag wordt beantwoord via baselinemetingen (fase 3) en interviews met netwerkbeheerders in fase 1.
+  \item \textbf{Oplossingsdomeinvragen:} De tweede en derde deelonderzoeksvraag worden beantwoord via de literatuurstudie en de vergelijkende tool-evaluatie in fase 1 en 2. De vierde deelvraag wordt beantwoord via de implementatie en kwantitatieve metingen in fase 4 en 5. De vijfde deelvraag wordt geadresseerd in de analyse en aanbevelingen in fase 6.
+\end{itemize}
