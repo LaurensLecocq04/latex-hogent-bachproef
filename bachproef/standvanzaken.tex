@@ -14,6 +14,10 @@ Automatische netwerkdetectie omvat technieken en systemen waarmee netwerkapparat
 
 Naast onderzoeksprototypes bestaan er in de praktijk diverse netwerkbeheersystemen en IPAM/DCIM-oplossingen met ingebouwde discovery-functionaliteit. Ter vergelijking worden commerciële Network Management Systems (NMS) of ITSM-platformen (zoals SolarWinds, ManageEngine of ServiceNow Discovery) in beschouwing genomen.\autocite{ServiceNowDiscovery} Deze tools variëren in dekking van technologieën (bijvoorbeeld ondersteuning voor draadloze controllers en 5G-corecomponenten), integratiemogelijkheden, configuratiecomplexiteit en de mate waarin zij integreren met bestaande documentatiesystemen.
 
+\subsection{Slurp'it als gespecialiseerde discovery-oplossing}
+
+Naast brede NMS- en ITSM-platformen bestaan er ook meer gefocuste tools die zich specifiek richten op netwerkdiscovery en inventarisatie. Slurp'it is zo'n oplossing die netwerkapparaten automatisch ontdekt en via onder meer SSH en SNMP configuratie- en statusinformatie ophaalt, om die vervolgens in een gestructureerd datamodel te bewaren.\autocite{SlurpitProduct,SlurpitPacketCoders} De tool ondersteunt out-of-the-box een groot aantal netwerkleveranciers en gebruikt onder andere TextFSM-templates om CLI-uitvoer naar gestructureerde data (zoals JSON of CSV) te parseren, wat integratie met rapportering en netwerkautomatisering vereenvoudigt.\autocite{SlurpitPacketCoders} In tegenstelling tot een volledig IPAM/DCIM-platform zoals NetBox fungeert Slurp'it vooral als gespecialiseerde discovery- en inventorylaag, waarvan de verzamelde data via een REST-API of exports kan worden teruggekoppeld naar een bestaande single source of truth. Daardoor is Slurp'it een relevante referentie om de mogelijkheden van NetBox Discovery en Diode te positioneren binnen het bredere landschap van netwerkdiscovery-oplossingen.
+
 \section{NetBox en NetBox Discovery}
 
 Dit onderzoek focust op NetBox Discovery als primaire oplossing voor automatische netwerkdetectie. Om de keuze voor deze tool te begrijpen, is het belangrijk om eerst inzicht te krijgen in NetBox zelf en vervolgens in de NetBox Discovery-functionaliteit.
