@@ -1,0 +1,54 @@
+%%=============================================================================
+%% Requirementsanalyse
+%%=============================================================================
+
+\chapter{\IfLanguageName{dutch}{Requirementsanalyse}{Requirements analysis}}%
+\label{ch:fase1}
+
+In dit hoofdstuk worden de requirements van Citymesh geanalyseerd op basis van de concrete pijnpunten die netwerkbeheerders vandaag ervaren bij het beheren van netwerkdocumentatie in NetBox. De requirements vormen de brug tussen de probleemstelling uit de inleiding en de oplossing die in latere hoofdstukken wordt uitgewerkt.
+
+\section{Pijnpunten bij de huidige werkwijze}
+
+Uit gesprekken met netwerkbeheerders bij Citymesh komen meerdere terugkerende pijnpunten naar voren:
+
+\begin{itemize}
+  \item \textbf{Verouderde documentatie}: netwerkdocumentatie in NetBox loopt vaak achter op de realiteit. Wanneer bijvoorbeeld een access point (AP) vervangen wordt na een defect, wordt deze wijziging niet altijd (tijdig) doorgevoerd in NetBox. Daardoor ontstaat er een discrepantie tussen de fysieke infrastructuur en de gedocumenteerde situatie.
+  \item \textbf{Handmatige inventarisatie en import}: om NetBox te vullen of bij te werken, moeten beheerders regelmatig een CSV-bestand samenstellen met alle relevante devices en hun kenmerken (locatie, type, IP-adres, serienummer, enz.) om dit vervolgens te importeren. Dit is tijdrovend, foutgevoelig en moet bij grotere wijzigingen herhaald worden.
+  \item \textbf{Handmatig opbouwen van topologie}: de netwerk-topologie (bijvoorbeeld relaties tussen switches, routers, access points en andere netwerkcomponenten) moet grotendeels handmatig opgebouwd en bijgewerkt worden in NetBox. Dit vergt veel tijd en moet bij elke wijziging opnieuw uitgevoerd worden, waardoor de kans groot is dat de topologieweergave veroudert.
+\end{itemize}
+
+Deze pijnpunten leiden er samen toe dat NetBox niet altijd als een betrouwbare \emph{single source of truth} wordt ervaren, terwijl dat net de bedoeling is van het platform. Bovendien gaat er kostbare tijd van netwerkbeheerders naar administratieve taken in plaats van naar ontwerp, onderhoud en troubleshooting.
+
+\section{Gefaseerde requirements}
+
+Op basis van bovenstaande pijnpunten worden de requirements voor een oplossing opgesplitst per onderzoeksfase, zoals beschreven in de methodologie.
+
+\subsection{Requirements voor fase 1 (requirementsanalyse)}
+
+De eerste fase moet resulteren in een helder en gevalideerd beeld van de behoeften van Citymesh:
+
+\begin{itemize}
+  \item De bestaande documentatieprocessen, gebruikte tools en verantwoordelijkheden moeten in kaart gebracht worden.
+  \item De hierboven beschreven pijnpunten moeten verder geoperationaliseerd worden (frequentie, impact, concrete voorbeelden).
+  \item Er moet een requirementsdocument opgesteld worden dat zowel functionele als niet-functionele eisen voor automatische netwerkdetectie en documentatiebeschrijving bevat, afgestemd op de draadloze context van Citymesh.
+\end{itemize}
+
+\subsection{Requirements voor fase 2--4 (toolselectie, voorbereiding en implementatie)}
+
+Voor de selectie en implementatie van een oplossing gelden onder meer de volgende hoge-niveau requirements:
+
+\begin{itemize}
+  \item De oplossing moet automatisch netwerkdevices kunnen ontdekken, zodat verouderde documentatie tot een minimum wordt beperkt.
+  \item De oplossing moet integreren met NetBox zodat zowel inventarisgegevens als topologierelaties automatisch of semiautomatisch bijgewerkt kunnen worden.
+  \item De oplossing moet schaalbaar zijn naar de gedistribueerde en dynamische draadloze omgevingen van Citymesh (meerdere sites, tijdelijke opstellingen, uitbreidingen).
+\end{itemize}
+
+\subsection{Requirements voor fase 5--6 (evaluatie en borging)}
+
+Tot slot zijn er requirements rond evaluatie en duurzame verankering:
+
+\begin{itemize}
+  \item Er moeten meetbare indicatoren gedefinieerd worden om de verbetering in actualiteit, volledigheid en foutgraad van de documentatie na implementatie te kunnen evalueren.
+  \item De oplossing moet passen binnen de organisatie- en beheerprocessen van Citymesh, zodat automatische detectie en documentatie geen eenmalig project blijft maar duurzaam ingebed wordt.
+\end{itemize}
+
