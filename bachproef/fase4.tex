@@ -5,3 +5,236 @@
 \chapter{\IfLanguageName{dutch}{Implementatie en configuratie van NetBox Discovery}{Implementation and configuration of NetBox Discovery}}%
 \label{ch:fase4}
 
+\section{Configuratie van de Orb agent voor Diode}
+
+In dit gedeelte wordt de concrete configuratie van de Orb agent beschreven die gebruikt wordt om discovery-data via Diode naar NetBox te sturen. De belangrijkste configuratie gebeurt in YAML-bestanden, aangevuld met shellscripts die de vereiste omgevingsvariabelen instellen en de agentcontainer starten.
+
+\subsection{Voorbeeldconfiguratie voor device discovery}
+
+\begin{listing}[H]
+  \caption{Voorbeeldconfiguratie van de Orb agent voor device discovery via Diode}
+  \label{lst:orb-device-discovery-config}
+  \begin{minted}[fontsize=\small]{yaml}
+orb:
+  # Zet het globale logniveau van de agent omhoog
+  log_level: DEBUG 
+  config_manager:
+    active: local
+
+  backends:
+    common:
+      diode:
+        target: grpc://localhost:8080/diode
+        client_id: ${DIODE_CLIENT_ID}
+        client_secret: ${DIODE_CLIENT_SECRET}
+        agent_name: discovery_agent_01
+        dry_run: true
+        dry_run_output_dir: /opt/orb
+    device_discovery:
+      host: 0.0.0.0
+      port: 8072
+      # Dit vertelt de backend wrapper om op debug te loggen
+      log_level: DEBUG
+      log_format: TEXT
+
+  policies:
+    device_discovery:
+      oostkamp_router:
+        config:
+          # Zet de interval tijdelijk korter voor sneller debuggen (elke minuut)
+          schedule: "* * * * *" 
+          options:
+            port_scan_ports: [8722]
+            port_scan_timeout: 1.0
+            # Veel discovery tools ondersteunen een debug flag in de config
+            debug: true 
+          defaults:
+            site: "Oostkamp Ridefort"
+            role: "Router"
+            tenant: "Oostkamp"
+        scope:
+          - hostname: "10.23.4.225"
+            driver: "ros"
+            username: "${DEVICE_USERNAME}"
+            password: "${DEVICE_PASSWORD}"
+            optional_args:
+              port: 8722
+              use_ssl: false
+              debug: true 
+            capabilities:
+              - device
+              - interfaces
+              - neighbors
+              - topology
+  \end{minted}
+\end{listing}
+
+\subsection{Voorbeeldconfiguratie voor SNMP discovery}
+
+\begin{listing}[H]
+  \caption{Voorbeeldconfiguratie van de Orb agent voor SNMP discovery}
+  \label{lst:orb-snmp-discovery-config}
+  \begin{minted}[fontsize=\small]{yaml}
+orb:
+  config_manager:
+    active: local
+
+  backends:
+    common:
+      diode:
+        target: grpc://127.0.0.1:8080/diode
+        client_id: ${DIODE_CLIENT_ID}
+        client_secret: ${DIODE_CLIENT_SECRET}
+        agent_name: discovery_agent_01
+
+    snmp_discovery:
+      log_level: DEBUG
+      log_format: TEXT
+
+  policies:
+    snmp_discovery:
+      oostkamp_ridefort:
+        config:
+          schedule: "*/3 * * * *"
+          timeout: 300
+          snmp_timeout: 5
+          retries: 3
+          lookup_extensions_dir: "/opt/orb/snmp-extensions/lookup_extensions"
+          defaults:
+            site: "Oostkamp Ridefort"
+            role: "network"
+            rack: "Oostkamp Ridefort"
+            tags: ["snmp-discovery", "orb"]
+            device:
+              tenant: "Oostkamp"
+              rack: "oostkamp_ridefort"
+              description: "SNMP discovered device"
+            ip_address:
+              description: "SNMP discovered IP"
+            interface:
+              description: "Auto-discovered interface"
+        scope:
+          targets:
+            - host: "10.23.4.225"
+              override_defaults:
+                role: "Router"
+
+            - host: "10.23.4.226"
+              override_defaults:
+                role: "Switch"
+
+            - host: "10.23.4.231-236"
+              override_defaults:
+                role: "Access Point"
+
+          authentication:
+            protocol_version: "SNMPv2c"
+            community: "public"
+  \end{minted}
+\end{listing}
+
+\subsection{Shellscripts voor genereren van configuratie en starten van de agent}
+
+De volgende shellscripts genereren op basis van OAuth2-credentials de definitieve \texttt{agent.yaml}-configuratie en starten de Orb agentcontainer.
+
+\begin{listing}[H]
+  \caption{Shellscript voor het genereren van \texttt{agent.yaml} voor SNMP discovery}
+  \label{lst:orb-snmp-script}
+  \begin{minted}[fontsize=\small]{bash}
+#!/usr/bin/env bash
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+mkdir -p "$SCRIPT_DIR/snmp-extensions"
+
+CREDS_FILE="/opt/diode/oauth2/client/client-credentials.json"
+ALT_CREDS_FILE="/vagrant/diode/oauth2/client/client-credentials.json"
+
+if [ ! -f "$CREDS_FILE" ]; then
+  if [ -f "$ALT_CREDS_FILE" ]; then
+    CREDS_FILE="$ALT_CREDS_FILE"
+  else
+    echo "Fout: $CREDS_FILE niet gevonden."
+    exit 1
+  fi
+fi
+
+if ! command -v envsubst >/dev/null 2>&1; then
+  echo "envsubst niet gevonden. Installeer met: sudo apt-get install -y gettext-base"
+  exit 1
+fi
+
+export DIODE_CLIENT_ID="diode-ingest"
+export DIODE_CLIENT_SECRET=$(sudo jq -r '.[] | select(.client_id == "diode-ingest") | .client_secret' "$CREDS_FILE")
+
+if [ -z "$DIODE_CLIENT_SECRET" ]; then
+  echo "Fout: kon diode-ingest secret niet ophalen."
+  exit 1
+fi
+
+export DEVICE_USERNAME="user"
+export DEVICE_PASSWORD="pass"
+
+envsubst '${DIODE_CLIENT_ID} ${DIODE_CLIENT_SECRET} ${DEVICE_USERNAME} ${DEVICE_PASSWORD}' < agent.yaml.snmp > agent.yaml
+echo "agent.yaml gegenereerd met credentials."
+
+exec sudo docker run --rm --network host \
+  -v "$SCRIPT_DIR:/opt/orb" \
+  -e PIP_BREAK_SYSTEM_PACKAGES=1 \
+  netboxlabs/orb-agent:latest run -c /opt/orb/agent.yaml
+  \end{minted}
+\end{listing}
+
+\begin{listing}[H]
+  \caption{Shellscript voor het genereren van \texttt{agent.yaml} voor router discovery}
+  \label{lst:orb-router-script}
+  \begin{minted}[fontsize=\small]{bash}
+#!/usr/bin/env bash
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+mkdir -p "$SCRIPT_DIR/snmp-extensions"
+
+CREDS_FILE="/opt/diode/oauth2/client/client-credentials.json"
+ALT_CREDS_FILE="/vagrant/diode/oauth2/client/client-credentials.json"
+
+if [ ! -f "$CREDS_FILE" ]; then
+  if [ -f "$ALT_CREDS_FILE" ]; then
+    CREDS_FILE="$ALT_CREDS_FILE"
+  else
+    echo "Fout: $CREDS_FILE niet gevonden."
+    exit 1
+  fi
+fi
+
+if ! command -v envsubst >/dev/null 2>&1; then
+  echo "envsubst niet gevonden. Installeer met: sudo apt-get install -y gettext-base"
+  exit 1
+fi
+
+export DIODE_CLIENT_ID="diode-ingest"
+export DIODE_CLIENT_SECRET=$(sudo jq -r '.[] | select(.client_id == "diode-ingest") | .client_secret' "$CREDS_FILE")
+
+if [ -z "$DIODE_CLIENT_SECRET" ]; then
+  echo "Fout: kon diode-ingest secret niet ophalen."
+  exit 1
+fi
+
+export DEVICE_USERNAME="user"
+export DEVICE_PASSWORD="pass"
+
+envsubst '${DIODE_CLIENT_ID} ${DIODE_CLIENT_SECRET} ${DEVICE_USERNAME} ${DEVICE_PASSWORD}' < agent.yaml.router > agent.yaml
+echo "agent.yaml gegenereerd met credentials."
+
+exec sudo docker run --rm --network host \
+  -v "$SCRIPT_DIR:/opt/orb" \
+  -e INSTALL_DRIVERS_PATH=/opt/orb/drivers-router.txt \
+  -e PIP_BREAK_SYSTEM_PACKAGES=1 \
+  netboxlabs/orb-agent:2.5.0 run -c /opt/orb/agent.yaml
+  \end{minted}
+\end{listing}
+
