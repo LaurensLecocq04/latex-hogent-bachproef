@@ -41,12 +41,12 @@ orb:
     device_discovery:
       oostkamp_router:
         config:
-          # Zet de interval tijdelijk korter voor sneller debuggen (elke minuut)
-          schedule: "* * * * *" 
+          
+          schedule: "*/30 * * * *" 
           options:
             port_scan_ports: [8722]
             port_scan_timeout: 1.0
-            # Veel discovery tools ondersteunen een debug flag in de config
+            
             debug: true 
           defaults:
             site: "Oostkamp Ridefort"
@@ -61,11 +61,6 @@ orb:
               port: 8722
               use_ssl: false
               debug: true 
-            capabilities:
-              - device
-              - interfaces
-              - neighbors
-              - topology
   \end{minted}
 \end{listing}
 
@@ -87,15 +82,11 @@ orb:
         client_secret: ${DIODE_CLIENT_SECRET}
         agent_name: discovery_agent_01
 
-    snmp_discovery:
-      log_level: DEBUG
-      log_format: TEXT
-
   policies:
     snmp_discovery:
       oostkamp_ridefort:
         config:
-          schedule: "*/3 * * * *"
+          schedule: "*/30 * * * *"
           timeout: 300
           snmp_timeout: 5
           retries: 3
@@ -109,10 +100,7 @@ orb:
               tenant: "Oostkamp"
               rack: "oostkamp_ridefort"
               description: "SNMP discovered device"
-            ip_address:
-              description: "SNMP discovered IP"
-            interface:
-              description: "Auto-discovered interface"
+
         scope:
           targets:
             - host: "10.23.4.225"
