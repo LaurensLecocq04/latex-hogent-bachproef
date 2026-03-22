@@ -17,6 +17,14 @@ Uit gesprekken met netwerkbeheerders bij Citymesh komen meerdere terugkerende pi
   \item \textbf{Handmatig opbouwen van topologie}: de netwerk-topologie (bijvoorbeeld relaties tussen switches, routers, access points en andere netwerkcomponenten) moet grotendeels handmatig opgebouwd en bijgewerkt worden in NetBox. Dit vergt veel tijd en moet bij elke wijziging opnieuw uitgevoerd worden, waardoor de kans groot is dat de topologieweergave veroudert.
 \end{itemize}
 
+\subsection{CSV-workflow en NetBox-templates}
+
+Citymesh werkt traditioneel sterk met \textbf{CSV-bestanden}: er bestaan vaste templates met de velden die ingevuld moeten worden. Die templates worden \textbf{handmatig} aangevuld (bijvoorbeeld in Excel) en daarna geïmporteerd in NetBox. Voor access points wordt een \textbf{naamgevingsconventie} gehanteerd die het invullen vergemakkelijkt: namen worden zo gekozen dat ze in Excel doorgesleept kunnen worden, bijvoorbeeld \texttt{CI\_OK\_AP13}, \texttt{CI\_OK\_AP14}, \texttt{CI\_OK\_AP15}, enzovoort. Ook \textbf{IP-adressen} worden typisch \textbf{opeenvolgend} toegewezen vanaf het eerste AP in een reeks, wat het plannen in een spreadsheet ondersteunt.
+
+In NetBox worden bovendien \textbf{templates} gebruikt voor de interfaces van toestellen; daar kunnen beheerders de IP-adressen koppelen aan de juiste interfaces. Dat maakt de data gestructureerder, maar het volledige traject---template vullen, CSV voorbereiden, importeren, controleren en bij fouten opnieuw importeren---blijft arbeidsintensief. Vaak is \textbf{meerdere keren een CSV-import} nodig (correcties, ontbrekende velden, afwijkingen na validatie).
+
+Een exacte tijdsmeting per site of per wijzigingsronde is in dit onderzoek niet systematisch vastgelegd; naar \textbf{schatting} ligt de doorlooptijd voor het netjes documenteren van een grotere reeks AP's met bijbehorende interface- en IP-gegevens, inclusief herimporten, al snel in de orde van \textbf{enkele uren tot een halve tot volledige werkdag}, afhankelijk van de omvang van de site, het aantal correctierondes en parallelle andere taken. Dit illustreert waarom reductie van handmatige stappen en automatische discovery een duidelijke meerwaarde kan hebben.
+
 Deze pijnpunten leiden er samen toe dat NetBox niet altijd als een betrouwbare \emph{single source of truth} wordt ervaren, terwijl dat net de bedoeling is van het platform. Bovendien gaat er kostbare tijd van netwerkbeheerders naar administratieve taken in plaats van naar ontwerp, onderhoud en troubleshooting.
 
 \section{Gefaseerde requirements}
