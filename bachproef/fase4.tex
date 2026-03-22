@@ -226,3 +226,27 @@ exec sudo docker run --rm --network host \
   \end{minted}
 \end{listing}
 
+\section{Werking in de praktijk en aanvullende automatisering}
+
+\subsection{Wat de Orb-agent wel oplevert}
+
+De SNMP discovery en de device discovery via de Orb agent functioneren naar verwachting: apparaten worden ontdekt en via Diode in NetBox geregistreerd. De configuratie in de voorgaande secties is in de praktijk ingezet en levert een betrouwbare basis voor inventarisatie.
+
+\subsection{Beperking: LLDP-buren in NetBox}
+
+LLDP-buren (\emph{neighbors}) worden via deze keten niet automatisch als relaties in NetBox aangemaakt. Ondanks een correcte device discovery (met onder meer capabilities voor topologie en buren in de configuratie) bleek het niet mogelijk om die LLDP-informatie consistent automatisch te laten landen in NetBox. Dit vormt een beperking voor volledig geautomatiseerde kabel- en buurrelaties op basis van alleen de standaard NetBox Discovery-workflow.
+
+\subsection{Aanvulling: Streamlit-toepassing en NetBox API}
+
+Om dit gat te dichten, is een eigen webtoepassing gebouwd met Streamlit (Python). Deze applicatie laat toe om voor een zelf gekozen netwerkapparaat Python-scripts uit te voeren die het apparaat uitlezen; de verzamelde gegevens worden vervolgens via de NetBox API naar NetBox geschreven. Zo kunnen interfaces, IP-adressen, kabelverbindingen en gerelateerde objecten alsnog gestructureerd worden ingevoerd, buiten de beperking van de automatische LLDP-synchronisatie.
+
+Voor apparaten waarvoor NAPALM-drivers beschikbaar zijn, werkt deze aanpak goed: de scripts kunnen op de ondersteunde apparaten draaien en de API vult NetBox aan met de verwachte details.
+
+\subsection{Ruckus access points versus overige apparaten}
+
+Voor Ruckus access points bestaat geen NAPALM-driver. Die toestellen worden daarom eerst in NetBox gebracht via SNMP discovery (zoals beschreven in de SNMP-configuratie hierboven). Voor die AP's blijft de aanvulling via de Streamlit-pipeline beperkt tot wat via SNMP of handmatige stappen mogelijk is; de nadruk van de custom scripts ligt op andere platformen.
+
+\subsection{Huawei-switch en MikroTik-router}
+
+Na de initiële registratie in NetBox worden met de Streamlit-toepassing gericht de Huawei-switch en de MikroTik-router verder uitgelezen. De bijbehorende scripts halen de relevante configuratie- en statusinformatie binnen en schrijven via de NetBox API onder meer de IP-adressen en de \emph{cable connections} (kabelverbindingen tussen interfaces) weg. Zo ontstaat een samenhangend beeld van topologie en bekabeling voor die kerncomponenten, ter aanvulling op wat SNMP discovery en device discovery automatisch leveren.
+
