@@ -53,7 +53,17 @@ Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor 
 
 Voor apparaten waar geen passende drivers bestaan (bv. Ruckus access points in jouw scope) bleef de aanvulling beperkt tot wat via SNMP discovery of andere haalbare stappen mogelijk was.
 
-\section{Kwantificatie (open punten)}
+\section{Resultaat na NetBox Discovery en Streamlit (Ridefort)}
 
-Voor een volledige kwantitatieve voor-na vergelijking (bv. exacte aantallen velden die automatisch correct geüpdatet werden en het totaal aantal gecorrigeerde kabels) is bijkomende vastlegging nodig van wat er precies na de discoveryflow in NetBox aangepast/aanwezig was. In dit hoofdstuk zijn de belangrijkste effecten en de evaluatiemethode daarom primair kwalitatief en casus-specifiek uitgewerkt, in lijn met wat er momenteel aan meetdata beschikbaar was.
+Voorafgaand aan NetBox Discovery zijn alle oude AP-records/devices verwijderd, zodat er geen duplicaten konden ontstaan. Na het uitvoeren van NetBox Discovery stonden de \textbf{AP-namen} bijgevolg allemaal correct.
+
+In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar de switch correct gedocumenteerd. Na discovery (en de LLDP-gebaseerde verwerking via jouw pipeline) stonden de kabelrelaties \textbf{allemaal correct}. Deze correctheid werd gevalideerd op basis van de LLDP-informatie van de switch.
+
+Een resterende beperking betreft het \textbf{serienummer} van de access points: dit lukte niet automatisch via SNMP, waardoor de AP's niet volledig op serieniveau konden worden geverifieerd/gestructureerd.
+
+Een resterende beperking betreft het \textbf{serienummer} van de access points: dit lukte niet automatisch via SNMP, waardoor de AP's wel qua naam en kabelrelaties correct werden, maar niet volledig op serieniveau konden worden geverifieerd/gestructureerd.
+
+\section{Kwantificatie (context)}
+
+Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig (bv. exacte aantallen velden en aantal gecorrigeerde relaties). In dit hoofdstuk ligt de focus daarom op de casus-specifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: (1) directe detectie van inconsistenties na discovery, (2) volledige correctie van kabelrelaties na discovery + Streamlit, en (3) resterende beperking op serienummer-informatie voor AP's.
 

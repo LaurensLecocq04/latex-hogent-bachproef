@@ -5,3 +5,84 @@
 \chapter{\IfLanguageName{dutch}{Analyse, aanbevelingen en reflectie}{Analysis, recommendations and reflection}}%
 \label{ch:fase6}
 
+In dit hoofdstuk worden de resultaten van de casestudy geanalyseerd in functie van de centrale onderzoeksvraag en deelonderzoeksvragen. De analyse vertrekt vanuit:
+
+\begin{itemize}
+  \item de baseline die de bestaande toestand van NetBox documentatie beschrijft (Hoofdstuk~\ref{ch:fase3});
+  \item de implementatie van NetBox Discovery en de aanvullende automatisering voor ontbrekende datatypes (Hoofdstuk~\ref{ch:fase4});
+  \item de evaluatieobservaties tijdens de discovery- en verwerkingsstappen (Hoofdstuk~\ref{ch:fase5}).
+\end{itemize}
+
+\section{Analyse van de resultaten}
+
+\subsection{Actualiteit en consistentie van inventarisdata}
+
+De baseline toonde aan dat na de access point-vervanging niet alle relevante attributen consequent waren aangepast in NetBox. Concreet waren een deel van de AP-records niet correct benoemd, niet correct getypeerd en waren vooral de kabelrelaties incompleet.
+
+De evaluatie leert vervolgens dat NetBox Discovery (met Diode) de \textbf{actualiteit van inventarisdata} snel kan herstellen voor minstens de \textbf{AP-namen}: na discovery stonden alle AP-namen correct. Dit bevestigt dat het discovery-proces in staat is om een deel van de verouderde documentatie effectief te vervangen door data die overeenkomt met de realiteit.
+
+\subsection{Kabelrelaties en topologie}
+
+Waar NetBox Discovery/Orb via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via jouw Streamlit-pipeline met NetBox API. De evaluatie op site `Ridefort` toont daarbij dat:
+
+\begin{itemize}
+  \item de discrepanties in NetBox al direct zichtbaar werden na het ontdekken van de apparaten (baseline: 3/6 kabelrelaties correct);
+  \item na discovery en de LLDP-gebaseerde verwerking de \textbf{cable connections} \textbf{allemaal} correct waren (gevalideerd aan de hand van de LLDP-informatie van de switch).
+\end{itemize}
+
+Deze bevinding ondersteunt de conclusie dat NetBox Discovery vooral sterk is als \emph{inventarislaag}, terwijl de \emph{relatie-/topologie-invulling} afhankelijk kan zijn van extra brondata en/of uitbreidingen.
+
+\subsection{Resterende beperkingen: serienummer en datatypes}
+
+Een belangrijke beperking blijft het \textbf{serienummer} van de access points: dit kon niet automatisch worden afgeleid met SNMP in jouw case. Hierdoor werd het eindresultaat inhoudelijk wel sterk (naam en kabelrelaties), maar niet volledig tot op alle datavelden.
+
+In deze evaluatie werden duplicaten vermeden doordat oude AP-records/devices verwijderd werden vóór de discovery. Bij opschaling naar andere sites blijft een \textbf{cleanup}-stap en naming governance echter noodzakelijk om consistentie te garanderen en regressies te vermijden.
+
+
+\section{Beantwoording van de deelonderzoeksvragen}
+
+De deelonderzoeksvragen worden hieronder beantwoord op basis van de casus `Ridefort`.
+
+\subsection*{Probleemdomeinvragen}
+
+\begin{itemize}
+  \item \textbf{Vraag 1 (manifestatie van het probleem):} het probleem manifesteert zich in NetBox als verouderde inventaris- en relatie-informatie die zichtbaar wordt wanneer apparaten opnieuw ontdekt worden.
+  \item \textbf{Vraag 2 (oorzaken):} de belangrijkste oorzaak is het niet (volledig) bijwerken van NetBox na wijzigingen in de fysieke infrastructuur. In de casus leidde de AP-vervanging in 2022 tot inconsistenties (naam/type) en incompleet ingevulde kabelrelaties.
+  \item \textbf{Vraag 3 (huidige staat en gevolgen):} de huidige staat vertoonde veroudering in meerdere attributen en vooral incompleet documenteerde bekabeling. Dit resulteert in een beperkte betrouwbaarheid van NetBox als SSOT.
+  \item \textbf{Vraag 4 (huidige processen):} Citymesh werkt historisch met CSV-templates die handmatig ingevuld worden en vervolgens geïmporteerd worden in NetBox. Daardoor blijft de workflow afhankelijk van administratieve opvolging na infrastructuurwijzigingen.
+\end{itemize}
+
+\subsection*{Oplossingsdomeinvragen}
+
+\begin{itemize}
+  \item \textbf{Vraag 5 (bestaande technieken en tools):} de studie situeert NetBox Discovery als open-source optie en positioneert daarnaast Slurp'it als beloftevolle maar niet-haalbare (budget/scale) alternatieve tool.
+  \item \textbf{Vraag 6 (prestatie van tools):} NetBox Discovery met Diode presteert goed voor inventaris/naamgeving, maar strandt bij LLDP-neighbors/kabelrelaties in de standaard keten. Jouw Streamlit-API-aanvulling vult dit effectief aan.
+  \item \textbf{Vraag 7 (verbetering):} de evaluatie toont dat AP-namen volledig correct werden na discovery en dat cable connections correct konden worden aangevuld na discovery + Streamlit. Hierdoor stijgt de bruikbaarheid van NetBox als SSOT voor inventaris en bekabeling.
+  \item \textbf{Vraag 8 (organisatorische processen):} duurzame borging vereist dat de documentatieflow niet enkel gebaseerd is op CSV-import, maar dat discovery en de topologie-aanvulling periodiek uitgevoerd en gevalideerd worden, inclusief een cleanup-stap om duplicaten te vermijden en een aanpak voor serienummerinformatie buiten SNMP waar nodig.
+\end{itemize}
+
+\section{Aanbevelingen voor Citymesh}
+
+\subsection{Aanbeveling 1: adopteer NetBox Discovery als inventarisbasis}
+
+NetBox Discovery met Diode blijkt in de casus effectief om verouderde device-attributen sneller te corrigeren. Dit maakt een basis SSOT mogelijk, waarop vervolgens processtappen en aanvullingen kunnen landen.
+
+\subsection{Aanbeveling 2: implementeer een pipeline voor kabelrelaties}
+
+Omdat de standaard Orb/NetBox discovery-flow in jouw case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. Jullie Streamlit-API-pipeline is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
+
+\subsection{Aanbeveling 3: neem cleanup en naming governance op in het proces}
+
+Bij infrastructurele wijzigingen (bv. AP-vervanging) is het essentieel dat oude records niet blijven bestaan met afwijkende namen. Een vooraf gedefinieerde naming-conventie en een cleanup-procedure moeten standaard onderdeel worden van de discovery/correctiecyclus.
+
+\subsection{Aanbeveling 4: plan voor serienummerdatatypes}
+
+Voor serienummerdata volstaat SNMP in jouw cas niet. Citymesh moet hiervoor een alternatieve datastroom voorzien, bijvoorbeeld via management/CLI-collectie, ondersteunde drivers of andere integratiemogelijkheden, afhankelijk van device-type.
+
+\section{Reflectie en beperkingen}
+
+De resultaten zijn gebaseerd op één casus (`Ridefort`) en op observaties in NetBox met nadruk op created/last updated en de zichtbare correctheid van attributen. Een bredere validatie over meerdere sites zou de generaliseerbaarheid verhogen.
+
+Daarnaast is de evaluatie sterk gericht op datavelden en relaties die in de casus relevant bleken (naam, type, cable connections). Voor andere datatypes (zoals serienummer) blijven er methodologische beperkingen omdat de gebruikte discoverykanalen niet volledig de gewenste data kunnen leveren.
+
+
