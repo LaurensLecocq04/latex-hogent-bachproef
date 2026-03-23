@@ -5,3 +5,55 @@
 \chapter{\IfLanguageName{dutch}{Evaluatie en metingen}{Evaluation and measurements}}%
 \label{ch:fase5}
 
+Dit hoofdstuk beschrijft de evaluatie van NetBox Discovery (met Diode) en de bijhorende automatisering voor ontbrekende datatypes. In overeenstemming met de methodologie werden tijdens de evaluatie metingen/observaties uitgevoerd om te bepalen in welke mate de \emph{actualiteit} en de \emph{betrouwbaarheid} van netwerkdocumentatie in NetBox verbeteren na de discoveryflow.
+
+\section{Evaluatiemethode}
+
+De evaluatie gebeurde in een casestudy-context. Concreet werd de bestaande NetBox-inhoud voor de site `Ridefort` beschouwd als referentie (baseline, zie Hoofdstuk~\ref{ch:fase3}). Daarna werden NetBox Discovery (met Diode) en de aanvullende pipeline (hoofdstuk~\ref{ch:fase4}) ingezet om:
+
+\begin{itemize}
+  \item de NetBox-inventaris te vernieuwen op basis van wat de discovery daadwerkelijk ziet;
+  \item na discovery meteen te verifiëren welke velden/relaties afwijken van wat eerder gedocumenteerd was;
+  \item aan de hand van die discrepanties de belangrijkste effectindicatoren te operationaliseren.
+\end{itemize}
+
+Een belangrijke observatie bij deze evaluatie is dat de impact niet enkel achteraf merkbaar is: na het ontdekken van de apparaten kon je direct in NetBox zien dat delen van de vorige documentatie niet overeenkwamen met de werkelijke toestand.
+
+\section{Indicatoren en metingen}
+
+De evaluatie focust op indicatoren uit de methodologie (actualiteit, foutgraad, resterende correcties/effort). In dit hoofdstuk worden de volgende indicatoren uitgewerkt:
+
+\begin{itemize}
+  \item \textbf{Detectie van verouderde/incorrecte velden:} name/type en (voor zover mogelijk via discovery) device- en interface-informatie die niet overeenstemt met de situatie na discovery.
+  \item \textbf{Detectie van incompleet gedocumenteerde relaties:} vooral kabelrelaties die in NetBox ontbreken of foutief zijn.
+  \item \textbf{Resterende beperkingen:} datatypes die via de Orb/NetBox discoveryketen niet automatisch als relaties landen (bv. LLDP-neighbors/kabels).
+  \item \textbf{Effort reductie (kwalitatief):} de mate waarin discovery het correctiewerk ondersteunt doordat fouten sneller worden blootgelegd.
+\end{itemize}
+
+\section{Evaluatie-observatie op site `Ridefort`}
+
+In de casus `Ridefort` was de bestaande NetBox-documentatie uit 2020 opgebouwd en werd in 2022 een access point-vervanging uitgevoerd. Bij de evaluatie werd vervolgens vastgesteld dat de fouten/inconsistenties in de vorige documentatie niet verborgen bleven: \textbf{na het ontdekken van de apparaten kon direct in NetBox gezien worden dat er afwijkingen waren}. Deze afwijkingen vielen in dezelfde categorieën als in de baseline:
+
+\begin{itemize}
+  \item \textbf{AP-namen:} een deel van de AP's had niet de correcte naam (veroudering/incorrecte attributen).
+  \item \textbf{AP-types:} een deel van de AP's had niet het correcte type na de infrastructuurwijziging.
+  \item \textbf{Kabelrelaties:} kabelrelaties naar de switch waren incompleet; slechts een subset van de verwachte kabelverbindingen was correct aanwezig.
+ \end{itemize}
+
+Deze directe zichtbaarheid vormt een meetbaar effect in de context van \emph{actualiteit}: het discovery-proces maakt inconsistenties sneller zichtbaar en vermindert daardoor de tijd die nodig is om te detecteren waar de documentatie afwijkt van de realiteit.
+
+\section{Rol van de aanvullende automatisering (LLDP/kabels)}
+
+Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor inventaris en een deel van de documentatie-updates. Voor relaties die afhankelijk zijn van LLDP-neighbors (en die via de Orb-keten niet automatisch als NetBox-relaties terechtkwamen), werd de aanvullende pipeline ingezet:
+
+\begin{itemize}
+  \item voor ondersteunde apparaten kon LLDP-informatie via jouw Streamlit-app en scripts worden opgehaald;
+  \item met die LLDP-neighbors kon de pipeline kabelobjecten in NetBox aanmaken via de NetBox API.
+\end{itemize}
+
+Voor apparaten waar geen passende drivers bestaan (bv. Ruckus access points in jouw scope) bleef de aanvulling beperkt tot wat via SNMP discovery of andere haalbare stappen mogelijk was.
+
+\section{Kwantificatie (open punten)}
+
+Voor een volledige kwantitatieve voor-na vergelijking (bv. exacte aantallen velden die automatisch correct geüpdatet werden en het totaal aantal gecorrigeerde kabels) is bijkomende vastlegging nodig van wat er precies na de discoveryflow in NetBox aangepast/aanwezig was. In dit hoofdstuk zijn de belangrijkste effecten en de evaluatiemethode daarom primair kwalitatief en casus-specifiek uitgewerkt, in lijn met wat er momenteel aan meetdata beschikbaar was.
+
