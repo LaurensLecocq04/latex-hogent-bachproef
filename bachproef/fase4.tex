@@ -335,7 +335,7 @@ with st.form("api_push_form"):
 In onderstaande (verkorte) codefragmenten wordt zichtbaar hoe je Streamlit de LLDP-neighbors verkrijgt en daarna kabels creëert via de NetBox API.
 
 \begin{listing}[H]
-  \caption{Extract: LLDP-neighbors ophalen en voorbereid verwerken in `sync_device_to_netbox`}
+  \caption{Extract: LLDP-neighbors ophalen en voorbereid verwerken in \texttt{sync\_device\_to\_netbox}}
   \label{lst:streamlit-sync-lldp}
   \begin{minted}[fontsize=\small]{python}
 def sync_device_to_netbox(ip, username, password, site_name, role_name, rack_name, tenant_name, custom_name, nb_url, nb_token, options, status_box, vendor):
