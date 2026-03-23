@@ -14,5 +14,22 @@
 % Heeft het onderzoek geleid tot nieuwe vragen die uitnodigen tot verder 
 %onderzoek?
 
-\lipsum[76-80]
+Dit onderzoek vertrekt vanuit de vraag hoe automatische netwerkdetectie kan bijdragen aan het up-to-date houden van netwerkdocumentatie en aan het realiseren van een betrouwbare \emph{single source of truth} binnen de dynamische, draadloze IT-infrastructuren van Citymesh. In de casestudy werd deze centrale onderzoeksvraag beantwoord via de implementatie en evaluatie van NetBox Discovery, aangevuld met een praktische pipeline om ontbrekende datatypes (met focus op bekabeling op basis van LLDP-neighbors) in NetBox te capteren.
+
+Op basis van de baseline voor de site \emph{Ridefort} kon vastgesteld worden dat de NetBox-documentatie verouderd was na een access point-vervanging in 2022. Specifiek waren AP-namen/types niet volledig correct en was bekabeling incompleet: in de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de access points naar de switch correct gedocumenteerd. De evaluatie toont vervolgens aan dat automatische discovery de documentatie effectief kan corrigeren: na NetBox Discovery stonden de \textbf{AP-namen} correct en waren \textbf{AP-types} en \textbf{inventarisdata} actueel. Met de aanvullende verwerking (Streamlit-app met NetBox API) konden de \textbf{cable connections} op basis van LLDP-informatie worden aangevuld zodat, na \emph{discovery + Streamlit}, \textbf{alle} kabelrelaties correct werden beschouwd volgens de LLDP van de switch. Dat betekent dat NetBox in deze casus duidelijk beter voldoet als \emph{single source of truth} voor inventaris en bekabeling.
+
+Een resterende beperking is dat \textbf{serienummers} voor toestellen die via SNMP-discovery in NetBox werden ontdekt, niet automatisch in NetBox terechtkwamen. Hierdoor werd het eindresultaat inhoudelijk sterk voor de velden waarvoor de gebruikte discoverykanalen wel toereikend waren (naamgeving, types en bekabeling), maar niet volledig tot op serieniveau.
+
+\section*{Aanbevelingen voor Citymesh}
+
+Op basis van deze bevindingen worden volgende aanbevelingen geformuleerd:
+
+\begin{itemize}
+  \item Gebruik NetBox Discovery met Diode als basis om inventarisdata automatisch actueel te maken, omdat dit in de casus aantoonbaar leidde tot correcte AP-namen/types.
+  \item Voor bekabeling en topologie die afhankelijk zijn van LLDP-neighbors, integreer een aanvullende pipeline (zoals de Streamlit/NetBox API aanpak) om kabelrelaties volledig en consistent te modelleren wanneer NetBox Discovery dit niet automatisch afhandelt.
+  \item Neem \emph{cleanup} en naming governance op in het proces bij infrastructurele wijzigingen (bv. AP-vervangingen) zodat dubbele records niet ontstaan en updates eenduidig blijven.
+  \item Voor serienummers voorzie een alternatieve datastroom buiten SNMP (bv. management/CLI-collectie of een bron die wel serienummerinformatie levert), zodat NetBox ook op serieniveau betrouwbaar kan zijn.
+\end{itemize}
+
+Samengevat kan gesteld worden dat automatische netwerkdetectie in deze casestudy effectief bijdroeg aan een betere, actueel correcte en meer betrouwbare NetBox-documentatie. De resultaten tonen bovendien aan dat volledige SSOT niet alleen technisch afhangt van discovery, maar ook van een gericht proces en van aanvullende automatisering voor datatypes waar de standaard discoveryflow tekortschiet.
 

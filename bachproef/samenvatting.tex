@@ -36,7 +36,13 @@
 \IfLanguageName{english}{%
 \selectlanguage{dutch}
 \chapter*{Samenvatting}
-\lipsum[1-4]
+\noindent In dit onderzoek wordt nagegaan hoe automatische netwerkdetectie kan bijdragen aan het up-to-date houden van netwerkdocumentatie en het realiseren van een betrouwbare \emph{single source of truth} binnen de dynamische, draadloze IT-infrastructuren van Citymesh. De casestudy richt zich op het gebruik van NetBox Discovery in combinatie met Diode, aangevuld met een eigen pipeline om ontbrekende datatypes (met focus op bekabeling via LLDP-neighbors) in NetBox aan te vullen.
+
+\noindent De baseline werd opgesteld door de bestaande NetBox-documentatie te analyseren in een concrete site-casus (Ridefort). Vervolgens werd NetBox Discovery uitgevoerd om inventarisdata te actualiseren. Wanneer de standaard discoveryflow niet automatisch kabel-/relatie-informatie aanmaakte, werd dit aangevuld met een Streamlit-toepassing die LLDP-data ophaalt en via de NetBox API in NetBox schrijft.
+
+\noindent De evaluatie toont aan dat de automatische discovery de documentatie duidelijk verbetert: na discovery stonden de access point (AP)-namen correct, en via de aanvullende pipeline werden de \emph{cable connections} correct gecorrigeerd en volledig gemaakt. Een resterende beperking is dat serienummers niet automatisch in NetBox konden worden opgenomen voor apparaten die via SNMP werden ontdekt, waardoor deze datavelden nog manueel of via een alternatieve datastroom moeten worden behandeld.
+
+\noindent Als conclusie geldt dat NetBox Discovery effectief werkt als basis voor inventaris en dat een proces met extra automatisering noodzakelijk is voor volledige SSOT in termen van topologie en bekabeling. Aanbevolen wordt om NetBox Discovery structureel te integreren in de documentatieflow, inclusief naming governance/cleanup en een aanpak voor serienummerdata buiten SNMP.
 \selectlanguage{english}
 }{}
 
@@ -45,4 +51,10 @@
 
 \chapter*{\IfLanguageName{dutch}{Samenvatting}{Abstract}}
 
-\lipsum[1-4]
+\noindent This thesis investigates how automated network discovery can help keep network documentation up to date and enable a reliable \emph{single source of truth} in Citymesh’s dynamic, wireless IT infrastructures. The case study focuses on using NetBox Discovery together with Diode, complemented by an additional pipeline to capture missing datatypes—especially cabling information derived from LLDP-neighbors—into NetBox.
+
+\noindent The baseline was constructed by analyzing existing NetBox documentation for the Ridefort site. NetBox Discovery was then executed to refresh inventory data. Where the standard discovery workflow did not automatically create cable/topology relations, a Streamlit application was used to retrieve LLDP data and write it to NetBox through the NetBox API.
+
+\noindent The evaluation shows that the discovery approach significantly improves documentation quality. After discovery, access point (AP) names were correct, and with the supplementary pipeline, \emph{cable connections} were corrected and made complete. A remaining limitation is that serial numbers could not be automatically populated in NetBox for devices discovered via SNMP. These fields therefore require a manual process or an alternative data source.
+
+\noindent Overall, NetBox Discovery proves effective as an inventory foundation. Achieving full SSOT for topology and cabling requires a structured process and additional automation where NetBox Discovery falls short. Future work and practical recommendations include operationalizing NetBox Discovery, implementing naming governance/cleanup, and establishing a dedicated data flow for serial number attributes outside SNMP.
