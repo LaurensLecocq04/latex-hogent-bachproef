@@ -81,6 +81,12 @@ Een resterende beperking betreft het \textbf{serienummer} van de access points: 
 
 Een resterende beperking betreft het \textbf{serienummer} van de access points: dit lukte niet automatisch via SNMP, waardoor de AP's wel qua naam en kabelrelaties correct werden, maar niet volledig op serieniveau konden worden geverifieerd/gestructureerd.
 
+\section{Extra observatie: site `Deleers Go4tech`}
+
+Naast `Ridefort` werd ook een grotere site ontdekt: `Deleers Go4tech`. Deze site omvat 11 switches, 1 router, 1 Fortinet firewall en 48 access points. De bestaande documentatie in NetBox was ongeveer twee maanden oud. Desondanks werd bij het opnieuw uitvoeren van discovery vastgesteld dat \textbf{3 switches} een \textbf{verkeerd type} hadden in NetBox.
+
+Deze observatie is belangrijk omdat ze aantoont dat documentatie zelfs wanneer ze recent is opgebouwd, alsnog fouten kan bevatten. Door apparaten periodiek opnieuw te ontdekken worden afwijkingen sneller zichtbaar en wordt de \emph{menselijke factor} (vergeten updates, foutieve selectie van types) gedeeltelijk uit de documentatiestroom gehaald.
+
 \section{Kwantificatie (context)}
 
 Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig (bv. exacte aantallen velden en aantal gecorrigeerde relaties). In dit hoofdstuk ligt de focus daarom op de casus-specifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: (1) directe detectie van inconsistenties na discovery, (2) volledige correctie van kabelrelaties na discovery + Streamlit, en (3) resterende beperking op serienummer-informatie voor AP's.
