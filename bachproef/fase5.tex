@@ -61,6 +61,24 @@ In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar 
 
 Een resterende beperking betreft het \textbf{serienummer} van de access points: dit lukte niet automatisch via SNMP, waardoor de AP's niet volledig op serieniveau konden worden geverifieerd/gestructureerd.
 
+\section{Overzicht voor/na (Ridefort)}
+
+\begin{table}[H]
+  \centering
+  \caption{Samenvatting van de belangrijkste voor/na resultaten voor de site `Ridefort`}
+  \label{tab:ridefort-voor-na}
+  \begin{tabular}{p{0.46\linewidth} p{0.22\linewidth} p{0.22\linewidth}}
+    \toprule
+    \textbf{Indicator} & \textbf{Baseline} & \textbf{Na discovery + pipeline} \\
+    \midrule
+    Correcte AP-namen in NetBox & gedeeltelijk correct & 6/6 correct \\
+    Correcte AP-types in NetBox & 5/6 correct & correct (actueel na discovery) \\
+    Kabelrelaties AP $\rightarrow$ switch & 3/6 correct & 6/6 correct (LLDP switch) \\
+    Serienummers AP's via SNMP & niet beschikbaar & niet beschikbaar \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 Een resterende beperking betreft het \textbf{serienummer} van de access points: dit lukte niet automatisch via SNMP, waardoor de AP's wel qua naam en kabelrelaties correct werden, maar niet volledig op serieniveau konden worden geverifieerd/gestructureerd.
 
 \section{Kwantificatie (context)}
