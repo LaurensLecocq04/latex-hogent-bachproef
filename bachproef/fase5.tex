@@ -47,13 +47,13 @@ Deze directe zichtbaarheid vormt een meetbaar effect in de context van \emph{act
 Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor inventaris en een deel van de documentatie-updates. Voor relaties die afhankelijk zijn van LLDP-neighbors (en die via de Orb-keten niet automatisch als NetBox-relaties terechtkwamen), werd de aanvullende pipeline ingezet:
 
 \begin{itemize}
-  \item voor ondersteunde apparaten kon LLDP-informatie via jouw Streamlit-app en scripts worden opgehaald;
+  \item voor ondersteunde apparaten kon LLDP-informatie via de \texttt{NetworkTool}-applicatie en scripts worden opgehaald;
   \item met die LLDP-neighbors kon de pipeline kabelobjecten in NetBox aanmaken via de NetBox API.
 \end{itemize}
 
 Voor apparaten waar geen passende drivers bestaan (bv. Ruckus access points in jouw scope) bleef de aanvulling beperkt tot wat via SNMP discovery of andere haalbare stappen mogelijk was.
 
-\section{Resultaat na NetBox Discovery en Streamlit (Ridefort)}
+\section{Resultaat na NetBox Discovery en NetworkTool (Ridefort)}
 
 Voorafgaand aan NetBox Discovery zijn alle oude AP-records/devices verwijderd, zodat er geen duplicaten konden ontstaan. Na het uitvoeren van NetBox Discovery stonden de \textbf{AP-namen} bijgevolg allemaal correct.
 
@@ -79,8 +79,6 @@ Een resterende beperking betreft het \textbf{serienummer} van de access points: 
   \end{tabular}
 \end{table}
 
-Een resterende beperking betreft het \textbf{serienummer} van de access points: dit lukte niet automatisch via SNMP, waardoor de AP's wel qua naam en kabelrelaties correct werden, maar niet volledig op serieniveau konden worden geverifieerd/gestructureerd.
-
 \section{Extra observatie: site `Deleers Go4tech`}
 
 Naast `Ridefort` werd ook een grotere site ontdekt: `Deleers Go4tech`. Deze site omvat 11 switches, 1 router, 1 Fortinet firewall en 48 access points. De bestaande documentatie in NetBox was ongeveer twee maanden oud. Desondanks werd bij het opnieuw uitvoeren van discovery vastgesteld dat \textbf{3 switches} een \textbf{verkeerd type} hadden in NetBox.
@@ -89,5 +87,5 @@ Deze observatie is belangrijk omdat ze aantoont dat documentatie zelfs wanneer z
 
 \section{Kwantificatie (context)}
 
-Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig (bv. exacte aantallen velden en aantal gecorrigeerde relaties). In dit hoofdstuk ligt de focus daarom op de casus-specifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: (1) directe detectie van inconsistenties na discovery, (2) volledige correctie van kabelrelaties na discovery + Streamlit, en (3) resterende beperking op serienummer-informatie voor AP's.
+Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig (bv. exacte aantallen velden en aantal gecorrigeerde relaties). In dit hoofdstuk ligt de focus daarom op de casus-specifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: (1) directe detectie van inconsistenties na discovery, (2) volledige correctie van kabelrelaties na discovery + \texttt{NetworkTool}, en (3) resterende beperking op serienummer-informatie voor AP's.
 

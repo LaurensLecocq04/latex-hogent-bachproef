@@ -25,7 +25,7 @@ De aanvullende observatie op de site `Deleers Go4tech` onderstreept bovendien da
 
 \subsection{Kabelrelaties en topologie}
 
-Waar NetBox Discovery/Orb via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via jouw Streamlit-pipeline met NetBox API. De evaluatie op site `Ridefort` toont daarbij dat:
+Waar NetBox Discovery/Orb via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via de \texttt{NetworkTool}-pipeline met NetBox API. De evaluatie op site `Ridefort` toont daarbij dat:
 
 \begin{itemize}
   \item de discrepanties in NetBox al direct zichtbaar werden na het ontdekken van de apparaten (baseline: 3/6 kabelrelaties correct);
@@ -43,7 +43,7 @@ In deze evaluatie werden duplicaten vermeden doordat oude AP-records/devices ver
 
 \section{Beantwoording van de deelonderzoeksvragen}
 
-De deelonderzoeksvragen worden hieronder beantwoord op basis van de casus `Ridefort`.
+De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen `Ridefort` en `Deleers Go4tech`.
 
 \subsection*{Probleemdomeinvragen}
 
@@ -58,8 +58,8 @@ De deelonderzoeksvragen worden hieronder beantwoord op basis van de casus `Ridef
 
 \begin{itemize}
   \item \textbf{Vraag 5 (bestaande technieken en tools):} de studie situeert NetBox Discovery als open-source optie en positioneert daarnaast Slurp'it als beloftevolle maar niet-haalbare (budget/scale) alternatieve tool.
-  \item \textbf{Vraag 6 (prestatie van tools):} NetBox Discovery met Diode presteert goed voor inventaris/naamgeving, maar strandt bij LLDP-neighbors/kabelrelaties in de standaard keten. Jouw Streamlit-API-aanvulling vult dit effectief aan.
-  \item \textbf{Vraag 7 (verbetering):} de evaluatie toont dat AP-namen volledig correct werden na discovery en dat cable connections correct konden worden aangevuld na discovery + Streamlit. Hierdoor stijgt de bruikbaarheid van NetBox als SSOT voor inventaris en bekabeling.
+  \item \textbf{Vraag 6 (prestatie van tools):} NetBox Discovery met Diode presteert goed voor inventaris/naamgeving, maar strandt bij LLDP-neighbors/kabelrelaties in de standaard keten. De \texttt{NetworkTool}-aanvulling vult dit effectief aan.
+  \item \textbf{Vraag 7 (verbetering):} de evaluatie toont dat AP-namen volledig correct werden na discovery en dat cable connections correct konden worden aangevuld na discovery + \texttt{NetworkTool}. Hierdoor stijgt de bruikbaarheid van NetBox als SSOT voor inventaris en bekabeling.
   \item \textbf{Vraag 8 (organisatorische processen):} duurzame borging vereist dat de documentatieflow niet enkel gebaseerd is op CSV-import, maar dat discovery en de topologie-aanvulling periodiek uitgevoerd en gevalideerd worden, inclusief een cleanup-stap om duplicaten te vermijden en een aanpak voor serienummerinformatie buiten SNMP waar nodig.
 \end{itemize}
 
@@ -71,7 +71,7 @@ NetBox Discovery met Diode blijkt in de casus effectief om verouderde device-att
 
 \subsection{Aanbeveling 2: implementeer een pipeline voor kabelrelaties}
 
-Omdat de standaard Orb/NetBox discovery-flow in jouw case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. Jullie Streamlit-API-pipeline is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
+Omdat de standaard Orb/NetBox discovery-flow in jouw case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. De \texttt{NetworkTool}-pipeline is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
 
 \subsection{Aanbeveling 3: neem cleanup en naming governance op in het proces}
 

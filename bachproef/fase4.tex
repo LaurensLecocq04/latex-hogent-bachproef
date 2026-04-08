@@ -236,206 +236,121 @@ De SNMP discovery en de device discovery via de Orb agent functioneren naar verw
 
 LLDP-buren (\emph{neighbors}) worden via deze keten niet automatisch als relaties in NetBox aangemaakt. Ondanks een correcte device discovery (met onder meer capabilities voor topologie en buren in de configuratie) bleek het niet mogelijk om die LLDP-informatie consistent automatisch te laten landen in NetBox. Dit vormt een beperking voor volledig geautomatiseerde kabel- en buurrelaties op basis van alleen de standaard NetBox Discovery-workflow.
 
-\subsection{Aanvulling: Streamlit-toepassing en NetBox API voor kabel- en LLDP-data}
+\subsection{Aanvulling: actuele \texttt{NetworkTool}-toepassing en NetBox API}
 
-LLDP-buren (\emph{neighbors}) komen niet automatisch als relaties in NetBox terecht via de Orb-agent-discoveryflow. Om toch kabel- en topologierelaties uit te werken, is een eigen webtoepassing gebouwd met Streamlit (Python). De kern van deze aanpak is:
+De oorspronkelijke Streamlit-tool werd ondertussen herwerkt naar een modulaire codebase in de aparte map \texttt{NetworkTool/}. In plaats van één groot script bestaat de toepassing nu uit gescheiden modules voor GUI, live dataverzameling, utility-functies en NetBox-synchronisatie. Daardoor werd de onderhoudbaarheid verbeterd en konden extra workflows toegevoegd worden.
 
 \begin{itemize}
-  \item een apparaat naar keuze uitlezen (per vendor/protocol) om o.a. interfaces, IP-informatie en LLDP-neighbors te verzamelen;
-  \item de verzamelde data via de NetBox REST API schrijven naar de relevante NetBox objecten (device, interfaces, IP-adressen en kabels).
+  \item \textbf{GUI-laag:} \texttt{tool/gui.py} beheert de gebruikersflow en tabs.
+  \item \textbf{Dataverzameling:} \texttt{tool/network\_core.py} haalt live data op per vendor (MikroTik, Huawei, Fortinet).
+  \item \textbf{NetBox-integratie:} \texttt{tool/netbox\_api.py} voert dry-run analyse en effectieve synchronisatie uit.
+  \item \textbf{Vendor-specifieke scripts:} aparte mappen voor Huawei, MikroTik en Fortinet met eigen dependencies en exports.
 \end{itemize}
 
-Voor de apparaten waarvoor een geschikte driver beschikbaar is, levert deze pipeline een praktisch alternatief: waar NetBox Discovery/Orb de LLDP-relaties niet automatisch aanmaakt, haalt Streamlit de LLDP-informatie op en maakt het vervolgens kabelobjecten op basis van de LLDP-neighbors.
+\subsubsection{Actuele GUI-architectuur}
 
-\subsubsection{Agent Manager tab: Orb-agent starten vanuit Streamlit}
-
-De eerste tab van de applicatie beheert de Orb agent via Docker. Op basis van de gekozen modus (`SNMP`, `Router` of `Switch`) selecteert Streamlit automatisch het juiste YAML-configuratiebestand en startscript.
+De vernieuwde GUI bevat vier tabs: \emph{Agent Manager}, \emph{Network Scanner}, \emph{SNMP Discovery} en \emph{CVE Scanner}. Dit breidt de oorspronkelijke workflow uit met subnet-sweeps en vulnerability checks.
 
 \begin{listing}[H]
-  \caption{Streamlit: selectie van Orb-agentconfig en startscript}
-  \label{lst:streamlit-agent-manager}
+  \caption{NetworkTool GUI: module-imports en tabstructuur}
+  \label{lst:networktool-gui-tabs}
   \begin{minted}[fontsize=\small]{python}
-AGENT_MAP = {
-    "SNMP": {"config": "agent.yaml.snmp", "script": "start-agent-snmp.sh"},
-    "Router": {"config": "agent.yaml.router", "script": "start-agent-router.sh"},
-    "Switch": {"config": "agent.yaml.switch", "script": "start-agent-switch.sh"}
-}
+from config import AGENT_MAP, AGENT_DIR, MAPPING_FILE
+from utils import load_snmp_mapping, parse_ip_input, sweep_ip, guess_role_and_type
+from network_core import fetch_live_data
+from netbox_api import (
+    get_nb_sites, get_nb_devices, get_nb_roles, 
+    get_nb_device_types, get_nb_tenants, 
+    evaluate_and_sync_netbox, sync_snmp_devices
+)
 
-mode = st.radio("Selecteer Agent:", ["SNMP", "Router", "Switch"], horizontal=True)
-cfg_file = AGENT_MAP[mode]["config"]
-run_script = AGENT_MAP[mode]["script"]
-
-if st.button(f"Start Agent ({mode})"):
-    log_file = os.path.join(AGENT_DIR, "agent_output.log")
-    with open(log_file, "a") as f:
-        subprocess.Popen(
-            ["bash", run_script],
-            cwd=AGENT_DIR,
-            stdout=f,
-            stderr=f
-        )
-    st.success(f"Start-commando voor {mode} verzonden.")
-    st.rerun()
+tab_agent, tab_scanner, tab_discovery, tab_cve = st.tabs(
+    ["Agent Manager", "Network Scanner", "SNMP Discovery", "CVE Scanner"]
+)
   \end{minted}
 \end{listing}
 
-\subsubsection{Network Scanner tab: bulk scan en NetBox API import}
+\subsubsection{Network Scanner: dry-run en gecontroleerde live push}
 
-De tweede tab scant toestellen (of een IP-range) en genereert daarna optioneel een reeks CSV-exports (achtergrond). Vervolgens kan je vanuit dezelfde interface bulkdata pushen naar NetBox via de NetBox API.
+In de actuele tool wordt de synchronisatie in twee stappen gedaan: eerst \emph{analyse} (dry-run/diff), daarna pas de effectieve write naar NetBox. Dit verlaagt het risico op foutieve updates.
 
 \begin{listing}[H]
-  \caption{Streamlit: scan-form en bulk API push}
-  \label{lst:streamlit-api-import}
+  \caption{NetworkTool: dry-run analyse gevolgd door live synchronisatie}
+  \label{lst:networktool-dryrun-live}
   \begin{minted}[fontsize=\small]{python}
-with st.form("scan_form"):
-    vendor = st.selectbox("Merk", ["MikroTik", "Huawei"])
-    ip_input = st.text_input("IP-adres of Range").strip()
-    site = st.text_input("NetBox Site", value="Oostkamp").strip()
+# Stap 2: analyse
+success, changes = evaluate_and_sync_netbox(
+    live_data_payload, d['ip'], d['site'], d['role'], d['rack'], d['tenant'], d['naam'],
+    nb_url, nb_token, selected_modules, d['vendor'], d['monitoring_env'], dry_run=True
+)
 
-    user = st.text_input("Gebruikersnaam", value="sa_netbox_orb").strip()
-    password = st.text_input("Wachtwoord", type="password").strip()
-    role = st.selectbox("NetBox Role", ["Router", "Switch"])
-    rack = st.text_input("NetBox Rack", value="").strip()
-    tenant = st.text_input("NetBox Tenant", value="").strip()
-
-    submitted = st.form_submit_button("Start Scan & Genereer CSV's")
-
-if submitted:
-    target_ips = parse_ip_input(ip_input)
-    # per IP: ophalen van feiten + genereren van CSV-exports (afhankelijk van vendor)
-    ...
-
-with st.form("api_push_form"):
-    api_options = st.multiselect(
-        "Selecteer modules om te pushen:",
-        ["Device", "Interfaces", "IP's", "Cables"],
-        default=["Device", "Interfaces", "IP's", "Cables"]
-    )
-    nb_url = st.text_input("NetBox URL", value="---").strip()
-    nb_token = st.text_input("NetBox API Token", type="password", value="---").strip()
-    push_btn = st.form_submit_button(
-        f"Bevestig: Push {len(st.session_state.scan_results)} apparaten naar NetBox"
-    )
-
-    if push_btn:
-        for d in st.session_state.scan_results:
-            success, message = sync_device_to_netbox(
-                ip=d["ip"], username=d["user"], password=d["password"],
-                site_name=d["site"], role_name=d["role"], rack_name=d["rack"],
-                tenant_name=d["tenant"], custom_name=d["naam"],
-                nb_url=nb_url, nb_token=nb_token,
-                options=api_options, status_box=status,
-                vendor=d["vendor"],
-            )
+# Stap 3: live push
+success, messages = evaluate_and_sync_netbox(
+    live_data_payload, d['ip'], d['site'], d['role'], d['rack'], d['tenant'], d['naam'],
+    nb_url, nb_token, st.session_state.selected_modules, d['vendor'], d['monitoring_env'],
+    dry_run=False
+)
   \end{minted}
 \end{listing}
 
-\subsubsection{LLDP-neighbors ophalen (MikroTik) en kabels aanmaken in NetBox}
+\subsubsection{Actuele LLDP- en kabelafhandeling}
 
-In onderstaande (verkorte) codefragmenten wordt zichtbaar hoe je Streamlit de LLDP-neighbors verkrijgt en daarna kabels creëert via de NetBox API.
+De nieuwe implementatie bevat robuustere LLDP-verwerking, met onder meer:
+\begin{itemize}
+  \item fallback tussen \texttt{get\_lldp\_neighbors\_detail()} en \texttt{get\_lldp\_neighbors()};
+  \item automatische normalisatie van interface-notaties;
+  \item drift-detectie waarbij bestaande maar fout gekoppelde kabels verwijderd en opnieuw aangemaakt worden;
+  \item herkenning van poorten die als MAC-adres binnenkomen (bijvoorbeeld AP-neighbor outputs).
+\end{itemize}
 
 \begin{listing}[H]
-  \caption{Extract: LLDP-neighbors ophalen en voorbereid verwerken in \texttt{sync\_device\_to\_netbox}}
-  \label{lst:streamlit-sync-lldp}
+  \caption{NetworkTool: LLDP ophalen en formatteren in de live datalaag}
+  \label{lst:networktool-lldp-fetch}
   \begin{minted}[fontsize=\small]{python}
-def sync_device_to_netbox(ip, username, password, site_name, role_name, rack_name, tenant_name, custom_name, nb_url, nb_token, options, status_box, vendor):
+try:
+    details = device.get_lldp_neighbors_detail()
+    if details:
+        fmt_lldp = {}
+        for iface, neighbors in details.items():
+            fmt_lldp[iface] = [
+                {'hostname': n.get('remote_system_name', ''), 'port': n.get('remote_port', '')}
+                for n in neighbors
+            ]
+        data["lldp_neighbors"] = fmt_lldp
+    else:
+        data["lldp_neighbors"] = device.get_lldp_neighbors()
+except Exception:
     try:
-        status_box.write(f"⏳ Verbinden met {vendor} ({ip}) via NAPALM...")
-        
-        # --- DATA OPHALEN (LOKAAL OF VIA BRUG) ---
-        if vendor == "MikroTik":
-            driver = get_network_driver('ros')
-            device = driver(ip, username, password, optional_args={'port': 8722})
-            device.open()
-            
-            facts = device.get_facts()
-            status_box.write("📡 Data ophalen van de router...")
-            interfaces = device.get_interfaces() if ("Interfaces" in options or "IP's" in options or "Cables" in options) else {}
-            ips = device.get_interfaces_ip() if "IP's" in options else {}
-            
-            lldp_neighbors = {}
-            if "Cables" in options:
-                status_box.write("🔌 LLDP (bekabeling) informatie ophalen...")
-                try:
-                    lldp_neighbors = device.get_lldp_neighbors()
-                except Exception:
-                    pass 
-            device.close()
-            
-    except Exception as e:
-        return False, f"Fout tijdens NetBox API sync: {str(e)}"
+        data["lldp_neighbors"] = device.get_lldp_neighbors()
+    except Exception:
+        pass
   \end{minted}
 \end{listing}
 
 \begin{listing}[H]
-  \caption{Extract: kabels aanmaken in NetBox op basis van LLDP-neighbors}
-  \label{lst:streamlit-create-cables}
+  \caption{NetworkTool: kabeldrift detecteren en corrigeren in NetBox}
+  \label{lst:networktool-cable-drift}
   \begin{minted}[fontsize=\small]{python}
-        # D. CABLES
-        if "Cables" in options and nb_dev:
-            count_cables = 0
-            for local_iface, neighbors in lldp_neighbors.items():
+if cable_a:
+    endpoints = getattr(nb_intf_a, 'connected_endpoints', [])
+    if endpoints and len(endpoints) > 0:
+        ep = endpoints[0]
+        connected_dev_name = getattr(getattr(ep, 'device', None), 'name', 'Onbekend')
+        connected_port_name = getattr(ep, 'name', 'Onbekend')
+        if str(connected_dev_name).upper() != str(remote_host).upper() or \
+           str(connected_port_name).upper() != str(nb_intf_b.name).upper():
+            drift_detected = True
 
-                if "eoip" in local_iface.lower() or "bridge" in local_iface.lower():
-                    continue
-
-                for neighbor in neighbors:
-                    remote_host = neighbor.get('hostname', '').strip()
-                    remote_port = str(neighbor.get('port', '')).strip()
-
-                    if not remote_host:
-                        continue
-
-                    if "eoip" in remote_port.lower() or "bridge" in remote_port.lower():
-                        continue
-
-                    if re.match(r'^([0-9a-fA-F]{4}-){2}[0-9a-fA-F]{4}$', remote_port):
-                        remote_port = "eth1"
-
-                    intf_a_search = list(nb.dcim.interfaces.filter(device_id=nb_dev.id, name=local_iface))
-                    if not intf_a_search:
-                        intf_a_search = list(nb.dcim.interfaces.filter(device_id=nb_dev.id, name=expand_port_name(local_iface)))
-
-                    if not intf_a_search:
-                        continue
-
-                    nb_intf_a = intf_a_search[0]
-
-                    if getattr(nb_intf_a, 'cable', None):
-                        continue
-
-                    remote_devs = list(nb.dcim.devices.filter(name=remote_host))
-                    if len(remote_devs) == 0 or len(remote_devs) > 1:
-                        continue
-                    nb_dev_b = remote_devs[0]
-
-                    remote_intfs = list(nb.dcim.interfaces.filter(device_id=nb_dev_b.id, name=remote_port))
-                    if len(remote_intfs) == 0:
-                        remote_intfs = list(nb.dcim.interfaces.filter(device_id=nb_dev_b.id, name=expand_port_name(remote_port)))
-
-                    if len(remote_intfs) == 0 or len(remote_intfs) > 1:
-                        continue
-                    nb_intf_b = remote_intfs[0]
-
-                    try:
-                        nb.dcim.cables.create(
-                            a_terminations=[{"object_type": "dcim.interface", "object_id": nb_intf_a.id}],
-                            b_terminations=[{"object_type": "dcim.interface", "object_id": nb_intf_b.id}],
-                            status="connected"
-                        )
-                        count_cables += 1
-                    except Exception:
-                        pass
-
-            messages.append(f"✅ {count_cables} nieuwe kabels verbonden via LLDP-detectie.")
+if not kabel_bestaat_al_goed:
+    nb.dcim.cables.create({
+        "a_terminations": [{"object_type": "dcim.interface", "object_id": nb_intf_a.id}],
+        "b_terminations": [{"object_type": "dcim.interface", "object_id": nb_intf_b.id}],
+        "status": "connected"
+    })
   \end{minted}
 \end{listing}
 
-\subsection{Ruckus access points versus overige apparaten}
+\subsection{Vendordekking en actuele beperkingen}
 
-Voor Ruckus access points bestaat geen NAPALM-driver. Deze toestellen worden daarom eerst in NetBox gebracht via SNMP discovery (zoals beschreven in de SNMP-configuratie hierboven). Voor die AP's blijft de aanvulling via de Streamlit-pipeline beperkt tot wat via SNMP of handmatige stappen mogelijk is; de nadruk van de custom scripts ligt op andere platformen.
-
-\subsection{Huawei-switch en MikroTik-router}
-
-Na de initiële registratie in NetBox worden met de Streamlit-toepassing gericht de Huawei-switch en de MikroTik-router verder uitgelezen. Afhankelijk van de vendor worden de relevante gegevens opgehaald en via de NetBox API ingevoerd (o.a. IP-adressen en \emph{cable connections}). Zo ontstaat een samenhangend beeld van topologie en bekabeling voor de kerncomponenten, ter aanvulling op wat SNMP discovery en device discovery automatisch leveren.
+De vernieuwde tool ondersteunt operationeel MikroTik, Huawei en Fortinet. Voor Ruckus access points blijft gelden dat er geen volledige NAPALM-driverflow beschikbaar is voor alle gewenste datavelden, waardoor SNMP-discovery en aanvullende verwerking nodig blijven. Dit sluit aan op de evaluatiebevindingen in fase~5 en de aanbevelingen in fase~6.
 

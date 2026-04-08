@@ -16,7 +16,7 @@ Voor dit onderzoek stonden twee automatische netwerkdetectie-aanpakken binnen de
 
 Andere discovery-tools werden in deze casestudy niet volledig uitgevoerd of uitgerold tot op productieniveau. Dit betekent dat de vergelijking in dit hoofdstuk vooral bestaat uit: (1) een concrete evaluatie van de NetBox Discovery-workflow (met Diode) en (2) een meer kwalitatieve beoordeling van Slurp'it op basis van wat getest en geobserveerd kon worden.
 
-De Streamlit-applicatie met NetBox API wordt in dit hoofdstuk beschouwd als een \emph{aanvulling} op de discoveryflow (om ontbrekende datatypes zoals LLDP-neighbors/kabelrelaties te capteren), maar niet als een zelfstandige discovery-tool die in dezelfde zin als NetBox Discovery en Slurp'it vergeleken werd.
+De \texttt{NetworkTool}-applicatie (met NetBox API) wordt in dit hoofdstuk beschouwd als een \emph{aanvulling} op de discoveryflow (om ontbrekende datatypes zoals LLDP-neighbors/kabelrelaties te capteren), maar niet als een zelfstandige discovery-tool die in dezelfde zin als NetBox Discovery en Slurp'it vergeleken werd.
 
 \section{Evaluatiecriteria}
 
@@ -38,7 +38,7 @@ Om te beoordelen of een oplossing voldoet aan de behoeften van Citymesh, werden 
 
 NetBox Discovery in combinatie met Diode werd als primaire oplossing beschouwd omdat dit binnen de scope van het onderzoek (gratis/low-cost) realiseerbaar was en direct inzetbaar is in NetBox.
 
-In de praktijk bleek NetBox Discovery effectief voor het opbouwen van een bruikbare inventarisbasis: devices en hun documentatiedata konden via de discovery-workflow in NetBox terechtkomen. Voor het volledige SSOT-verhaal bleef echter één beperking over: LLDP-neighbors (\emph{neighbors}) werden niet automatisch als relaties in NetBox aangemaakt via de Orb/NetBox discoveryketen. Dit is vervolgens opgevangen met een aanvullende automatisering (Streamlit + NetBox API) in hoofdstuk~\ref{ch:fase4}.
+In de praktijk bleek NetBox Discovery effectief voor het opbouwen van een bruikbare inventarisbasis: devices en hun documentatiedata konden via de discovery-workflow in NetBox terechtkomen. Voor het volledige SSOT-verhaal bleef echter één beperking over: LLDP-neighbors (\emph{neighbors}) werden niet automatisch als relaties in NetBox aangemaakt via de Orb/NetBox discoveryketen. Dit is vervolgens opgevangen met een aanvullende automatisering (\texttt{NetworkTool} + NetBox API) in hoofdstuk~\ref{ch:fase4}.
 
 \subsection{Slurp'it (NetBox plugin)}
 
@@ -59,7 +59,7 @@ Op basis van de scope, evaluatiecriteria en de praktische haalbaarheid werd geko
 \begin{itemize}
   \item \textbf{Haalbaarheid binnen budget:} NetBox Discovery was gratis en direct beschikbaar binnen de casestudy-scope.
   \item \textbf{Effectieve integratiebasis voor SSOT:} de workflow levert een bruikbare NetBox-inventaris op, waardoor de aanvullende automatisering kan starten van een “gevulde” basis.
-  \item \textbf{Uitbreidbaarheid:} waar discovery niet volledig automatisch landt (LLDP-neighbors/kabelrelaties), kon je de ontbrekende functionaliteit aanvullen met een eigen pipeline (Streamlit + NetBox API).
+  \item \textbf{Uitbreidbaarheid:} waar discovery niet volledig automatisch landt (LLDP-neighbors/kabelrelaties), kon je de ontbrekende functionaliteit aanvullen met een eigen pipeline (\texttt{NetworkTool} + NetBox API).
 \end{itemize}
 
 \section{Beperkingen van de vergelijking}
