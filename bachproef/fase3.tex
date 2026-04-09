@@ -47,4 +47,28 @@ Omdat dit een casestudie is, is de baseline primair beschrijvend en bedoeld om d
 
 Om de bevindingen uit `Ridefort` te contextualiseren, werd later ook een grotere site gedetecteerd: `Deleers Go4tech` (11 switches, 1 router, 1 Fortinet firewall en 48 access points). Hoewel de NetBox-documentatie daar slechts ongeveer twee maanden oud was, bleken na herdiscovering 3 switches een incorrect type te hebben in NetBox. Dit illustreert dat fouten niet enkel ontstaan door ``oude'' documentatie, maar ook door de menselijke factor bij initiële input, en motiveert het belang van periodieke discovery als kwaliteitscontrole.
 
+\section{Nieuwe baselinecase in voorbereiding: `Koninklijke Stallingen`}
+
+Naast `Ridefort` en `Deleers Go4tech` wordt de site `Koninklijke Stallingen` opgenomen om de baseline-observaties verder te verbreden. Voor deze site is de \textbf{baseline} al beschikbaar; de \textbf{na-meting na discovery} volgt in een volgende stap van het onderzoek.
+
+\subsection{Huidige samenstelling van de site}
+
+De site bevat:
+\begin{itemize}
+  \item 1 MikroTik-router;
+  \item 2 Huawei-switches;
+  \item 5 access points (Ruckus).
+\end{itemize}
+
+\subsection{Baseline-observaties vóór discovery}
+
+Op eerste inspectie in NetBox zijn de volgende afwijkingen vastgesteld:
+\begin{itemize}
+  \item \textbf{Inconsistente naamgeving:} device-benamingen volgen geen eenduidig patroon;
+  \item \textbf{Type-inconsistentie bij AP's:} er worden twee verschillende Ruckus-types gebruikt in dezelfde site;
+  \item \textbf{Ontbrekende topologie:} er zijn momenteel geen cable connections gedocumenteerd.
+\end{itemize}
+
+Deze baseline is relevant omdat ze opnieuw dezelfde probleemcategorieën zichtbaar maakt als in de eerdere casussen: inconsistentie in inventarisatiedata en ontbrekende relatie-informatie. In fase~5 wordt deze site aangevuld met een voor/na-vergelijking zodra de discovery- en synchronisatiestappen uitgevoerd zijn.
+
 

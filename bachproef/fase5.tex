@@ -97,6 +97,31 @@ Naast `Ridefort` werd ook een grotere site ontdekt: `Deleers Go4tech`. Deze site
 
 Deze observatie is belangrijk omdat ze aantoont dat documentatie zelfs wanneer ze recent is opgebouwd, alsnog fouten kan bevatten. Door apparaten periodiek opnieuw te ontdekken worden afwijkingen sneller zichtbaar en wordt de \emph{menselijke factor} (vergeten updates, foutieve selectie van types) gedeeltelijk uit de documentatiestroom gehaald.
 
+\section{Voor/na-kader (in voorbereiding): site `Koninklijke Stallingen`}
+
+Naast de reeds uitgewerkte casussen wordt ook de site `Koninklijke Stallingen` opgenomen in de evaluatie. Voor deze site is de baseline al vastgesteld; de na-meting na discovery wordt toegevoegd zodra de discovery- en synchronisatiestappen volledig zijn uitgevoerd.
+
+\subsection{Baseline (reeds vastgesteld)}
+
+De site `Koninklijke Stallingen` bevat 1 MikroTik-router, 2 Huawei-switches en 5 Ruckus access points. In de baseline werden volgende afwijkingen vastgesteld:
+\begin{itemize}
+  \item inconsistente device-naamgeving;
+  \item gebruik van twee verschillende Ruckus-types in de documentatie;
+  \item geen gedocumenteerde cable connections.
+\end{itemize}
+
+\subsection{Na-meting (in te vullen na discovery)}
+
+Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \texttt{NetworkTool} worden onderstaande indicatoren ingevuld:
+\begin{itemize}
+  \item correcte device-naamgeving: \texttt{[in te vullen]};
+  \item correctheid van device-types: \texttt{[in te vullen]};
+  \item correcte kabelrelaties: \texttt{[in te vullen]};
+  \item resterende beperkingen (bv. serienummers): \texttt{[in te vullen]}.
+\end{itemize}
+
+Deze structuur laat toe om dezelfde voor/na-logica als in `Ridefort` te hanteren en de vergelijkbaarheid tussen sites te verhogen.
+
 \section{Kwantificatie (context)}
 
 Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig (bv. exacte aantallen velden en aantal gecorrigeerde relaties). In dit hoofdstuk ligt de focus daarom op de casus-specifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: (1) directe detectie van inconsistenties na discovery, (2) volledige correctie van kabelrelaties na discovery + \texttt{NetworkTool}, en (3) resterende beperking op serienummer-informatie voor AP's.
