@@ -30,6 +30,18 @@ De evaluatie focust op indicatoren uit de methodologie (actualiteit, foutgraad, 
   \item \textbf{Effort reductie (kwalitatief):} de mate waarin discovery het correctiewerk ondersteunt doordat fouten sneller worden blootgelegd.
 \end{itemize}
 
+\subsection{Meetdefinities}
+
+Om interpretatieverschillen te vermijden, zijn de belangrijkste indicatoren als volgt geïnterpreteerd:
+\begin{itemize}
+  \item \textbf{Correcte AP-naam:} de NetBox-naam stemt overeen met de actuele naming in de site.
+  \item \textbf{Correct AP-type:} het toegewezen device type in NetBox stemt overeen met het effectief geplaatste toesteltype.
+  \item \textbf{Correcte kabelrelatie:} de kabelverbinding in NetBox komt overeen met de LLDP-observatie op de switch.
+  \item \textbf{Resterende beperking:} een relevant dataveld kan niet automatisch via de gebruikte discoveryketen aangeleverd worden.
+\end{itemize}
+
+Deze definities werden consequent toegepast op baseline en eindtoestand in de casus `Ridefort`.
+
 \section{Evaluatie-observatie op site `Ridefort`}
 
 In de casus `Ridefort` was de bestaande NetBox-documentatie uit 2020 opgebouwd en werd in 2022 een access point-vervanging uitgevoerd. Bij de evaluatie werd vervolgens vastgesteld dat de fouten/inconsistenties in de vorige documentatie niet verborgen bleven: \textbf{na het ontdekken van de apparaten kon direct in NetBox gezien worden dat er afwijkingen waren}. Deze afwijkingen vielen in dezelfde categorieën als in de baseline:
@@ -88,4 +100,6 @@ Deze observatie is belangrijk omdat ze aantoont dat documentatie zelfs wanneer z
 \section{Kwantificatie (context)}
 
 Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig (bv. exacte aantallen velden en aantal gecorrigeerde relaties). In dit hoofdstuk ligt de focus daarom op de casus-specifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: (1) directe detectie van inconsistenties na discovery, (2) volledige correctie van kabelrelaties na discovery + \texttt{NetworkTool}, en (3) resterende beperking op serienummer-informatie voor AP's.
+
+De resultaten ondersteunen daarmee een \textbf{duidelijke richtinggevende conclusie} over effectiviteit binnen deze scope, maar geen statistische generalisatie naar alle sites of alle vendormixen zonder bijkomende metingen op grotere schaal.
 

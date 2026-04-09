@@ -5,6 +5,188 @@
 \academicyear{2025-2026}
 \institution{Hogeschool Gent, Valentin Vaerwyckweg 1, 9000 Gent}
 
+\title{Automatische netwerkdetectie in NetBox}
+\subtitle{Casestudy bij Citymesh voor een betrouwbare single source of truth}
+\author{Laurens Lecocq}
+\email{laurens.lecocq@student.hogent.be}
+\supervisor{Martijn Saelens}
+\cosupervisor{Tom Pirlet (Citymesh)}
+
+\specialisation{Systeem- en Netwerkbeheer}
+\keywords{NetBox, Diode, SNMP, LLDP, NetworkTool, Netwerkautomatisering}
+% \projectrepo{https://github.com/user/repo}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Deze bachelorproef onderzoekt hoe automatische netwerkdetectie de actualiteit en juistheid van netwerkdocumentatie in NetBox kan verbeteren. NetBox Discovery met Diode werd gebruikt als basis voor inventarisdata. Voor onderdelen die niet volledig automatisch landen in NetBox, zoals LLDP-kabelrelaties, werd een aanvullende \texttt{NetworkTool}-workflow via de NetBox API toegepast. De resultaten tonen een duidelijke verbetering van documentatiekwaliteit in twee praktijkcases.
+\end{abstract}
+
+\begin{multicols}{2}
+
+\section{Context en probleem}
+Citymesh beheert dynamische netwerkinfrastructuren. In zo'n omgeving raakt documentatie snel verouderd wanneer wijzigingen niet consequent worden doorgevoerd.
+
+Vastgestelde knelpunten:
+\begin{itemize}
+  \item handmatige CSV-imports zijn tijdrovend en foutgevoelig;
+  \item vervangingen van toestellen worden niet altijd bijgewerkt;
+  \item topologie- en kabelrelaties zijn vaak onvolledig.
+\end{itemize}
+
+\textbf{Onderzoeksvraag}\\
+Hoe kan automatische netwerkdetectie bijdragen aan up-to-date netwerkdocumentatie en een betrouwbare \emph{single source of truth} (SSOT) in NetBox?
+
+\section{Methodologie}
+\begin{itemize}
+  \item \textbf{Fase 1 - Requirementsanalyse:} inventariseren van pijnpunten in de huidige werkwijze.
+  \item \textbf{Fase 2 - Toolkeuze:} vergelijking van NetBox Discovery en Slurp'it op haalbaarheid en bruikbaarheid.
+  \item \textbf{Fase 3 - Baseline:} nulmeting op bestaande NetBox-documentatie per site.
+  \item \textbf{Fase 4 - Implementatie:} configuratie van Diode + integratie met \texttt{NetworkTool}.
+  \item \textbf{Fase 5 - Evaluatie:} voor/na-analyse op datakwaliteit en kabelrelaties.
+  \item \textbf{Fase 6 - Analyse:} interpretatie van resultaten, beperkingen en aanbevelingen.
+\end{itemize}
+
+\section{Technische aanpak}
+\textbf{Basis:} NetBox Discovery met Diode voor device- en inventarisdetectie.\\
+\textbf{Aanvulling:} \texttt{NetworkTool} met:
+\begin{itemize}
+  \item dry-run (\emph{diff}) voor gecontroleerde wijzigingsanalyse;
+  \item live push via NetBox API na validatie;
+  \item LLDP-gebaseerde correctie en aanvulling van kabelrelaties.
+\end{itemize}
+
+\section{Resultaten}
+\textbf{Case 1: Ridefort}
+\begin{itemize}
+  \item baseline: 3/6 AP-kabelrelaties correct;
+  \item na discovery + \texttt{NetworkTool}: 6/6 AP-kabelrelaties correct;
+  \item AP-naamgeving en toesteltypes zijn gecorrigeerd.
+\end{itemize}
+
+\textbf{Case 2: Deleers Go4tech}
+\begin{itemize}
+  \item siteomvang: 11 switches, 1 router, 1 Fortinet firewall, 48 AP's;
+  \item bij herdiscovering werden 3 switches met fout type gedetecteerd, ondanks recente documentatie.
+\end{itemize}
+
+\textbf{Kerninzicht}\\
+Discovery corrigeert niet alleen historische fouten, maar werkt ook als kwaliteitscontrole op recente documentatie.
+
+\section{Conclusie}
+NetBox Discovery met Diode is een haalbare en effectieve basis om inventarisdata in NetBox actueel te houden. Voor volledige topologie- en kabelkwaliteit is aanvullende automatisering nodig. In deze casestudy werd dat gerealiseerd met \texttt{NetworkTool} en de NetBox API.
+
+\textbf{Belangrijkste beperking:} serienummers van via SNMP ontdekte AP's worden niet automatisch ingevuld.
+
+\section{Aanbevelingen}
+\begin{itemize}
+  \item gebruik periodieke discovery als standaard kwaliteitscontrole;
+  \item behoud een dry-run stap voor elke live synchronisatie;
+  \item veranker cleanup en naamgevingsregels in operationele processen;
+  \item voorzie een aparte datastroom voor serienummers buiten SNMP.
+\end{itemize}
+
+\end{multicols}
+\end{document}
+\documentclass[a0,portrait]{hogent-poster}
+
+\course{Bachelorproef}
+\studyprogramme{toegepaste informatica}
+\academicyear{2025-2026}
+\institution{Hogeschool Gent, Valentin Vaerwyckweg 1, 9000 Gent}
+
+\title{Automatische netwerkdetectie in NetBox}
+\subtitle{Casestudy bij Citymesh voor een betrouwbare single source of truth}
+\author{Laurens Lecocq}
+\email{laurens.lecocq@student.hogent.be}
+\supervisor{Martijn Saelens}
+\cosupervisor{Tom Pirlet (Citymesh)}
+
+\specialisation{Systeem- en Netwerkbeheer}
+\keywords{NetBox, Diode, SNMP, LLDP, NetworkTool, Netwerkautomatisering}
+% \projectrepo{https://github.com/user/repo}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Deze bachelorproef onderzoekt hoe automatische netwerkdetectie de actualiteit en juistheid van netwerkdocumentatie in NetBox kan verbeteren. NetBox Discovery met Diode werd gebruikt als basis voor inventarisdata. Voor onderdelen die niet volledig automatisch landen in NetBox, zoals LLDP-kabelrelaties, werd een aanvullende \texttt{NetworkTool}-workflow via de NetBox API toegepast. De resultaten tonen een duidelijke verbetering van documentatiekwaliteit in twee praktijkcases.
+\end{abstract}
+
+\begin{multicols}{2}
+
+\section{Context en probleem}
+Citymesh beheert dynamische netwerkinfrastructuren. In zo'n omgeving raakt documentatie snel verouderd wanneer wijzigingen niet consequent worden doorgevoerd.
+
+Vastgestelde knelpunten:
+\begin{itemize}
+  \item handmatige CSV-imports zijn tijdrovend en foutgevoelig;
+  \item vervangingen van toestellen worden niet altijd bijgewerkt;
+  \item topologie- en kabelrelaties zijn vaak onvolledig.
+\end{itemize}
+
+\textbf{Onderzoeksvraag}\\
+Hoe kan automatische netwerkdetectie bijdragen aan up-to-date netwerkdocumentatie en een betrouwbare \emph{single source of truth} (SSOT) in NetBox?
+
+\section{Methodologie}
+\begin{itemize}
+  \item \textbf{Fase 1 - Requirementsanalyse:} inventariseren van pijnpunten in de huidige werkwijze.
+  \item \textbf{Fase 2 - Toolkeuze:} vergelijking van NetBox Discovery en Slurp'it op haalbaarheid en bruikbaarheid.
+  \item \textbf{Fase 3 - Baseline:} nulmeting op bestaande NetBox-documentatie per site.
+  \item \textbf{Fase 4 - Implementatie:} configuratie van Diode + integratie met \texttt{NetworkTool}.
+  \item \textbf{Fase 5 - Evaluatie:} voor/na-analyse op datakwaliteit en kabelrelaties.
+  \item \textbf{Fase 6 - Analyse:} interpretatie van resultaten, beperkingen en aanbevelingen.
+\end{itemize}
+
+\section{Technische aanpak}
+\textbf{Basis:} NetBox Discovery met Diode voor device- en inventarisdetectie.\\
+\textbf{Aanvulling:} \texttt{NetworkTool} met:
+\begin{itemize}
+  \item dry-run (\emph{diff}) voor gecontroleerde wijzigingsanalyse;
+  \item live push via NetBox API na validatie;
+  \item LLDP-gebaseerde correctie en aanvulling van kabelrelaties.
+\end{itemize}
+
+\section{Resultaten}
+\textbf{Case 1: Ridefort}
+\begin{itemize}
+  \item baseline: 3/6 AP-kabelrelaties correct;
+  \item na discovery + \texttt{NetworkTool}: 6/6 AP-kabelrelaties correct;
+  \item AP-naamgeving en toesteltypes zijn gecorrigeerd.
+\end{itemize}
+
+\textbf{Case 2: Deleers Go4tech}
+\begin{itemize}
+  \item siteomvang: 11 switches, 1 router, 1 Fortinet firewall, 48 AP's;
+  \item bij herdiscovering werden 3 switches met fout type gedetecteerd, ondanks recente documentatie.
+\end{itemize}
+
+\textbf{Kerninzicht}\\
+Discovery corrigeert niet alleen historische fouten, maar werkt ook als kwaliteitscontrole op recente documentatie.
+
+\section{Conclusie}
+NetBox Discovery met Diode is een haalbare en effectieve basis om inventarisdata in NetBox actueel te houden. Voor volledige topologie- en kabelkwaliteit is aanvullende automatisering nodig. In deze casestudy werd dat gerealiseerd met \texttt{NetworkTool} en de NetBox API.
+
+\textbf{Belangrijkste beperking:} serienummers van via SNMP ontdekte AP's worden niet automatisch ingevuld.
+
+\section{Aanbevelingen}
+\begin{itemize}
+  \item gebruik periodieke discovery als standaard kwaliteitscontrole;
+  \item behoud een dry-run stap voor elke live synchronisatie;
+  \item veranker cleanup en naamgevingsregels in operationele processen;
+  \item voorzie een aparte datastroom voor serienummers buiten SNMP.
+\end{itemize}
+
+\end{multicols}
+\end{document}
+\documentclass[a0,portrait]{hogent-poster}
+
+\course{Bachelorproef}
+\studyprogramme{toegepaste informatica}
+\academicyear{2025-2026}
+\institution{Hogeschool Gent, Valentin Vaerwyckweg 1, 9000 Gent}
+
 \title{NetBox Discovery voor een betrouwbare single source of truth}
 \subtitle{Casestudy bij Citymesh in dynamische netwerkomgevingen}
 \author{Laurens Lecocq}

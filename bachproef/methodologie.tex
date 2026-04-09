@@ -7,6 +7,28 @@
 
 Dit hoofdstuk beschrijft de methodologie die gebruikt wordt om de onderzoeksvragen te beantwoorden. Het onderzoek combineert een vergelijkende studie met een praktische implementatie en evaluatie in de context van Citymesh. De methodologie bestaat uit verschillende fasen die elk bijdragen aan het beantwoorden van de centrale onderzoeksvraag en de deelonderzoeksvragen.
 
+\section{Onderzoeksopzet}
+
+Dit onderzoek volgt een \textbf{praktijkgerichte casestudy-opzet} met een combinatie van:
+\begin{itemize}
+  \item \textbf{kwalitatieve dataverzameling} (gesprekken met netwerkbeheerders, procesanalyse, observaties tijdens implementatie);
+  \item \textbf{kwantitatieve voor/na-metingen} (correctheid van attributen en relaties in NetBox vóór en na discovery).
+\end{itemize}
+
+De keuze voor een casestudy is verantwoord omdat de onderzoeksvraag contextafhankelijk is: de bruikbaarheid van automatische discovery hangt af van bestaande processen, toolketens en vendor-mix binnen Citymesh. Het doel is niet om een universele effectgrootte te claimen, maar om in een realistische operationele setting te bepalen \emph{welke verbetering haalbaar is}, \emph{waar de grenzen liggen} en \emph{welke procesaanpassingen nodig zijn} voor duurzame borging.
+
+\section{Operationalisering van de kernindicatoren}
+
+Om de centrale onderzoeksvraag toetsbaar te maken, werden kernindicatoren vooraf vastgelegd:
+\begin{itemize}
+  \item \textbf{Actualiteit:} mate waarin NetBox-data overeenkomt met de actuele infrastructuurtoestand;
+  \item \textbf{Correctheid:} juistheid van device-attributen (o.a. naam en type) en relaties;
+  \item \textbf{Volledigheid van topologie:} aanwezigheid en correctheid van kabelrelaties voor relevante verbindingen;
+  \item \textbf{Resterende manuele last:} datavelden die na discovery nog manueel of via bijkomende pipeline verwerkt moeten worden.
+\end{itemize}
+
+De indicatoren worden in fase~5 gemeten via een voor/na-vergelijking op de primaire casus (`Ridefort`) en aanvullend getoetst op een grotere site (`Deleers Go4tech`).
+
 \section{Onderzoeksfasen}
 
 Het onderzoek is opgedeeld in zes fasen die sequentieel en gedeeltelijk parallel worden uitgevoerd. Elke fase heeft specifieke doelstellingen, deliverables en tijdschattingen.
@@ -91,3 +113,14 @@ De verschillende onderzoeksvragen worden als volgt beantwoord:
   \item \textbf{Vraag 7 (verbetering):} Wordt beantwoord via kwantitatieve metingen in fase 5 die de voor-na vergelijking maken tussen de huidige werkwijze en de implementatie van NetBox Discovery.
   \item \textbf{Vraag 8 (organisatorische processen):} Wordt beantwoord via de analyse in fase 6, waarbij op basis van de implementatie-ervaring en metingen concrete aanbevelingen worden geformuleerd.
 \end{itemize}
+
+\section{Kwaliteitsborging en beperkingen van de methode}
+
+Om de betrouwbaarheid van de bevindingen te verhogen, zijn drie principes toegepast:
+\begin{itemize}
+  \item \textbf{Triangulatie van bronnen:} combinatie van NetBox-observaties, infrastructuurkennis uit de praktijk en implementatielogs.
+  \item \textbf{Transparante voor/na-logica:} baseline en eindmeting worden op dezelfde indicatoren vergeleken.
+  \item \textbf{Expliciete afbakening:} claims worden beperkt tot de geobserveerde scope en gebruikte toolketen.
+\end{itemize}
+
+Belangrijkste methodologische beperkingen zijn de beperkte steekproefomvang (casestudy), de afhankelijkheid van beschikbare discovery-protocollen per vendor, en het feit dat niet elk datatype (zoals serienummers via SNMP) even goed meetbaar was met dezelfde automatiseringsgraad.
