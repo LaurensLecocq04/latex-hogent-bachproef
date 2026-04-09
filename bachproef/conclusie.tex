@@ -25,7 +25,7 @@ Een resterende beperking is dat \textbf{serienummers} voor toestellen die via SN
 Op basis van deze bevindingen worden volgende aanbevelingen geformuleerd:
 
 \begin{itemize}
-  \item Gebruik NetBox Discovery met Diode als basis om inventarisdata automatisch actueel te maken, omdat dit in de casus aantoonbaar leidde tot correcte AP-namen/types.
+  \item Gebruik NetBox Discovery met Diode als basis om inventarisdata automatisch actueel te maken, omdat dit in de casus aantoonbaar leidde tot correctere naamgeving, types en algemene apparaatregistratie.
   \item Voor bekabeling en topologie die afhankelijk zijn van LLDP-neighbors, integreer een aanvullende pipeline (zoals de \texttt{NetworkTool}/NetBox API aanpak) om kabelrelaties volledig en consistent te modelleren wanneer NetBox Discovery dit niet automatisch afhandelt.
   \item Neem \emph{cleanup} en naming governance op in het proces bij infrastructurele wijzigingen (bv. AP-vervangingen) zodat dubbele records niet ontstaan en updates eenduidig blijven.
   \item Voor serienummers voorzie een alternatieve datastroom buiten SNMP (bv. management/CLI-collectie of een bron die wel serienummerinformatie levert), zodat NetBox ook op serieniveau betrouwbaar kan zijn.
