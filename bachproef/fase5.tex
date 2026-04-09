@@ -122,6 +122,30 @@ Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \text
 
 Deze structuur laat toe om dezelfde voor/na-logica als in `Ridefort` te hanteren en de vergelijkbaarheid tussen sites te verhogen.
 
+\section{Voor/na-kader (in voorbereiding): site `WZC Riethove`}
+
+De site `WZC Riethove` wordt eveneens opgenomen in de evaluatie met hetzelfde voor/na-principe. De baseline is reeds vastgesteld; de na-meting wordt toegevoegd na uitvoering van discovery en synchronisatie.
+
+\subsection{Baseline (reeds vastgesteld)}
+
+De site bevat 1 router, 4 switches en 70 access points. In de baseline werd vastgesteld dat:
+\begin{itemize}
+  \item de device-naamgeving consistent is;
+  \item er geen gedocumenteerde cable connections aanwezig zijn.
+\end{itemize}
+
+\subsection{Na-meting (in te vullen na discovery)}
+
+Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \texttt{NetworkTool} worden onderstaande indicatoren ingevuld:
+\begin{itemize}
+  \item correcte device-naamgeving: \texttt{[in te vullen]};
+  \item correctheid van device-types: \texttt{[in te vullen]};
+  \item correcte kabelrelaties: \texttt{[in te vullen]};
+  \item resterende beperkingen (bv. serienummers): \texttt{[in te vullen]}.
+\end{itemize}
+
+Door deze case mee op te nemen kan worden nagegaan of de meerwaarde van discovery ook duidelijk is in sites waar naamgeving al goed is, maar topologiedata onvolledig blijft.
+
 \section{Kwantificatie (context)}
 
 Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig (bv. exacte aantallen velden en aantal gecorrigeerde relaties). In dit hoofdstuk ligt de focus daarom op de casus-specifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: (1) directe detectie van inconsistenties na discovery, (2) volledige correctie van kabelrelaties na discovery + \texttt{NetworkTool}, en (3) resterende beperking op serienummer-informatie voor AP's.
