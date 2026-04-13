@@ -7,21 +7,21 @@
 
 In dit hoofdstuk wordt de baseline geschetst van de huidige kwaliteit van de netwerkdocumentatie in NetBox vóór de implementatie van de automatische discoveryflow. De baseline is gebaseerd op wat voorafgaand aan de pilot en implementatie teruggevonden werd in NetBox voor de site `Ridefort` van Citymesh.
 
-\section{Baseline: casus `Ridefort`}
+\section{Primaire baselinecase: `Ridefort`}
 
-\subsection{Tijdsverloop en wijzigingen in de infrastructuur}
+\subsection{Historiek van de site}
 
 Voor de site `Ridefort` werd de NetBox-inhoud opgebouwd in \textbf{2020}. Op dat moment werden de relevante \textbf{devices}, namelijk AP's, switch en router, gedocumenteerd in NetBox. In \textbf{2022} vonden er vervolgens \textbf{wijzigingen} plaats aan de draadloze infrastructuur: de access points werden vervangen.
 
-Op basis van het inspecteren van de apparaten in NetBox, met focus op de velden \emph{created} en \emph{last updated}, werd vastgesteld dat na de AP-vervanging in 2022 een deel van de gewijzigde toestand niet volledig en niet consistent in NetBox was aangepast:
+Op basis van het inspecteren van de apparaten in NetBox, met focus op de velden \emph{created} en \emph{last updated}, werd vastgesteld dat na de AP-vervanging in 2022 een deel van de gewijzigde toestand niet volledig en niet consistent in NetBox was aangepast. Voor de 6 access points werd het volgende vastgesteld:
 
 \begin{itemize}
-  \item Van de 6 access points werden 3/6 AP's voorzien van de \textbf{juiste naam}.
-  \item Van de 6 access points werden 5/6 AP's voorzien van het \textbf{juiste type}.
-  \item Van de 6 access points kregen 3/6 ook de \textbf{nodige cable connections} naar de switch. Voor de overige 3/6 access points was dit \textbf{vergeten} en waren kabelrelaties incompleet.
+  \item 3/6 hadden de \textbf{juiste naam}.
+  \item 5/6 hadden het \textbf{juiste type}.
+  \item 3/6 hadden een \textbf{correcte cable connection} naar de switch; bij de overige 3/6 ontbrak die relatie.
 \end{itemize}
 
-\subsection{Indicatoren voor veroudering en inconsistenties}
+\subsection{Baseline-indicatoren}
 
 De bovenstaande observaties vertalen zich naar concrete baseline-indicatoren, in lijn met de methodologie:
 
@@ -31,7 +31,7 @@ De bovenstaande observaties vertalen zich naar concrete baseline-indicatoren, in
   \item \textbf{Arbeidsintuïtie en effort:} het documenteren van een kleine site zoals `Ridefort` kost in de praktijk ongeveer \textbf{een half uur} wanneer er in het begin geen fouten in zitten. Wanneer wijzigingen achteraf vergeten worden, bijvoorbeeld na AP-vervanging, neemt het correctiewerk toe doordat beheerders opnieuw moeten zoeken naar ontbrekende aanpassingen en kabelrelaties opnieuw moeten ingeven of herimporteren.
 \end{itemize}
 
-\section{Dataverzameling voor de baseline}
+\section{Dataverzameling en afbakening}
 
 De baseline werd opgesteld door de relevante devices in NetBox te bekijken en de \emph{created}- en \emph{last updated}-informatie te interpreteren in relatie tot de gekende onderhoudsperiode, met aanmaak in 2020 en AP-vervanging in 2022. Concreet:
 
@@ -43,15 +43,17 @@ De baseline werd opgesteld door de relevante devices in NetBox te bekijken en de
 
 Omdat dit een casestudie is, is de baseline primair beschrijvend en bedoeld om de aard van het probleem van veroudering en incomplete kabelrelaties te concretiseren. Voor de kwantificatie van effecten door de implementatie wordt in fase~5 een aparte evaluatiemeting uitgevoerd.
 
-\section{Aanvullende context: grotere site `Deleers Go4tech`}
+\section{Aanvullende baselinecases}
+
+\subsection{`Deleers Go4tech`}
 
 Om de bevindingen uit `Ridefort` te contextualiseren, werd later ook een grotere site gedetecteerd: `Deleers Go4tech` met 11 switches, 1 router, 1 Fortinet firewall en 48 access points. Hoewel de NetBox-documentatie daar slechts ongeveer twee maanden oud was, bleken na herdiscovering 3 switches een incorrect type te hebben in NetBox. Dit illustreert dat fouten niet enkel ontstaan door oude documentatie, maar ook door de menselijke factor bij initiële input, en motiveert het belang van periodieke discovery als kwaliteitscontrole.
 
-\section{Nieuwe baselinecase in voorbereiding: `Koninklijke Stallingen`}
+\subsection{`Koninklijke Stallingen`}
 
 Naast `Ridefort` en `Deleers Go4tech` wordt de site `Koninklijke Stallingen` opgenomen om de baseline-observaties verder te verbreden. Voor deze site is de \textbf{baseline} al beschikbaar; de \textbf{na-meting na discovery} volgt in een volgende stap van het onderzoek.
 
-\subsection{Huidige samenstelling van de site}
+\subsubsection{Sitesamenstelling}
 
 De site bevat:
 \begin{itemize}
@@ -60,7 +62,7 @@ De site bevat:
   \item 5 access points (Ruckus).
 \end{itemize}
 
-\subsection{Baseline-observaties vóór discovery}
+\subsubsection{Baseline-observaties}
 
 Op eerste inspectie in NetBox zijn de volgende afwijkingen vastgesteld:
 \begin{itemize}
@@ -71,11 +73,11 @@ Op eerste inspectie in NetBox zijn de volgende afwijkingen vastgesteld:
 
 Deze baseline is relevant omdat ze opnieuw dezelfde probleemcategorieën zichtbaar maakt als in de eerdere casussen: inconsistentie in inventarisatiedata en ontbrekende relatie-informatie. In fase~5 wordt deze site aangevuld met een voor/na-vergelijking zodra de discovery- en synchronisatiestappen uitgevoerd zijn.
 
-\section{Nieuwe baselinecase in voorbereiding: `WZC Riethove`}
+\subsection{`WZC Riethove`}
 
 Een bijkomende site die in de baselinefase is opgenomen, is `WZC Riethove`. Ook hier is de baseline reeds gekend en wordt de na-meting toegevoegd zodra discovery en synchronisatie zijn afgerond.
 
-\subsection{Huidige samenstelling van de site}
+\subsubsection{Sitesamenstelling}
 
 De site bevat:
 \begin{itemize}
@@ -84,7 +86,7 @@ De site bevat:
   \item 70 access points.
 \end{itemize}
 
-\subsection{Baseline-observaties vóór discovery}
+\subsubsection{Baseline-observaties}
 
 Op eerste inspectie in NetBox werden volgende observaties gedaan:
 \begin{itemize}
