@@ -7,6 +7,18 @@
 
 In dit hoofdstuk wordt de baseline geschetst van de huidige kwaliteit van de netwerkdocumentatie in NetBox vóór de implementatie van de automatische discoveryflow. De baseline is gebaseerd op wat voorafgaand aan de pilot en implementatie teruggevonden werd in NetBox voor de site `Ridefort` van Citymesh.
 
+\section{Dataverzameling en afbakening}
+
+De baseline werd opgesteld door de relevante devices in NetBox te bekijken en de \emph{created}- en \emph{last updated}-informatie te interpreteren in relatie tot de gekende onderhoudsperiode, met aanmaak in 2020 en AP-vervanging in 2022. Concreet:
+
+\begin{itemize}
+  \item Devices werden gelokaliseerd via hun NetBox-identificatie, op basis van naam, rol en site.
+  \item Voor de access points werd nagegaan of de \textbf{verwachte gegevens}, namelijk naam, type en kabelrelaties, overeenstemmen met wat men kon afleiden uit de infrastructuurgeschiedenis waarin de AP's in 2022 vervangen werden.
+  \item Voor kabelrelaties werd gecontroleerd of de \textbf{cable connections} naar de switch aanwezig en correct waren.
+\end{itemize}
+
+Omdat dit een casestudie is, is de baseline primair beschrijvend en bedoeld om de aard van het probleem van veroudering en incomplete kabelrelaties te concretiseren. Voor de kwantificatie van effecten door de implementatie wordt in fase~5 een aparte evaluatiemeting uitgevoerd.
+
 \section{Primaire baselinecase: `Ridefort`}
 
 \subsection{Historiek van de site}
@@ -30,18 +42,6 @@ De bovenstaande observaties vertalen zich naar concrete baseline-indicatoren, in
   \item \textbf{Inconsistenties/foutgraad:} niet alle velden, vooral naam, type en kabelrelaties, waren synchroon met de vernieuwde realiteit.
   \item \textbf{Arbeidsintuïtie en effort:} het documenteren van een kleine site zoals `Ridefort` kost in de praktijk ongeveer \textbf{een half uur} wanneer er in het begin geen fouten in zitten. Wanneer wijzigingen achteraf vergeten worden, bijvoorbeeld na AP-vervanging, neemt het correctiewerk toe doordat beheerders opnieuw moeten zoeken naar ontbrekende aanpassingen en kabelrelaties opnieuw moeten ingeven of herimporteren.
 \end{itemize}
-
-\section{Dataverzameling en afbakening}
-
-De baseline werd opgesteld door de relevante devices in NetBox te bekijken en de \emph{created}- en \emph{last updated}-informatie te interpreteren in relatie tot de gekende onderhoudsperiode, met aanmaak in 2020 en AP-vervanging in 2022. Concreet:
-
-\begin{itemize}
-  \item Devices werden gelokaliseerd via hun NetBox-identificatie, op basis van naam, rol en site.
-  \item Voor de access points werd nagegaan of de \textbf{verwachte gegevens}, namelijk naam, type en kabelrelaties, overeenstemmen met wat men kon afleiden uit de infrastructuurgeschiedenis waarin de AP's in 2022 vervangen werden.
-  \item Voor kabelrelaties werd gecontroleerd of de \textbf{cable connections} naar de switch aanwezig en correct waren.
-\end{itemize}
-
-Omdat dit een casestudie is, is de baseline primair beschrijvend en bedoeld om de aard van het probleem van veroudering en incomplete kabelrelaties te concretiseren. Voor de kwantificatie van effecten door de implementatie wordt in fase~5 een aparte evaluatiemeting uitgevoerd.
 
 \section{Aanvullende baselinecases}
 
