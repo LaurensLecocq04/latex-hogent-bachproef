@@ -17,7 +17,7 @@ De evaluatie gebeurde in een casestudy-context. Concreet werd de bestaande NetBo
   \item aan de hand van die discrepanties de belangrijkste effectindicatoren te operationaliseren.
 \end{itemize}
 
-Een belangrijke observatie bij deze evaluatie is dat de impact niet enkel achteraf merkbaar is: na het ontdekken van de apparaten kon je direct in NetBox zien dat delen van de vorige documentatie niet overeenkwamen met de werkelijke toestand.
+Een belangrijke observatie bij deze evaluatie is dat de impact niet enkel achteraf merkbaar is: na het ontdekken van de apparaten werd in NetBox direct zichtbaar dat delen van de vorige documentatie niet overeenkwamen met de werkelijke toestand.
 
 \section{Indicatoren en metingen}
 
@@ -67,11 +67,11 @@ Voor apparaten waar geen passende drivers bestaan, zoals Ruckus access points in
 
 \section{Resultaat na NetBox Discovery en NetworkTool voor `Ridefort`}
 
-Voorafgaand aan NetBox Discovery zijn alle oude AP-records/devices verwijderd, zodat er geen duplicaten konden ontstaan. Na het uitvoeren van NetBox Discovery stonden de \textbf{AP-namen} bijgevolg allemaal correct.
+Voorafgaand aan NetBox Discovery werden oude AP-records/devices verwijderd, zodat duplicaten vermeden werden. Na uitvoering van NetBox Discovery stonden de \textbf{AP-namen} correct.
 
-In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar de switch correct gedocumenteerd. Na discovery en LLDP-gebaseerde verwerking via jouw pipeline stonden de kabelrelaties \textbf{allemaal correct}. Deze correctheid werd gevalideerd op basis van de LLDP-informatie van de switch.
+In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar de switch correct gedocumenteerd. Na discovery en LLDP-gebaseerde verwerking via de aanvullende pipeline stonden de kabelrelaties \textbf{allemaal correct}. Deze correctheid werd gevalideerd aan de hand van de LLDP-informatie van de switch.
 
-Een resterende beperking betreft het \textbf{serienummer} van de access points: dit lukte niet automatisch via SNMP, waardoor de AP's niet volledig op serieniveau konden worden geverifieerd/gestructureerd.
+Een resterende beperking betreft het \textbf{serienummer} van de access points: dit kon niet automatisch via SNMP worden opgehaald, waardoor de AP's niet volledig op serieniveau konden worden geverifieerd en gestructureerd.
 
 \section{Overzicht voor/na (Ridefort)}
 
@@ -148,7 +148,7 @@ Door deze case mee op te nemen kan worden nagegaan of de meerwaarde van discover
 
 \section{Kwantificatie (context)}
 
-Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig, bijvoorbeeld exacte aantallen velden en gecorrigeerde relaties. In dit hoofdstuk ligt de focus daarom op de casusspecifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: directe detectie van inconsistenties na discovery, volledige correctie van kabelrelaties na discovery met \texttt{NetworkTool}, en een resterende beperking op serienummer-informatie voor AP's.
+Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig, bijvoorbeeld exacte aantallen velden en gecorrigeerde relaties. In dit hoofdstuk ligt de focus daarom op de casusspecifieke effecten die tijdens de evaluatie in NetBox werden vastgesteld: directe detectie van inconsistenties na discovery, volledige correctie van kabelrelaties na discovery met \texttt{NetworkTool}, en een resterende beperking op serienummer-informatie voor AP's.
 
 De resultaten ondersteunen daarmee een \textbf{duidelijke richtinggevende conclusie} over effectiviteit binnen deze scope, maar geen statistische generalisatie naar alle sites of alle vendormixen zonder bijkomende metingen op grotere schaal.
 

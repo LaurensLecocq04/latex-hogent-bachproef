@@ -71,7 +71,7 @@ NetBox Discovery met Diode blijkt in de casus effectief om verouderde device-att
 
 \subsection{Aanbeveling 2: implementeer een pipeline voor kabelrelaties}
 
-Omdat de standaard Orb/NetBox discovery-flow in jouw case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. De \texttt{NetworkTool}-pipeline is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
+Omdat de standaard Orb/NetBox discovery-flow in deze case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. De \texttt{NetworkTool}-pipeline is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
 
 \subsection{Aanbeveling 3: neem cleanup en naming governance op in het proces}
 
@@ -79,7 +79,7 @@ Bij infrastructurele wijzigingen (bv. AP-vervanging) is het essentieel dat oude 
 
 \subsection{Aanbeveling 4: plan voor serienummerdatatypes}
 
-Voor serienummerdata volstaat SNMP in jouw cas niet. Citymesh moet hiervoor een alternatieve datastroom voorzien, bijvoorbeeld via management/CLI-collectie, ondersteunde drivers of andere integratiemogelijkheden, afhankelijk van device-type.
+Voor serienummerdata volstaat SNMP in deze casus niet. Citymesh moet hiervoor een alternatieve datastroom voorzien, bijvoorbeeld via management/CLI-collectie, ondersteunde drivers of andere integratiemogelijkheden, afhankelijk van device-type.
 
 \section{Reflectie en beperkingen}
 
