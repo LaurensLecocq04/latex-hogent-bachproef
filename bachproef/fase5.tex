@@ -5,11 +5,11 @@
 \chapter{\IfLanguageName{dutch}{Evaluatie en metingen}{Evaluation and measurements}}%
 \label{ch:fase5}
 
-Dit hoofdstuk beschrijft de evaluatie van NetBox Discovery (met Diode) en de bijhorende automatisering voor ontbrekende datatypes. In overeenstemming met de methodologie werden tijdens de evaluatie metingen/observaties uitgevoerd om te bepalen in welke mate de \emph{actualiteit} en de \emph{betrouwbaarheid} van netwerkdocumentatie in NetBox verbeteren na de discoveryflow.
+Dit hoofdstuk beschrijft de evaluatie van NetBox Discovery met Diode en de bijhorende automatisering voor ontbrekende datatypes. In overeenstemming met de methodologie werden tijdens de evaluatie metingen en observaties uitgevoerd om te bepalen in welke mate de \emph{actualiteit} en de \emph{betrouwbaarheid} van netwerkdocumentatie in NetBox verbeteren na de discoveryflow.
 
 \section{Evaluatiemethode}
 
-De evaluatie gebeurde in een casestudy-context. Concreet werd de bestaande NetBox-inhoud voor de site `Ridefort` beschouwd als referentie (baseline, zie Hoofdstuk~\ref{ch:fase3}). Daarna werden NetBox Discovery (met Diode) en de aanvullende pipeline (hoofdstuk~\ref{ch:fase4}) ingezet om:
+De evaluatie gebeurde in een casestudy-context. Concreet werd de bestaande NetBox-inhoud voor de site `Ridefort` beschouwd als baseline, zie Hoofdstuk~\ref{ch:fase3}. Daarna werden NetBox Discovery met Diode en de aanvullende pipeline uit Hoofdstuk~\ref{ch:fase4} ingezet om:
 
 \begin{itemize}
   \item de NetBox-inventaris te vernieuwen op basis van wat de discovery daadwerkelijk ziet;
@@ -21,13 +21,13 @@ Een belangrijke observatie bij deze evaluatie is dat de impact niet enkel achter
 
 \section{Indicatoren en metingen}
 
-De evaluatie focust op indicatoren uit de methodologie (actualiteit, foutgraad, resterende correcties/effort). In dit hoofdstuk worden de volgende indicatoren uitgewerkt:
+De evaluatie focust op indicatoren uit de methodologie: actualiteit, foutgraad en resterende correctielast. In dit hoofdstuk worden de volgende indicatoren uitgewerkt:
 
 \begin{itemize}
-  \item \textbf{Detectie van verouderde/incorrecte velden:} name/type en (voor zover mogelijk via discovery) device- en interface-informatie die niet overeenstemt met de situatie na discovery.
+  \item \textbf{Detectie van verouderde/incorrecte velden:} naam, type en voor zover mogelijk via discovery ook device- en interface-informatie die niet overeenstemt met de situatie na discovery.
   \item \textbf{Detectie van incompleet gedocumenteerde relaties:} vooral kabelrelaties die in NetBox ontbreken of foutief zijn.
-  \item \textbf{Resterende beperkingen:} datatypes die via de Orb/NetBox discoveryketen niet automatisch als relaties landen (bv. LLDP-neighbors/kabels).
-  \item \textbf{Effort reductie (kwalitatief):} de mate waarin discovery het correctiewerk ondersteunt doordat fouten sneller worden blootgelegd.
+  \item \textbf{Resterende beperkingen:} datatypes die via de Orb/NetBox discoveryketen niet automatisch als relaties landen, zoals LLDP-neighbors en kabels.
+  \item \textbf{Kwalitatieve reductie van effort:} de mate waarin discovery het correctiewerk ondersteunt doordat fouten sneller worden blootgelegd.
 \end{itemize}
 
 \subsection{Meetdefinities}
@@ -47,29 +47,29 @@ Deze definities werden consequent toegepast op baseline en eindtoestand in de ca
 In de casus `Ridefort` was de bestaande NetBox-documentatie uit 2020 opgebouwd en werd in 2022 een access point-vervanging uitgevoerd. Bij de evaluatie werd vervolgens vastgesteld dat de fouten/inconsistenties in de vorige documentatie niet verborgen bleven: \textbf{na het ontdekken van de apparaten kon direct in NetBox gezien worden dat er afwijkingen waren}. Deze afwijkingen vielen in dezelfde categorieën als in de baseline:
 
 \begin{itemize}
-  \item \textbf{AP-namen:} een deel van de AP's had niet de correcte naam (veroudering/incorrecte attributen).
+  \item \textbf{AP-namen:} een deel van de AP's had niet de correcte naam door verouderde of foutieve attributen.
   \item \textbf{AP-types:} een deel van de AP's had niet het correcte type na de infrastructuurwijziging.
   \item \textbf{Kabelrelaties:} kabelrelaties naar de switch waren incompleet; slechts een subset van de verwachte kabelverbindingen was correct aanwezig.
  \end{itemize}
 
 Deze directe zichtbaarheid vormt een meetbaar effect in de context van \emph{actualiteit}: het discovery-proces maakt inconsistenties sneller zichtbaar en vermindert daardoor de tijd die nodig is om te detecteren waar de documentatie afwijkt van de realiteit.
 
-\section{Rol van de aanvullende automatisering (LLDP/kabels)}
+\section{Rol van de aanvullende automatisering voor LLDP en kabels}
 
-Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor inventaris en een deel van de documentatie-updates. Voor relaties die afhankelijk zijn van LLDP-neighbors (en die via de Orb-keten niet automatisch als NetBox-relaties terechtkwamen), werd de aanvullende pipeline ingezet:
+Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor inventaris en een deel van de documentatie-updates. Voor relaties die afhankelijk zijn van LLDP-neighbors, en die via de Orb-keten niet automatisch als NetBox-relaties terechtkwamen, werd de aanvullende pipeline ingezet:
 
 \begin{itemize}
   \item voor ondersteunde apparaten kon LLDP-informatie via de \texttt{NetworkTool}-applicatie en scripts worden opgehaald;
   \item met die LLDP-neighbors kon de pipeline kabelobjecten in NetBox aanmaken via de NetBox API.
 \end{itemize}
 
-Voor apparaten waar geen passende drivers bestaan (bv. Ruckus access points in jouw scope) bleef de aanvulling beperkt tot wat via SNMP discovery of andere haalbare stappen mogelijk was.
+Voor apparaten waar geen passende drivers bestaan, zoals Ruckus access points in deze scope, bleef de aanvulling beperkt tot wat via SNMP discovery of andere haalbare stappen mogelijk was.
 
-\section{Resultaat na NetBox Discovery en NetworkTool (Ridefort)}
+\section{Resultaat na NetBox Discovery en NetworkTool voor `Ridefort`}
 
 Voorafgaand aan NetBox Discovery zijn alle oude AP-records/devices verwijderd, zodat er geen duplicaten konden ontstaan. Na het uitvoeren van NetBox Discovery stonden de \textbf{AP-namen} bijgevolg allemaal correct.
 
-In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar de switch correct gedocumenteerd. Na discovery (en de LLDP-gebaseerde verwerking via jouw pipeline) stonden de kabelrelaties \textbf{allemaal correct}. Deze correctheid werd gevalideerd op basis van de LLDP-informatie van de switch.
+In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar de switch correct gedocumenteerd. Na discovery en LLDP-gebaseerde verwerking via jouw pipeline stonden de kabelrelaties \textbf{allemaal correct}. Deze correctheid werd gevalideerd op basis van de LLDP-informatie van de switch.
 
 Een resterende beperking betreft het \textbf{serienummer} van de access points: dit lukte niet automatisch via SNMP, waardoor de AP's niet volledig op serieniveau konden worden geverifieerd/gestructureerd.
 
@@ -84,8 +84,8 @@ Een resterende beperking betreft het \textbf{serienummer} van de access points: 
     \textbf{Indicator} & \textbf{Baseline} & \textbf{Na discovery + pipeline} \\
     \midrule
     Correcte AP-namen in NetBox & 3/6 correct & 6/6 correct \\
-    Correcte AP-types in NetBox & 5/6 correct & correct (actueel na discovery) \\
-    Kabelrelaties AP $\rightarrow$ switch & 3/6 correct & 6/6 correct (LLDP switch) \\
+    Correcte AP-types in NetBox & 5/6 correct & correct \\
+    Kabelrelaties AP $\rightarrow$ switch & 3/6 correct & 6/6 correct \\
     Serienummers AP's via SNMP & niet beschikbaar & niet beschikbaar \\
     \bottomrule
   \end{tabular}
@@ -95,13 +95,13 @@ Een resterende beperking betreft het \textbf{serienummer} van de access points: 
 
 Naast `Ridefort` werd ook een grotere site ontdekt: `Deleers Go4tech`. Deze site omvat 11 switches, 1 router, 1 Fortinet firewall en 48 access points. De bestaande documentatie in NetBox was ongeveer twee maanden oud. Desondanks werd bij het opnieuw uitvoeren van discovery vastgesteld dat \textbf{3 switches} een \textbf{verkeerd type} hadden in NetBox.
 
-Deze observatie is belangrijk omdat ze aantoont dat documentatie zelfs wanneer ze recent is opgebouwd, alsnog fouten kan bevatten. Door apparaten periodiek opnieuw te ontdekken worden afwijkingen sneller zichtbaar en wordt de \emph{menselijke factor} (vergeten updates, foutieve selectie van types) gedeeltelijk uit de documentatiestroom gehaald.
+Deze observatie is belangrijk omdat ze aantoont dat documentatie zelfs wanneer ze recent is opgebouwd alsnog fouten kan bevatten. Door apparaten periodiek opnieuw te ontdekken worden afwijkingen sneller zichtbaar en wordt de menselijke factor, zoals vergeten updates of foutieve typekeuze, gedeeltelijk uit de documentatiestroom gehaald.
 
-\section{Voor/na-kader (in voorbereiding): site `Koninklijke Stallingen`}
+\section{Voor/na-kader in voorbereiding: site `Koninklijke Stallingen`}
 
 Naast de reeds uitgewerkte casussen wordt ook de site `Koninklijke Stallingen` opgenomen in de evaluatie. Voor deze site is de baseline al vastgesteld; de na-meting na discovery wordt toegevoegd zodra de discovery- en synchronisatiestappen volledig zijn uitgevoerd.
 
-\subsection{Baseline (reeds vastgesteld)}
+\subsection{Baseline, reeds vastgesteld}
 
 De site `Koninklijke Stallingen` bevat 1 MikroTik-router, 2 Huawei-switches en 5 Ruckus access points. In de baseline werden volgende afwijkingen vastgesteld:
 \begin{itemize}
@@ -110,23 +110,23 @@ De site `Koninklijke Stallingen` bevat 1 MikroTik-router, 2 Huawei-switches en 5
   \item geen gedocumenteerde cable connections.
 \end{itemize}
 
-\subsection{Na-meting (in te vullen na discovery)}
+\subsection{Na-meting, in te vullen na discovery}
 
 Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \texttt{NetworkTool} worden onderstaande indicatoren ingevuld:
 \begin{itemize}
   \item correcte device-naamgeving: \texttt{[in te vullen]};
   \item correctheid van device-types: \texttt{[in te vullen]};
   \item correcte kabelrelaties: \texttt{[in te vullen]};
-  \item resterende beperkingen (bv. serienummers): \texttt{[in te vullen]}.
+  \item resterende beperkingen, zoals serienummers: \texttt{[in te vullen]}.
 \end{itemize}
 
 Deze structuur laat toe om dezelfde voor/na-logica als in `Ridefort` te hanteren en de vergelijkbaarheid tussen sites te verhogen.
 
-\section{Voor/na-kader (in voorbereiding): site `WZC Riethove`}
+\section{Voor/na-kader in voorbereiding: site `WZC Riethove`}
 
 De site `WZC Riethove` wordt eveneens opgenomen in de evaluatie met hetzelfde voor/na-principe. De baseline is reeds vastgesteld; de na-meting wordt toegevoegd na uitvoering van discovery en synchronisatie.
 
-\subsection{Baseline (reeds vastgesteld)}
+\subsection{Baseline, reeds vastgesteld}
 
 De site bevat 1 router, 4 switches en 70 access points. In de baseline werd vastgesteld dat:
 \begin{itemize}
@@ -134,21 +134,21 @@ De site bevat 1 router, 4 switches en 70 access points. In de baseline werd vast
   \item er geen gedocumenteerde cable connections aanwezig zijn.
 \end{itemize}
 
-\subsection{Na-meting (in te vullen na discovery)}
+\subsection{Na-meting, in te vullen na discovery}
 
 Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \texttt{NetworkTool} worden onderstaande indicatoren ingevuld:
 \begin{itemize}
   \item correcte device-naamgeving: \texttt{[in te vullen]};
   \item correctheid van device-types: \texttt{[in te vullen]};
   \item correcte kabelrelaties: \texttt{[in te vullen]};
-  \item resterende beperkingen (bv. serienummers): \texttt{[in te vullen]}.
+  \item resterende beperkingen, zoals serienummers: \texttt{[in te vullen]}.
 \end{itemize}
 
 Door deze case mee op te nemen kan worden nagegaan of de meerwaarde van discovery ook duidelijk is in sites waar naamgeving al goed is, maar topologiedata onvolledig blijft.
 
 \section{Kwantificatie (context)}
 
-Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig (bv. exacte aantallen velden en aantal gecorrigeerde relaties). In dit hoofdstuk ligt de focus daarom op de casus-specifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: (1) directe detectie van inconsistenties na discovery, (2) volledige correctie van kabelrelaties na discovery + \texttt{NetworkTool}, en (3) resterende beperking op serienummer-informatie voor AP's.
+Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig, bijvoorbeeld exacte aantallen velden en gecorrigeerde relaties. In dit hoofdstuk ligt de focus daarom op de casusspecifieke effecten die je kon vaststellen in NetBox tijdens de evaluatie: directe detectie van inconsistenties na discovery, volledige correctie van kabelrelaties na discovery met \texttt{NetworkTool}, en een resterende beperking op serienummer-informatie voor AP's.
 
 De resultaten ondersteunen daarmee een \textbf{duidelijke richtinggevende conclusie} over effectiviteit binnen deze scope, maar geen statistische generalisatie naar alle sites of alle vendormixen zonder bijkomende metingen op grotere schaal.
 

@@ -8,9 +8,9 @@
 In dit hoofdstuk worden de resultaten van de casestudy geanalyseerd in functie van de centrale onderzoeksvraag en deelonderzoeksvragen. De analyse vertrekt vanuit:
 
 \begin{itemize}
-  \item de baseline die de bestaande toestand van NetBox documentatie beschrijft (Hoofdstuk~\ref{ch:fase3});
-  \item de implementatie van NetBox Discovery en de aanvullende automatisering voor ontbrekende datatypes (Hoofdstuk~\ref{ch:fase4});
-  \item de evaluatieobservaties tijdens de discovery- en verwerkingsstappen (Hoofdstuk~\ref{ch:fase5}).
+  \item de baseline die de bestaande toestand van NetBox-documentatie beschrijft in Hoofdstuk~\ref{ch:fase3};
+  \item de implementatie van NetBox Discovery en de aanvullende automatisering voor ontbrekende datatypes in Hoofdstuk~\ref{ch:fase4};
+  \item de evaluatieobservaties tijdens de discovery- en verwerkingsstappen in Hoofdstuk~\ref{ch:fase5}.
 \end{itemize}
 
 \section{Analyse van de resultaten}
@@ -19,7 +19,7 @@ In dit hoofdstuk worden de resultaten van de casestudy geanalyseerd in functie v
 
 De baseline toonde aan dat na de access point-vervanging niet alle relevante attributen consequent waren aangepast in NetBox. Concreet waren een deel van de AP-records niet correct benoemd, niet correct getypeerd en waren vooral de kabelrelaties incompleet.
 
-De evaluatie leert vervolgens dat NetBox Discovery (met Diode) de \textbf{actualiteit van inventarisdata} snel kan herstellen voor minstens de \textbf{AP-namen}: na discovery stonden alle AP-namen correct. Dit bevestigt dat het discovery-proces in staat is om een deel van de verouderde documentatie effectief te vervangen door data die overeenkomt met de realiteit.
+De evaluatie leert vervolgens dat NetBox Discovery met Diode de \textbf{actualiteit van inventarisdata} snel kan herstellen voor minstens de \textbf{AP-namen}: na discovery stonden alle AP-namen correct. Dit bevestigt dat het discovery-proces in staat is om een deel van de verouderde documentatie effectief te vervangen door data die overeenkomt met de realiteit.
 
 De aanvullende observatie op de site `Deleers Go4tech` onderstreept bovendien dat het probleem niet beperkt blijft tot ``oude'' documentatie. Hoewel de documentatie daar slechts ongeveer twee maanden oud was, werden na herdiscovering toch 3 switches met een incorrect device type geïdentificeerd. Dit toont aan dat automatische discovery ook waardevol is als kwaliteitscontrole, zelfs kort na (handmatige) documentatie.
 
@@ -28,15 +28,15 @@ De aanvullende observatie op de site `Deleers Go4tech` onderstreept bovendien da
 Waar NetBox Discovery/Orb via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via de \texttt{NetworkTool}-pipeline met NetBox API. De evaluatie op site `Ridefort` toont daarbij dat:
 
 \begin{itemize}
-  \item de discrepanties in NetBox al direct zichtbaar werden na het ontdekken van de apparaten (baseline: 3/6 kabelrelaties correct);
-  \item na discovery en de LLDP-gebaseerde verwerking de \textbf{cable connections} \textbf{allemaal} correct waren (gevalideerd aan de hand van de LLDP-informatie van de switch).
+  \item de discrepanties in NetBox al direct zichtbaar werden na het ontdekken van de apparaten; in de baseline waren 3/6 kabelrelaties correct;
+  \item na discovery en LLDP-gebaseerde verwerking de \textbf{cable connections} \textbf{allemaal} correct waren, gevalideerd met LLDP-informatie van de switch.
 \end{itemize}
 
 Deze bevinding ondersteunt de conclusie dat NetBox Discovery vooral sterk is als \emph{inventarislaag}, terwijl de \emph{relatie-/topologie-invulling} afhankelijk kan zijn van extra brondata en/of uitbreidingen.
 
 \subsection{Resterende beperkingen: serienummer en datatypes}
 
-Een belangrijke beperking blijft het \textbf{serienummer} van de access points: dit kon niet automatisch worden afgeleid met SNMP in jouw case. Hierdoor werd het eindresultaat inhoudelijk wel sterk (naam en kabelrelaties), maar niet volledig tot op alle datavelden.
+Een belangrijke beperking blijft het \textbf{serienummer} van de access points: dit kon niet automatisch worden afgeleid met SNMP in deze case. Hierdoor werd het eindresultaat inhoudelijk wel sterk voor naam en kabelrelaties, maar niet volledig tot op alle datavelden.
 
 In deze evaluatie werden duplicaten vermeden doordat oude AP-records/devices verwijderd werden vóór de discovery. Bij opschaling naar andere sites blijft een \textbf{cleanup}-stap en naming governance echter noodzakelijk om consistentie te garanderen en regressies te vermijden.
 
@@ -48,10 +48,10 @@ De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen `Ri
 \subsection*{Probleemdomeinvragen}
 
 \begin{itemize}
-  \item \textbf{Vraag 1 (manifestatie van het probleem):} het probleem manifesteert zich in NetBox als verouderde inventaris- en relatie-informatie die zichtbaar wordt wanneer apparaten opnieuw ontdekt worden.
-  \item \textbf{Vraag 2 (oorzaken):} de belangrijkste oorzaak is het niet (volledig) bijwerken van NetBox na wijzigingen in de fysieke infrastructuur. In de casus leidde de AP-vervanging in 2022 tot inconsistenties (naam/type) en incompleet ingevulde kabelrelaties.
-  \item \textbf{Vraag 3 (huidige staat en gevolgen):} de huidige staat vertoonde veroudering in meerdere attributen en vooral incompleet documenteerde bekabeling. Dit resulteert in een beperkte betrouwbaarheid van NetBox als SSOT.
-  \item \textbf{Vraag 4 (huidige processen):} Citymesh werkt historisch met CSV-templates die handmatig ingevuld worden en vervolgens geïmporteerd worden in NetBox. Daardoor blijft de workflow afhankelijk van administratieve opvolging na infrastructuurwijzigingen.
+  \item \textbf{Vraag 1, manifestatie van het probleem:} het probleem manifesteert zich in NetBox als verouderde inventaris- en relatie-informatie die zichtbaar wordt wanneer apparaten opnieuw ontdekt worden.
+  \item \textbf{Vraag 2, oorzaken:} de belangrijkste oorzaak is het niet volledig bijwerken van NetBox na wijzigingen in de fysieke infrastructuur. In de casus leidde de AP-vervanging in 2022 tot inconsistenties in naam en type, en tot incompleet ingevulde kabelrelaties.
+  \item \textbf{Vraag 3, huidige staat en gevolgen:} de huidige staat vertoonde veroudering in meerdere attributen en vooral incompleet gedocumenteerde bekabeling. Dit resulteert in een beperkte betrouwbaarheid van NetBox als SSOT.
+  \item \textbf{Vraag 4, huidige processen:} Citymesh werkt historisch met CSV-templates die handmatig ingevuld worden en vervolgens geïmporteerd worden in NetBox. Daardoor blijft de workflow afhankelijk van administratieve opvolging na infrastructuurwijzigingen.
 \end{itemize}
 
 \subsection*{Oplossingsdomeinvragen}
