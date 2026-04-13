@@ -25,7 +25,7 @@ De aanvullende observatie op de site `Deleers Go4tech` onderstreept bovendien da
 
 \subsection{Kabelrelaties en topologie}
 
-Waar NetBox Discovery/Orb via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via de \texttt{NetworkTool}-pipeline met NetBox API. De evaluatie op site `Ridefort` toont daarbij dat:
+Waar NetBox Discovery/Orb via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via \texttt{NetworkTool} met NetBox API. De evaluatie op site `Ridefort` toont daarbij dat:
 
 \begin{itemize}
   \item de discrepanties in NetBox al direct zichtbaar werden na het ontdekken van de apparaten; in de baseline waren 3/6 kabelrelaties correct;
@@ -69,9 +69,9 @@ De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen `Ri
 
 NetBox Discovery met Diode blijkt in de casus effectief om verouderde device-attributen sneller te corrigeren. Dit maakt een basis SSOT mogelijk, waarop vervolgens processtappen en aanvullingen kunnen landen.
 
-\subsection{Aanbeveling 2: implementeer een pipeline voor kabelrelaties}
+\subsection{Aanbeveling 2: gebruik de Streamlit-toepassing voor kabelrelaties}
 
-Omdat de standaard Orb/NetBox discovery-flow in deze case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. De \texttt{NetworkTool}-pipeline is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
+Omdat de standaard Orb/NetBox discovery-flow in deze case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. De Streamlit-toepassing is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
 
 \subsection{Aanbeveling 3: neem cleanup en naming governance op in het proces}
 
@@ -83,7 +83,7 @@ Voor serienummerdata volstaat SNMP in deze casus niet. Citymesh moet hiervoor ee
 
 \section{Reflectie en beperkingen}
 
-De resultaten zijn gebaseerd op één casus (`Ridefort`) en op observaties in NetBox met nadruk op created/last updated en de zichtbare correctheid van attributen. Een bredere validatie over meerdere sites zou de generaliseerbaarheid verhogen.
+De resultaten steunen op een primaire voor/na-casus (`Ridefort`), aangevuld met observaties op bijkomende sites. De analyse in NetBox focust op created/last updated en op de zichtbare correctheid van attributen. Een bredere validatie met volledige voor/na-metingen op meerdere sites zou de generaliseerbaarheid verder verhogen.
 
 Daarnaast is de evaluatie sterk gericht op datavelden en relaties die in de casus relevant bleken (naam, type, cable connections). Voor andere datatypes (zoals serienummer) blijven er methodologische beperkingen omdat de gebruikte discoverykanalen niet volledig de gewenste data kunnen leveren.
 

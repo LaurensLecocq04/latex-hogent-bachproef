@@ -9,7 +9,7 @@ Dit hoofdstuk beschrijft de evaluatie van NetBox Discovery met Diode en de bijho
 
 \section{Evaluatiemethode}
 
-De evaluatie gebeurde in een casestudy-context. Concreet werd de bestaande NetBox-inhoud voor de site `Ridefort` beschouwd als baseline, zie Hoofdstuk~\ref{ch:fase3}. Daarna werden NetBox Discovery met Diode en de aanvullende pipeline uit Hoofdstuk~\ref{ch:fase4} ingezet om:
+De evaluatie gebeurde in een casestudy-context. Concreet werd de bestaande NetBox-inhoud voor de site `Ridefort` beschouwd als baseline, zie Hoofdstuk~\ref{ch:fase3}. Daarna werden NetBox Discovery met Diode en de aanvullende \texttt{NetworkTool}-werking uit Hoofdstuk~\ref{ch:fase4} ingezet om:
 
 \begin{itemize}
   \item de NetBox-inventaris te vernieuwen op basis van wat de discovery daadwerkelijk ziet;
@@ -56,11 +56,11 @@ Deze directe zichtbaarheid vormt een meetbaar effect in de context van \emph{act
 
 \section{Rol van de aanvullende automatisering voor LLDP en kabels}
 
-Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor inventaris en een deel van de documentatie-updates. Voor relaties die afhankelijk zijn van LLDP-neighbors, en die via de Orb-keten niet automatisch als NetBox-relaties terechtkwamen, werd de aanvullende pipeline ingezet:
+Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor inventaris en een deel van de documentatie-updates. Voor relaties die afhankelijk zijn van LLDP-neighbors, en die via de Orb-keten niet automatisch als NetBox-relaties terechtkwamen, werd \texttt{NetworkTool} ingezet:
 
 \begin{itemize}
   \item voor ondersteunde apparaten kon LLDP-informatie via de \texttt{NetworkTool}-applicatie en scripts worden opgehaald;
-  \item met die LLDP-neighbors kon de pipeline kabelobjecten in NetBox aanmaken via de NetBox API.
+  \item met die LLDP-neighbors kon \texttt{NetworkTool} kabelobjecten in NetBox aanmaken via de NetBox API.
 \end{itemize}
 
 Voor apparaten waar geen passende drivers bestaan, zoals Ruckus access points in deze scope, bleef de aanvulling beperkt tot wat via SNMP discovery of andere haalbare stappen mogelijk was.
@@ -69,7 +69,7 @@ Voor apparaten waar geen passende drivers bestaan, zoals Ruckus access points in
 
 Voorafgaand aan NetBox Discovery werden oude AP-records/devices verwijderd, zodat duplicaten vermeden werden. Na uitvoering van NetBox Discovery stonden de \textbf{AP-namen} correct.
 
-In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar de switch correct gedocumenteerd. Na discovery en LLDP-gebaseerde verwerking via de aanvullende pipeline stonden de kabelrelaties \textbf{allemaal correct}. Deze correctheid werd gevalideerd aan de hand van de LLDP-informatie van de switch.
+In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar de switch correct gedocumenteerd. Na discovery en LLDP-gebaseerde verwerking via \texttt{NetworkTool} stonden de kabelrelaties \textbf{allemaal correct}. Deze correctheid werd gevalideerd aan de hand van de LLDP-informatie van de switch.
 
 Een resterende beperking betreft het \textbf{serienummer} van de access points: dit kon niet automatisch via SNMP worden opgehaald, waardoor de AP's niet volledig op serieniveau konden worden geverifieerd en gestructureerd.
 
@@ -81,7 +81,7 @@ Een resterende beperking betreft het \textbf{serienummer} van de access points: 
   \label{tab:ridefort-voor-na}
   \begin{tabular}{p{0.46\linewidth} p{0.22\linewidth} p{0.22\linewidth}}
     \toprule
-    \textbf{Indicator} & \textbf{Baseline} & \textbf{Na discovery + pipeline} \\
+    \textbf{Indicator} & \textbf{Baseline} & \textbf{Na discovery + NetworkTool} \\
     \midrule
     Correcte AP-namen in NetBox & 3/6 correct & 6/6 correct \\
     Correcte AP-types in NetBox & 5/6 correct & correct \\
@@ -146,7 +146,7 @@ Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \text
 
 Door deze case mee op te nemen kan worden nagegaan of de meerwaarde van discovery ook duidelijk is in sites waar naamgeving al goed is, maar topologiedata onvolledig blijft.
 
-\section{Kwantificatie (context)}
+\section{Resultaatduiding}
 
 Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig, bijvoorbeeld exacte aantallen velden en gecorrigeerde relaties. In dit hoofdstuk ligt de focus daarom op de casusspecifieke effecten die tijdens de evaluatie in NetBox werden vastgesteld: directe detectie van inconsistenties na discovery, volledige correctie van kabelrelaties na discovery met \texttt{NetworkTool}, en een resterende beperking op serienummer-informatie voor AP's.
 

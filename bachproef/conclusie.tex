@@ -5,7 +5,7 @@
 \chapter{Conclusie}%
 \label{ch:conclusie}
 
-Dit onderzoek vertrekt vanuit de vraag hoe automatische netwerkdetectie kan bijdragen aan het up-to-date houden van netwerkdocumentatie en aan het realiseren van een betrouwbare \emph{single source of truth} binnen de dynamische, draadloze IT-infrastructuren van Citymesh. In de casestudy werd deze centrale onderzoeksvraag beantwoord via de implementatie en evaluatie van NetBox Discovery, aangevuld met een praktische pipeline om ontbrekende datatypes, met focus op bekabeling op basis van LLDP-neighbors, in NetBox te capteren.
+Dit onderzoek vertrekt vanuit de vraag hoe automatische netwerkdetectie kan bijdragen aan het up-to-date houden van netwerkdocumentatie en aan het realiseren van een betrouwbare \emph{single source of truth} binnen de dynamische, draadloze IT-infrastructuren van Citymesh. In de casestudy werd deze centrale onderzoeksvraag beantwoord via de implementatie en evaluatie van NetBox Discovery, aangevuld met \texttt{NetworkTool} om ontbrekende datatypes, met focus op bekabeling op basis van LLDP-neighbors, in NetBox te capteren.
 
 Op basis van de baseline voor de site \emph{Ridefort} kon vastgesteld worden dat de NetBox-documentatie verouderd was na een access point-vervanging in 2022. Specifiek waren AP-namen en types niet volledig correct en was bekabeling incompleet: in de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de access points naar de switch correct gedocumenteerd. De evaluatie toont vervolgens aan dat automatische discovery de documentatie effectief kan corrigeren: na NetBox Discovery stonden de \textbf{AP-namen} correct en waren \textbf{AP-types} en \textbf{inventarisdata} actueel. Met de aanvullende verwerking via \texttt{NetworkTool} en NetBox API konden de \textbf{cable connections} op basis van LLDP-informatie worden aangevuld, zodat na discovery met \texttt{NetworkTool} \textbf{alle} kabelrelaties correct werden beschouwd volgens de LLDP van de switch. Dat betekent dat NetBox in deze casus duidelijk beter voldoet als \emph{single source of truth} voor inventaris en bekabeling.
 
@@ -17,7 +17,7 @@ Op basis van deze bevindingen worden volgende aanbevelingen geformuleerd:
 
 \begin{itemize}
   \item Gebruik NetBox Discovery met Diode als basis om inventarisdata automatisch actueel te maken, omdat dit in de casus aantoonbaar leidde tot correctere naamgeving, types en algemene apparaatregistratie.
-  \item Voor bekabeling en topologie die afhankelijk zijn van LLDP-neighbors, integreer een aanvullende pipeline zoals de \texttt{NetworkTool}/NetBox API-aanpak om kabelrelaties volledig en consistent te modelleren wanneer NetBox Discovery dit niet automatisch afhandelt.
+  \item Voor bekabeling en topologie die afhankelijk zijn van LLDP-neighbors, integreer \texttt{NetworkTool} met de NetBox API om kabelrelaties volledig en consistent te modelleren wanneer NetBox Discovery dit niet automatisch afhandelt.
   \item Neem \emph{cleanup} en naming governance op in het proces bij infrastructurele wijzigingen, zoals AP-vervangingen, zodat dubbele records niet ontstaan en updates eenduidig blijven.
   \item Voor serienummers voorzie een alternatieve datastroom buiten SNMP, bijvoorbeeld management/CLI-collectie of een bron die wel serienummerinformatie levert, zodat NetBox ook op serieniveau betrouwbaar kan zijn.
 \end{itemize}
