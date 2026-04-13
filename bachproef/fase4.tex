@@ -236,9 +236,9 @@ De SNMP discovery en de device discovery via de Orb agent functioneren naar verw
 
 LLDP-buren (\emph{neighbors}) worden via deze keten niet automatisch als relaties in NetBox aangemaakt. Ondanks een correcte device discovery (met onder meer capabilities voor topologie en buren in de configuratie) bleek het niet mogelijk om die LLDP-informatie consistent automatisch te laten landen in NetBox. Dit vormt een beperking voor volledig geautomatiseerde kabel- en buurrelaties op basis van alleen de standaard NetBox Discovery-workflow.
 
-\subsection{Aanvulling: actuele Streamlit-toepassing en NetBox API}
+\subsection{Aanvulling: Streamlit-toepassing en NetBox API}
 
-De actuele Streamlit-toepassing ondersteunt het discoveryproces met een modulaire opbouw voor GUI, live dataverzameling, utility-functies en NetBox-synchronisatie. Daardoor blijft de werking beheersbaar en kunnen extra workflows toegevoegd worden.
+De Streamlit-toepassing ondersteunt het discoveryproces met een modulaire opbouw voor GUI, live dataverzameling, utility-functies en NetBox-synchronisatie. Daardoor blijft de werking beheersbaar en kunnen extra workflows toegevoegd worden.
 
 \begin{itemize}
   \item \textbf{GUI-laag:} beheert de gebruikersflow en tabs.
@@ -247,7 +247,7 @@ De actuele Streamlit-toepassing ondersteunt het discoveryproces met een modulair
   \item \textbf{Vendor-specifieke scripts:} voorzien exports en verwerking per ondersteunde leverancier.
 \end{itemize}
 
-\subsubsection{Actuele GUI-architectuur}
+\subsubsection{GUI-architectuur}
 
 De vernieuwde GUI bevat vier tabs: \emph{Agent Manager}, \emph{Network Scanner}, \emph{SNMP Discovery} en \emph{CVE Scanner}. Dit breidt de oorspronkelijke workflow uit met subnet-sweeps en vulnerability checks.
 
@@ -272,7 +272,7 @@ tab_agent, tab_scanner, tab_discovery, tab_cve = st.tabs(
 
 \subsubsection{Network Scanner: dry-run en gecontroleerde live push}
 
-In de actuele tool wordt de synchronisatie in twee stappen gedaan: eerst \emph{analyse} (dry-run/diff), daarna pas de effectieve write naar NetBox. Dit verlaagt het risico op foutieve updates.
+In de tool wordt de synchronisatie in twee stappen gedaan: eerst \emph{analyse} (dry-run/diff), daarna pas de effectieve write naar NetBox. Dit verlaagt het risico op foutieve updates.
 
 \begin{listing}[H]
   \caption{NetworkTool: dry-run analyse gevolgd door live synchronisatie}
@@ -293,7 +293,7 @@ success, messages = evaluate_and_sync_netbox(
   \end{minted}
 \end{listing}
 
-\subsubsection{Actuele LLDP- en kabelafhandeling}
+\subsubsection{LLDP- en kabelafhandeling}
 
 De nieuwe implementatie bevat robuustere LLDP-verwerking, met onder meer:
 \begin{itemize}
@@ -350,7 +350,7 @@ if not kabel_bestaat_al_goed:
   \end{minted}
 \end{listing}
 
-\subsection{Vendordekking en actuele beperkingen}
+\subsection{Vendordekking en beperkingen}
 
-De vernieuwde tool ondersteunt operationeel MikroTik, Huawei en Fortinet. Voor Ruckus access points blijft gelden dat er geen volledige NAPALM-driverflow beschikbaar is voor alle gewenste datavelden, waardoor SNMP-discovery en aanvullende verwerking nodig blijven. Dit sluit aan op de evaluatiebevindingen in fase~5 en de aanbevelingen in fase~6.
+De vernieuwde tool ondersteunt operationeel MikroTik, Huawei en Fortinet. Voor Ruckus access points blijft gelden dat er geen volledige NAPALM-driverflow beschikbaar is, waardoor SNMP-discovery en aanvullende verwerking nodig blijven. Dit sluit aan op de evaluatiebevindingen in fase~5 en de aanbevelingen in fase~6.
 
