@@ -236,15 +236,15 @@ De SNMP discovery en de device discovery via de Orb agent functioneren naar verw
 
 LLDP-buren (\emph{neighbors}) worden via deze keten niet automatisch als relaties in NetBox aangemaakt. Ondanks een correcte device discovery (met onder meer capabilities voor topologie en buren in de configuratie) bleek het niet mogelijk om die LLDP-informatie consistent automatisch te laten landen in NetBox. Dit vormt een beperking voor volledig geautomatiseerde kabel- en buurrelaties op basis van alleen de standaard NetBox Discovery-workflow.
 
-\subsection{Aanvulling: actuele \texttt{NetworkTool}-toepassing en NetBox API}
+\subsection{Aanvulling: actuele Streamlit-toepassing en NetBox API}
 
-De oorspronkelijke Streamlit-tool werd ondertussen herwerkt naar een modulaire codebase in de aparte map \texttt{NetworkTool/}. In plaats van één groot script bestaat de toepassing nu uit gescheiden modules voor GUI, live dataverzameling, utility-functies en NetBox-synchronisatie. Daardoor werd de onderhoudbaarheid verbeterd en konden extra workflows toegevoegd worden.
+De actuele Streamlit-toepassing ondersteunt het discoveryproces met een modulaire opbouw voor GUI, live dataverzameling, utility-functies en NetBox-synchronisatie. Daardoor blijft de werking beheersbaar en kunnen extra workflows toegevoegd worden.
 
 \begin{itemize}
-  \item \textbf{GUI-laag:} \texttt{tool/gui.py} beheert de gebruikersflow en tabs.
-  \item \textbf{Dataverzameling:} \texttt{tool/network\_core.py} haalt live data op per vendor (MikroTik, Huawei, Fortinet).
-  \item \textbf{NetBox-integratie:} \texttt{tool/netbox\_api.py} voert dry-run analyse en effectieve synchronisatie uit.
-  \item \textbf{Vendor-specifieke scripts:} aparte mappen voor Huawei, MikroTik en Fortinet met eigen dependencies en exports.
+  \item \textbf{GUI-laag:} beheert de gebruikersflow en tabs.
+  \item \textbf{Dataverzameling:} haalt live data op per vendor, zoals MikroTik, Huawei en Fortinet.
+  \item \textbf{NetBox-integratie:} voert dry-run analyse en effectieve synchronisatie uit.
+  \item \textbf{Vendor-specifieke scripts:} voorzien exports en verwerking per ondersteunde leverancier.
 \end{itemize}
 
 \subsubsection{Actuele GUI-architectuur}
