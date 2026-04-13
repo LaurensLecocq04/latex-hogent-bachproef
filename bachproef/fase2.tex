@@ -29,7 +29,7 @@ Om te beoordelen of een oplossing voldoet aan de behoeften van Citymesh, werden 
   \item \textbf{Wireless relevantie:} kan de oplossing zinvol omgaan met draadloze use-cases (o.a. access points en devices in een distributed context)?
   \item \textbf{Topologie-informatie:} ondersteunt de oplossing, direct of via uitbreidbaarheid, relaties zoals interfaces en (indien mogelijk) kabel-/neighbor-relaties.
   \item \textbf{Kosten/haalbaarheid:} past de oplossing binnen een praktisch budget en is ze operationeel haalbaar voor een bachelorproef-casestudy.
-  \item \textbf{Uitbreidbaarheid:} kan de oplossing geconfigureerd of aangevuld worden wanneer bepaalde datatypes (bv. neighbors/kabels) niet volledig automatisch landen?
+  \item \textbf{Uitbreidbaarheid:} kan de oplossing geconfigureerd of aangevuld worden wanneer bepaalde datatypes, zoals neighbors en kabels, niet volledig automatisch landen?
  \end{itemize}
 
 \section{Vergelijkende evaluatie}
@@ -44,7 +44,7 @@ In de praktijk bleek NetBox Discovery effectief voor het opbouwen van een bruikb
 
 Slurp'it werd meegenomen omdat het in studies en documentatie veelbelovend oogt voor het ophalen en structureren van netwerkdata en omdat de beschikbare NetBox plugin een route biedt om discoverydata te integreren.
 
-Tijdens de evaluatie werd vastgesteld dat Slurp'it conceptueel kan aansluiten op het doel (automatisch/gestructureerd netwerkdocumentatie), maar dat de oplossing betalend is en daardoor minder haalbaar wordt in de context van dit project. Hierdoor bleef Slurp'it buiten scope voor een volwaardige implementatie en werd het niet geselecteerd als primaire tool.
+Tijdens de evaluatie werd vastgesteld dat Slurp'it conceptueel kan aansluiten op het doel van automatische en gestructureerde netwerkdocumentatie, maar dat de oplossing betalend is en daardoor minder haalbaar wordt in de context van dit project. Hierdoor bleef Slurp'it buiten scope voor een volwaardige implementatie en werd het niet geselecteerd als primaire tool.
 
 Slurp'it hanteert een licentiemodel waarbij het aantal ondersteunde devices per jaar bepalend is. De gratis versie ondersteunt slechts ongeveer 10 devices, terwijl Citymesh in de praktijk met veel hogere aantallen toestellen werkt (orde van grootte ~25.000 devices).
 
@@ -59,7 +59,7 @@ Op basis van de scope, evaluatiecriteria en de praktische haalbaarheid werd geko
 \begin{itemize}
   \item \textbf{Haalbaarheid binnen budget:} NetBox Discovery was gratis en direct beschikbaar binnen de casestudy-scope.
   \item \textbf{Effectieve integratiebasis voor SSOT:} de workflow levert een bruikbare NetBox-inventaris op, waardoor de aanvullende automatisering kan starten van een “gevulde” basis.
-  \item \textbf{Uitbreidbaarheid:} waar discovery niet volledig automatisch landt (LLDP-neighbors), kon je de ontbrekende functionaliteit aanvullen met een eigen pipeline (\texttt{NetworkTool} + NetBox API).
+  \item \textbf{Uitbreidbaarheid:} waar discovery niet volledig automatisch landt, zoals bij LLDP-neighbors, is het mogelijk om de ontbrekende functionaliteit aan te vullen met de pipeline (NetworkTool + NetBox API).
 \end{itemize}
 
 \section{Beperkingen van de vergelijking}
