@@ -1,7 +1,13 @@
 \chapter{\IfLanguageName{dutch}{Stand van zaken}{State of the art}}%
 \label{ch:stand-van-zaken}
 
-Dit hoofdstuk bevat de literatuurstudie die verder bouwt op de inleiding en het onderwerp van de bachelorproef diepgaand uitwerkt. De bedoeling is dat de lezer na lezing van dit hoofdstuk volledig op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein van automatische netwerkdetectie en single source of truth in netwerkbeheer. Ook lezers die vooraf niet vertrouwd zijn met het onderwerp, vinden hier voldoende context om de rest van het onderzoek te volgen zonder bijkomende bronnen te moeten raadplegen.
+Dit hoofdstuk bevat de literatuurstudie die verder bouwt op de inleiding en het
+onderwerp van de bachelorproef diepgaand uitwerkt. De bedoeling is dat de lezer
+na lezing van dit hoofdstuk volledig op de hoogte is van de huidige stand van zaken
+(state-of-the-art) in het onderzoeksdomein van automatische netwerkdetectie en
+single source of truth in netwerkbeheer. Ook lezers die vooraf niet vertrouwd zijn
+met het onderwerp, vinden hier voldoende context om de rest van het onderzoek te volgen
+zonder bijkomende bronnen te moeten raadplegen.
 
 \section{Single Source of Truth in Netwerkbeheer}
 
@@ -36,7 +42,7 @@ NetBox Discovery werkt door middel van discovery jobs die periodiek worden uitge
 
 \begin{itemize}
   \item \textbf{SNMP-discovery:} Via Simple Network Management Protocol (SNMP) worden netwerkapparaten bevraagd om informatie te verzamelen over apparaten, interfaces, en configuraties.
-  \item \textbf{ARP-scanning:} Door ARP-tabellen te analyseren kunnen actieve apparaten in het netwerk worden geïdentificeerd.
+  \item \textbf{NMAP-network-scanning:} De network-discovery backend gebruikt NMAP om targets (bv. IP-adressen, IP-ranges en subnets) te scannen en zo live hosts en bijhorende IP-informatie te identificeren.
   \item \textbf{Koppeling via workers/orkestratie:} NetBox Discovery orkestreert discovery-jobs die door workers worden uitgevoerd. In deze bachelorproef gebeurt die discovery-orkestratie in combinatie met Orb/Diode.
 \end{itemize}
 
