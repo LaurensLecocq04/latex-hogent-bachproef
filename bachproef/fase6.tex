@@ -59,7 +59,7 @@ De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen `Ri
 \subsection*{Oplossingsdomeinvragen}
 
 \begin{itemize}
-  \item \textbf{Vraag 5 (bestaande technieken en tools):} de studie situeert NetBox Discovery als open-source optie en positioneert daarnaast Slurp'it als beloftevolle maar niet-haalbare (budget/scale) alternatieve tool.
+  \item \textbf{Vraag 5 (bestaande technieken en tools):} de studie situeert NetBox Discovery als open-source optie en positioneert daarnaast Slurp'it als een beloftevolle maar binnen budget en schaal minder haalbare alternatieve tool.
   \item \textbf{Vraag 6 (prestatie van tools):} NetBox Discovery met Diode presteert goed voor inventaris/naamgeving, maar strandt bij LLDP-neighbors/kabelrelaties in de standaard keten. De \texttt{NetworkTool}-aanvulling vult dit effectief aan.
   \item \textbf{Vraag 7 (verbetering):} de evaluatie toont dat AP-namen volledig correct werden na discovery en dat cable connections correct konden worden aangevuld na discovery + \texttt{NetworkTool}. Hierdoor stijgt de bruikbaarheid van NetBox als SSOT voor inventaris en bekabeling.
   \item \textbf{Vraag 8 (organisatorische processen):} duurzame borging vereist dat de documentatieflow niet enkel gebaseerd is op CSV-import, maar dat discovery en topologie-aanvulling periodiek uitgevoerd en gevalideerd worden, inclusief een cleanup-stap om duplicaten te vermijden en een aanpak voor Ruckus IP-adressering waar nodig.
@@ -71,9 +71,9 @@ De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen `Ri
 
 NetBox Discovery met Diode blijkt in de casus effectief om verouderde device-attributen sneller te corrigeren. Dit maakt een basis SSOT mogelijk, waarop vervolgens processtappen en aanvullingen kunnen landen.
 
-\subsection{Aanbeveling 2: gebruik de Streamlit-toepassing voor kabelrelaties}
+\subsection{Aanbeveling 2: gebruik \texttt{NetworkTool} voor kabelrelaties}
 
-Omdat de standaard Orb/NetBox discovery-flow in deze case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. De Streamlit-toepassing is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
+Omdat de standaard Orb/NetBox discovery-flow in deze case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. \texttt{NetworkTool} is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
 
 \subsection{Aanbeveling 3: neem cleanup en naming governance op in het proces}
 

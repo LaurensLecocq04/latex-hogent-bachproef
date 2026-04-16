@@ -26,7 +26,7 @@ Om te beoordelen of een oplossing voldoet aan de behoeften van Citymesh, werden 
   \item \textbf{Dekking:} kan de oplossing netwerkapparaten en relevante configuratiedetails bijhouden in een heterogene, dynamische omgeving?
   \item \textbf{Integratie met NetBox:} ondersteunt de oplossing een workflow die de \emph{single source of truth} in NetBox effectief versterkt?
   \item \textbf{Beheerlast:} vergt de oplossing veel configuratie/onderhoud of blijven herhaalde handmatige correcties beperkt?
-  \item \textbf{Wireless relevantie:} kan de oplossing zinvol omgaan met draadloze use-cases (o.a. access points en devices in een distributed context)?
+  \item \textbf{Relevantie voor draadloze omgevingen:} kan de oplossing zinvol omgaan met draadloze use-cases (o.a. access points en devices in een gedistribueerde context)?
   \item \textbf{Topologie-informatie:} ondersteunt de oplossing, direct of via uitbreidbaarheid, relaties zoals interfaces en (indien mogelijk) kabel-/neighbor-relaties.
   \item \textbf{Kosten/haalbaarheid:} past de oplossing binnen een praktisch budget en is ze operationeel haalbaar voor een bachelorproef-casestudy.
   \item \textbf{Uitbreidbaarheid:} kan de oplossing geconfigureerd of aangevuld worden wanneer bepaalde datatypes, zoals neighbors en kabels, niet volledig automatisch landen?
@@ -36,7 +36,7 @@ Om te beoordelen of een oplossing voldoet aan de behoeften van Citymesh, werden 
 
 \subsection{NetBox Discovery met Diode}
 
-NetBox Discovery in combinatie met Diode werd als primaire oplossing beschouwd omdat dit binnen de scope van het onderzoek (gratis/low-cost) realiseerbaar was en direct inzetbaar is in NetBox.
+NetBox Discovery in combinatie met Diode werd als primaire oplossing beschouwd omdat dit binnen de scope van het onderzoek financieel haalbaar was en direct inzetbaar is in NetBox.
 
 In de praktijk bleek NetBox Discovery effectief voor het opbouwen van een bruikbare inventarisbasis: devices en hun documentatiedata konden via de discovery-workflow in NetBox terechtkomen. Voor het volledige SSOT-verhaal bleef echter één beperking over: LLDP-neighbors (\emph{neighbors}) werden niet automatisch als relaties in NetBox aangemaakt via de Orb/NetBox discoveryketen. Dit is vervolgens opgevangen met een aanvullende automatisering (\texttt{NetworkTool} + NetBox API) in hoofdstuk~\ref{ch:fase4}.
 

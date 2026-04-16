@@ -12,7 +12,7 @@ Dit hoofdstuk beschrijft de methodologie die gebruikt wordt om de onderzoeksvrag
 Dit onderzoek volgt een \textbf{praktijkgerichte casestudy-opzet} met een combinatie van:
 \begin{itemize}
   \item \textbf{kwalitatieve dataverzameling} (gesprekken met netwerkbeheerders, procesanalyse, observaties tijdens implementatie);
-  \item \textbf{kwantitatieve voor/na-metingen} (correctheid van attributen en relaties in NetBox vóór en na discovery).
+  \item \textbf{gerichte voor/na-metingen} (correctheid van attributen en relaties in NetBox vóór en na discovery).
 \end{itemize}
 
 De keuze voor een casestudy is verantwoord omdat de onderzoeksvraag contextafhankelijk is: de bruikbaarheid van automatische discovery hangt af van bestaande processen, toolketens en vendor-mix binnen Citymesh. Het doel is niet om een universele effectgrootte te claimen, maar om in een realistische operationele setting te bepalen \emph{welke verbetering haalbaar is}, \emph{waar de grenzen liggen} en \emph{welke procesaanpassingen nodig zijn} voor duurzame borging.
@@ -27,7 +27,7 @@ Om de centrale onderzoeksvraag toetsbaar te maken, werden kernindicatoren vooraf
   \item \textbf{Resterende manuele last:} datavelden die na discovery nog manueel of via bijkomende \texttt{NetworkTool}-verwerking verwerkt moeten worden.
 \end{itemize}
 
-De indicatoren worden in fase~5 gemeten via een voor/na-vergelijking op de primaire casus (`Ridefort`) en aanvullend getoetst op een grotere site (`Deleers Go4tech`).
+De indicatoren worden in fase~5 beoordeeld via een voor/na-vergelijking op de primaire casus (`Ridefort`) en aanvullend getoetst via observaties op een grotere site (`Deleers Go4tech`). De nadruk ligt daarbij op direct toetsbare kwaliteitsindicatoren in NetBox, niet op een brede statistische effectmeting over alle Citymesh-omgevingen.
 
 \section{Onderzoeksfasen}
 
@@ -47,12 +47,11 @@ Op basis van de literatuurstudie en de geformuleerde requirements wordt NetBox D
 
 \subsection{Fase 3: Baselinemetingen en implementatievoorbereiding}
 
-Voorafgaand aan de implementatie worden baselinemetingen uitgevoerd om de huidige staat van de netwerkdocumentatie binnen een afgebakende Citymesh-omgeving vast te leggen. Hierbij wordt onder meer gemeten:
+Voorafgaand aan de implementatie worden baselinemetingen uitgevoerd om de huidige staat van de netwerkdocumentatie binnen een afgebakende Citymesh-omgeving vast te leggen. Hierbij wordt onder meer nagegaan:
 \begin{itemize}
-  \item Het aantal verouderde items in de huidige inventarisatie
-  \item De tijd die netwerkbeheerders besteden aan handmatige updates
-  \item De frequentie waarmee documentatie veroudert (bijvoorbeeld aantal wijzigingen per maand/kwartaal)
-  \item Het aantal inconsistente of foutieve registraties in de documentatie
+  \item welke inventarisitems en relaties verouderd of onvolledig zijn;
+  \item waar manuele updates en correcties nodig blijven;
+  \item welke inconsistente of foutieve registraties in de documentatie zichtbaar zijn.
 \end{itemize}
 Tegelijkertijd wordt de implementatie voorbereid door de benodigde infrastructuur, toegangen en testomgevingen te voorzien, inclusief toegang tot relevante draadloze controllers en managementsystemen.
 
@@ -66,12 +65,12 @@ NetBox Discovery wordt geïmplementeerd en geconfigureerd binnen de bestaande in
 
 \subsection{Fase 5: Evaluatie en metingen}
 
-Na implementatie wordt gedurende een periode van 3--4 weken een monitoring- en evaluatiefase uitgevoerd om de impact van automatische detectie te kwantificeren. Deze monitoringperiode loopt parallel met het schrijven van de scriptie. Tijdens deze fase worden onder meer de volgende indicatoren gemeten:
+Na implementatie wordt een evaluatiefase uitgevoerd waarin de impact van automatische detectie binnen de casestudy systematisch wordt beoordeeld. Deze fase loopt parallel met het schrijven van de scriptie. Tijdens deze fase worden onder meer de volgende indicatoren beoordeeld:
 \begin{itemize}
-  \item Verbetering in actualiteit van documentatie (percentage items dat binnen een vooraf gedefinieerde tijdspanne correct gedocumenteerd is)
-  \item Tijdswinst bij updates (reductie in tijd die beheerders spenderen aan documentatie)
-  \item Aantal resterende foutieve of ontbrekende registraties
-  \item Benodigde onderhoudsmomenten en correcties aan de automatische detectieconfiguratie
+  \item verbetering in actualiteit van documentatie op basis van voor/na-observaties;
+  \item reductie van zichtbare fouten en ontbrekende registraties;
+  \item resterende datavelden of relaties die bijkomende verwerking vereisen;
+  \item benodigde correcties aan de automatische detectieconfiguratie.
 \end{itemize}
 
 \textbf{Tijdschatting:} 3--4 weken (monitoring loopt parallel met fase 6)
@@ -110,7 +109,7 @@ De verschillende onderzoeksvragen worden als volgt beantwoord:
 \begin{itemize}
   \item \textbf{Vraag 5 (bestaande technieken en tools):} Wordt beantwoord via de literatuurstudie in fase 1 en de vergelijkende tool-evaluatie in fase 2.
   \item \textbf{Vraag 6 (prestatie van tools):} Wordt beantwoord via de evaluatie van NetBox Discovery in fase 2 en de implementatie in fase 4, waarbij de prestatie wordt gemeten op basis van de evaluatiecriteria.
-  \item \textbf{Vraag 7 (verbetering):} Wordt beantwoord via kwantitatieve metingen in fase 5 die de voor-na vergelijking maken tussen de huidige werkwijze en de implementatie van NetBox Discovery.
+  \item \textbf{Vraag 7 (verbetering):} Wordt beantwoord via voor/na-observaties en gerichte metingen in fase 5 die de vergelijking maken tussen de huidige werkwijze en de implementatie van NetBox Discovery.
   \item \textbf{Vraag 8 (organisatorische processen):} Wordt beantwoord via de analyse in fase 6, waarbij op basis van de implementatie-ervaring en metingen concrete aanbevelingen worden geformuleerd.
 \end{itemize}
 
