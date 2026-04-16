@@ -238,7 +238,7 @@ LLDP-buren (\emph{neighbors}) worden via deze keten niet automatisch als relatie
 
 \subsection{Aanvulling: \texttt{NetworkTool} en NetBox API}
 
-De \texttt{NetworkTool}-toepassing, opgebouwd met een Streamlit-gebaseerde GUI, ondersteunt het discoveryproces met een modulaire opbouw voor live dataverzameling, utility-functies en NetBox-synchronisatie. Daardoor blijft de werking beheersbaar en kunnen extra workflows toegevoegd worden.
+De \texttt{NetworkTool}-toepassing, opgebouwd met een Streamlit-gebaseerde GUI, ondersteunt het discoveryproces met een modulaire opbouw voor het beheren van discovery-agents, het uitvoeren van live dataverzameling, utility-functies en NetBox-synchronisatie. Daardoor blijft de werking beheersbaar en kunnen extra workflows toegevoegd worden.
 
 \begin{itemize}
   \item \textbf{GUI-laag:} beheert de gebruikersflow en tabs.
@@ -249,7 +249,7 @@ De \texttt{NetworkTool}-toepassing, opgebouwd met een Streamlit-gebaseerde GUI, 
 
 \subsubsection{GUI-architectuur}
 
-De vernieuwde GUI bevat vier tabs: \emph{Agent Manager}, \emph{Network Scanner}, \emph{SNMP Discovery} en \emph{CVE Scanner}. Daarnaast werd een Ruckus vSZ-tab toegevoegd voor API-gestuurde synchronisatie van access points per zone naar NetBox. Dit breidt de oorspronkelijke workflow uit met subnet-sweeps, vulnerability checks en vendor-specifieke AP-synchronisatie.
+De vernieuwde GUI bevat vier tabs: \emph{Agent Manager}, \emph{Network Scanner}, \emph{SNMP Discovery} en \emph{CVE Scanner}. Daarnaast werd een Ruckus vSZ-tab toegevoegd voor synchronisatie van access points per zone naar NetBox. Dit breidt de oorspronkelijke workflow uit met subnet-sweeps, vulnerability checks en vendor-specifieke AP-synchronisatie.
 
 \begin{listing}[H]
   \caption{NetworkTool GUI: module-imports en tabstructuur}

@@ -41,7 +41,7 @@ In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd naar technie
 
 \subsection{Fase 2: Toolselectie en vergelijkende evaluatie}
 
-Op basis van de literatuurstudie en de geformuleerde requirements wordt NetBox Discovery geëvalueerd als primaire oplossing, zoals gevraagd door Citymesh. Ter vergelijking worden ook alternatieve automatische netwerkdetectietools in beschouwing genomen, waaronder commerciële NMS- of ITSM-tools met discovery-functionaliteit indien beschikbaar binnen de organisatie.\autocite{NetBoxDiscoveryDocs,ServiceNowDiscovery} De evaluatiecriteria omvatten functionaliteiten, ondersteuning voor draadloze infrastructuren (WiFi-controllers, 4G/5G-core, IoT-gateways), integratiemogelijkheden met bestaande documentatiesystemen, configuratiecomplexiteit, schaalbaarheid en onderhoudsvereisten. Deze fase resulteert in een vergelijkende analyse waarbij NetBox Discovery als primaire oplossing wordt gevalideerd tegen de requirements van Citymesh.
+Op basis van de literatuurstudie en de geformuleerde requirements wordt NetBox Discovery geëvalueerd als primaire oplossing, zoals gevraagd door Citymesh. Ter vergelijking worden ook alternatieve automatische netwerkdetectietools in beschouwing genomen, waaronder commerciële NMS- of ITSM-tools met discovery-functionaliteit indien beschikbaar binnen de organisatie.\autocite{NetBoxDiscoveryDocs,ServiceNowDiscovery} De evaluatiecriteria omvatten functionaliteiten en vooral of de aanpak toepasbaar is op draadloze infrastructuren (bv. WiFi-controllers, 4G/5G-core, IoT-gateways) als requirements/aandachtspunten, integratiemogelijkheden met bestaande documentatiesystemen, configuratiecomplexiteit, schaalbaarheid en onderhoudsvereisten. Deze fase resulteert in een vergelijkende analyse waarbij NetBox Discovery als primaire oplossing wordt gevalideerd tegen de requirements van Citymesh.
 
 \textbf{Tijdschatting:} 1 week
 
@@ -59,7 +59,7 @@ Tegelijkertijd wordt de implementatie voorbereid door de benodigde infrastructuu
 
 \subsection{Fase 4: Implementatie en configuratie}
 
-NetBox Discovery wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, de configuratie van discoveryprotocollen (bijvoorbeeld SNMP, LLDP, API-koppelingen met WiFi- en 4G/5G-managementsystemen), de integratie met bestaande netwerkdocumentatiesystemen (zoals IPAM/DCIM of CMDB) en het opzetten van automatische synchronisatie- en validatieprocessen. Waar mogelijk wordt NetBox Discovery zo opgezet dat zowel vaste netwerkcomponenten als draadloze access points, small cells en corecomponenten automatisch ontdekt en bijgewerkt worden.
+NetBox Discovery wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, de configuratie van discoveryprotocollen (bijvoorbeeld SNMP en LLDP) en de orkestratie van discovery-jobs via workers/Orb agenten in combinatie met Diode, de integratie met bestaande netwerkdocumentatiesystemen (zoals IPAM/DCIM of CMDB) en het opzetten van automatische synchronisatie- en validatieprocessen. Waar mogelijk wordt NetBox Discovery zo opgezet dat zowel vaste netwerkcomponenten als draadloze access points, small cells en corecomponenten automatisch ontdekt en bijgewerkt worden.
 
 \textbf{Tijdschatting:} 2 weken
 
@@ -87,7 +87,7 @@ De verzamelde data wordt geanalyseerd en geïnterpreteerd met het oog op het bea
 
 Voor dit onderzoek zullen de volgende tools en technologieën gebruikt worden:
 \begin{itemize}
-  \item \textbf{Automatische netwerkdetectietools:} NetBox Discovery als primaire oplossing, zoals gevraagd door Citymesh. Ter vergelijking kunnen aanvullende NMS- of ITSM-oplossingen met discovery-functionaliteit worden geëvalueerd indien beschikbaar binnen de organisatie
+  \item \textbf{Automatische netwerkdetectietools:} NetBox Discovery als primaire oplossing, zoals gevraagd door Citymesh. In deze casus wordt NetBox Community gebruikt in combinatie met Diode en discovery agents (orb-agent) die de discovery uitvoeren en de data via Diode in NetBox laten landen. Ter vergelijking kunnen aanvullende NMS- of ITSM-oplossingen met discovery-functionaliteit worden geëvalueerd indien beschikbaar binnen de organisatie
   \item \textbf{SNMP en Linux-tools:} Voor netwerkprotocolcommunicatie, verificatie en het uitvoeren van aanvullende metingen
   \item \textbf{Documentatie- en inventorysystemen:} Bestaande systemen binnen Citymesh (bijvoorbeeld NetBox, CMDB, Confluence of andere platformen) voor het centraliseren van de SSOT
   \item \textbf{Monitoring- en analysetools:} Voor het verzamelen en visualiseren van kwantitatieve data over documentatie-updates en foutpercentages
