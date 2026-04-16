@@ -249,7 +249,7 @@ De Streamlit-toepassing ondersteunt het discoveryproces met een modulaire opbouw
 
 \subsubsection{GUI-architectuur}
 
-De vernieuwde GUI bevat vier tabs: \emph{Agent Manager}, \emph{Network Scanner}, \emph{SNMP Discovery} en \emph{CVE Scanner}. Dit breidt de oorspronkelijke workflow uit met subnet-sweeps en vulnerability checks.
+De vernieuwde GUI bevat vier tabs: \emph{Agent Manager}, \emph{Network Scanner}, \emph{SNMP Discovery} en \emph{CVE Scanner}. Daarnaast werd een Ruckus vSZ-tab toegevoegd voor API-gestuurde synchronisatie van access points per zone naar NetBox. Dit breidt de oorspronkelijke workflow uit met subnet-sweeps, vulnerability checks en vendor-specifieke AP-synchronisatie.
 
 \begin{listing}[H]
   \caption{NetworkTool GUI: module-imports en tabstructuur}
@@ -352,5 +352,7 @@ if not kabel_bestaat_al_goed:
 
 \subsection{Vendordekking en beperkingen}
 
-De vernieuwde tool ondersteunt operationeel MikroTik, Huawei en Fortinet. Voor Ruckus access points blijft gelden dat er geen NAPALM-driver beschikbaar is, waardoor SNMP-discovery en aanvullende verwerking nodig blijven. Dit sluit aan op de evaluatiebevindingen in fase~5 en de aanbevelingen in fase~6.
+De vernieuwde tool ondersteunt operationeel MikroTik, Huawei en Fortinet. Voor Ruckus access points is bijkomend een vSZ API-koppeling voorzien. Via die koppeling kunnen AP's per zone aan een NetBox-site gekoppeld worden met correcte naam, serienummer, MAC-adres, fabrikant en type.
+
+Een belangrijk aandachtspunt is dat het IP-adres van Ruckus AP's via deze vSZ-methode niet betrouwbaar in NetBox kan worden overgenomen. De synchronisatie focust daarom op inventarisatiedata en niet op een sluitende IP-koppeling voor deze vendorflow. Dit sluit aan op de evaluatiebevindingen in fase~5 en de aanbevelingen in fase~6.
 

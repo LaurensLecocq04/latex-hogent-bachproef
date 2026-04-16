@@ -26,7 +26,7 @@ De evaluatie focust op indicatoren uit de methodologie: actualiteit, foutgraad e
 \begin{itemize}
   \item \textbf{Detectie van verouderde/incorrecte velden:} naam, type en voor zover mogelijk via discovery ook device- en interface-informatie die niet overeenstemt met de situatie na discovery.
   \item \textbf{Detectie van incompleet gedocumenteerde relaties:} vooral kabelrelaties die in NetBox ontbreken of foutief zijn.
-  \item \textbf{Resterende beperkingen:} datatypes die via de Orb/NetBox discoveryketen niet automatisch als relaties landen, zoals LLDP-neighbors en kabels.
+  \item \textbf{Aandachtspunten:} datatypes die via de Orb/NetBox discoveryketen niet automatisch als relaties landen, zoals LLDP-neighbors en kabels.
   \item \textbf{Kwalitatieve reductie van effort:} de mate waarin discovery het correctiewerk ondersteunt doordat fouten sneller worden blootgelegd.
 \end{itemize}
 
@@ -37,7 +37,7 @@ Om interpretatieverschillen te vermijden, zijn de belangrijkste indicatoren als 
   \item \textbf{Correcte AP-naam:} de NetBox-naam stemt overeen met de actuele naming in de site.
   \item \textbf{Correct AP-type:} het toegewezen device type in NetBox stemt overeen met het effectief geplaatste toesteltype.
   \item \textbf{Correcte kabelrelatie:} de kabelverbinding in NetBox komt overeen met de LLDP-observatie op de switch.
-  \item \textbf{Resterende beperking:} een relevant dataveld kan niet automatisch via de gebruikte discoveryketen aangeleverd worden.
+  \item \textbf{Aandachtspunt:} een relevant dataveld kan niet automatisch via de gebruikte discoveryketen aangeleverd worden.
 \end{itemize}
 
 Deze definities werden consequent toegepast op baseline en eindtoestand in de casus `Ridefort`.
@@ -63,7 +63,7 @@ Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor 
   \item met die LLDP-neighbors kon \texttt{NetworkTool} kabelobjecten in NetBox aanmaken via de NetBox API.
 \end{itemize}
 
-Voor apparaten waar geen passende drivers bestaan, zoals Ruckus access points in deze scope, bleef de aanvulling beperkt tot wat via SNMP discovery of andere haalbare stappen mogelijk was.
+Voor Ruckus access points werd een bijkomende vSZ API-stap gebruikt. Daarmee konden AP's per zone aan een site in NetBox gekoppeld worden met correcte naam, serienummer, MAC-adres, fabrikant en type.
 
 \section{Resultaat na NetBox Discovery en NetworkTool voor `Ridefort`}
 
@@ -71,7 +71,7 @@ Voorafgaand aan NetBox Discovery werden oude AP-records/devices verwijderd, zoda
 
 In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar de switch correct gedocumenteerd. Na discovery en LLDP-gebaseerde verwerking via \texttt{NetworkTool} stonden de kabelrelaties \textbf{allemaal correct}. Deze correctheid werd gevalideerd aan de hand van de LLDP-informatie van de switch.
 
-Een resterende beperking betreft het \textbf{serienummer} van de access points: dit kon niet automatisch via SNMP worden opgehaald, waardoor de AP's niet volledig op serieniveau konden worden geverifieerd en gestructureerd.
+Een belangrijk aandachtspunt betreft het \textbf{IP-adres} van Ruckus access points: dit kon via de vSZ-methode niet betrouwbaar in NetBox worden opgenomen. Daardoor blijft voor deze vendorflow een extra stap nodig wanneer IP-velden volledig moeten worden gevalideerd.
 
 \section{Overzicht voor/na (Ridefort)}
 
@@ -86,7 +86,7 @@ Een resterende beperking betreft het \textbf{serienummer} van de access points: 
     Correcte AP-namen in NetBox & 3/6 correct & 6/6 correct \\
     Correcte AP-types in NetBox & 5/6 correct & correct \\
     Kabelrelaties AP $\rightarrow$ switch & 3/6 correct & 6/6 correct \\
-    Serienummers AP's via SNMP & niet beschikbaar & niet beschikbaar \\
+    Serienummers AP's (Ruckus via vSZ) & niet beschikbaar in basisflow & beschikbaar via vSZ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -117,7 +117,7 @@ Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \text
   \item correcte device-naamgeving: \texttt{[in te vullen]};
   \item correctheid van device-types: \texttt{[in te vullen]};
   \item correcte kabelrelaties: \texttt{[in te vullen]};
-  \item resterende beperkingen, zoals serienummers: \texttt{[in te vullen]}.
+  \item aandachtspunten, zoals IP-adressering of serienummers: \texttt{[in te vullen]}.
 \end{itemize}
 
 Deze structuur laat toe om dezelfde voor/na-logica als in `Ridefort` te hanteren en de vergelijkbaarheid tussen sites te verhogen.
@@ -141,14 +141,14 @@ Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \text
   \item correcte device-naamgeving: \texttt{[in te vullen]};
   \item correctheid van device-types: \texttt{[in te vullen]};
   \item correcte kabelrelaties: \texttt{[in te vullen]};
-  \item resterende beperkingen, zoals serienummers: \texttt{[in te vullen]}.
+  \item aandachtspunten, zoals IP-adressering of serienummers: \texttt{[in te vullen]}.
 \end{itemize}
 
 Door deze case mee op te nemen kan worden nagegaan of de meerwaarde van discovery ook duidelijk is in sites waar naamgeving al goed is, maar topologiedata onvolledig blijft.
 
 \section{Resultaatduiding}
 
-Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig, bijvoorbeeld exacte aantallen velden en gecorrigeerde relaties. In dit hoofdstuk ligt de focus daarom op de casusspecifieke effecten die tijdens de evaluatie in NetBox werden vastgesteld: directe detectie van inconsistenties na discovery, volledige correctie van kabelrelaties na discovery met \texttt{NetworkTool}, en een resterende beperking op serienummer-informatie voor AP's.
+Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig, bijvoorbeeld exacte aantallen velden en gecorrigeerde relaties. In dit hoofdstuk ligt de focus daarom op de casusspecifieke effecten die tijdens de evaluatie in NetBox werden vastgesteld: directe detectie van inconsistenties na discovery, volledige correctie van kabelrelaties na discovery met \texttt{NetworkTool}, en een aandachtspunt rond IP-adressering bij Ruckus AP's via de vSZ-methode.
 
 De resultaten ondersteunen daarmee een \textbf{duidelijke richtinggevende conclusie} over effectiviteit binnen deze scope, maar geen statistische generalisatie naar alle sites of alle vendormixen zonder bijkomende metingen op grotere schaal.
 

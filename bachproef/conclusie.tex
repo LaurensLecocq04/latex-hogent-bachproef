@@ -9,7 +9,9 @@ Dit onderzoek vertrekt vanuit de vraag hoe automatische netwerkdetectie kan bijd
 
 Op basis van de baseline voor de site \emph{Ridefort} kon vastgesteld worden dat de NetBox-documentatie verouderd was na een access point-vervanging in 2022. Specifiek waren AP-namen en types niet volledig correct en was bekabeling incompleet: in de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de access points naar de switch correct gedocumenteerd. De evaluatie toont vervolgens aan dat automatische discovery de documentatie effectief kan corrigeren: na NetBox Discovery stonden de \textbf{AP-namen} correct en waren \textbf{AP-types} en \textbf{inventarisdata} actueel. Met de aanvullende verwerking via \texttt{NetworkTool} en NetBox API konden de \textbf{cable connections} op basis van LLDP-informatie worden aangevuld, zodat na discovery met \texttt{NetworkTool} \textbf{alle} kabelrelaties correct werden beschouwd volgens de LLDP van de switch. Dat betekent dat NetBox in deze casus duidelijk beter voldoet als \emph{single source of truth} voor inventaris en bekabeling.
 
-Een resterende beperking is dat \textbf{serienummers} voor toestellen die via SNMP-discovery in NetBox werden ontdekt, niet automatisch in NetBox terechtkwamen. Hierdoor werd het eindresultaat inhoudelijk sterk voor de velden waarvoor de gebruikte discoverykanalen wel toereikend waren, namelijk naamgeving, types en bekabeling, maar niet volledig tot op serieniveau.
+Door de toevoeging van de Ruckus vSZ API-koppeling kunnen voor Ruckus AP's inmiddels naam, serienummer, MAC-adres, fabrikant en type automatisch worden overgenomen in NetBox. Daarmee is de vroegere beperking op serienummerniveau voor deze flow grotendeels opgelost.
+
+Een belangrijk aandachtspunt is dat \textbf{IP-adressering} van Ruckus AP's via deze methode niet betrouwbaar in NetBox terechtkomt. Hierdoor blijft aanvullende validatie nodig wanneer IP-velden volledig en consistent moeten worden beheerd.
 
 \section*{Aanbevelingen voor Citymesh}
 
@@ -19,7 +21,7 @@ Op basis van deze bevindingen worden volgende aanbevelingen geformuleerd:
   \item Gebruik NetBox Discovery met Diode als basis om inventarisdata automatisch actueel te maken, omdat dit in de casus aantoonbaar leidde tot correctere naamgeving, types en algemene apparaatregistratie.
   \item Voor bekabeling en topologie die afhankelijk zijn van LLDP-neighbors, integreer \texttt{NetworkTool} met de NetBox API om kabelrelaties volledig en consistent te modelleren wanneer NetBox Discovery dit niet automatisch afhandelt.
   \item Neem \emph{cleanup} en naming governance op in het proces bij infrastructurele wijzigingen, zoals AP-vervangingen, zodat dubbele records niet ontstaan en updates eenduidig blijven.
-  \item Voor serienummers voorzie een alternatieve datastroom buiten SNMP, bijvoorbeeld management/CLI-collectie of een bron die wel serienummerinformatie levert, zodat NetBox ook op serieniveau betrouwbaar kan zijn.
+  \item Voor Ruckus AP's voorzie een aanvullende aanpak voor IP-adressering, aangezien dit veld via de vSZ-koppeling niet betrouwbaar wordt overgenomen.
 \end{itemize}
 
 Samengevat kan gesteld worden dat automatische netwerkdetectie in deze casestudy effectief bijdroeg aan een betere, actueel correcte en meer betrouwbare NetBox-documentatie. De resultaten tonen bovendien aan dat volledige SSOT niet alleen technisch afhangt van discovery, maar ook van een gericht proces en van aanvullende automatisering voor datatypes waar de standaard discoveryflow tekortschiet.
