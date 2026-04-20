@@ -26,7 +26,7 @@ De evaluatie focust op indicatoren uit de methodologie: actualiteit, foutgraad e
 \begin{itemize}
   \item \textbf{Detectie van verouderde/incorrecte velden:} naam, type en voor zover mogelijk via discovery ook device- en interface-informatie die niet overeenstemt met de situatie na discovery.
   \item \textbf{Detectie van incompleet gedocumenteerde relaties:} vooral kabelrelaties die in NetBox ontbreken of foutief zijn.
-  \item \textbf{Aandachtspunten:} datatypes die via de Orb/NetBox discoveryketen niet automatisch als relaties landen, zoals LLDP-neighbors en kabels.
+  \item \textbf{Aandachtspunten:} datatypes die via de standaard discoveryflow met Orb en Diode niet automatisch als relaties landen, zoals LLDP-neighbors en kabels.
   \item \textbf{Kwalitatieve reductie van effort:} de mate waarin discovery het correctiewerk ondersteunt doordat fouten sneller worden blootgelegd.
 \end{itemize}
 
@@ -63,7 +63,7 @@ Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor 
   \item met die LLDP-neighbors kon \texttt{NetworkTool} kabelobjecten in NetBox aanmaken via de NetBox API.
 \end{itemize}
 
-Voor Ruckus access points werd een bijkomende vSZ API-stap gebruikt. Daarmee konden AP's per zone aan een site in NetBox gekoppeld worden met correcte naam, serienummer, MAC-adres, fabrikant en type.
+Voor Ruckus access points werd een bijkomende vSZ API-stap gebruikt. Daarmee konden AP's per zone aan een site in NetBox gekoppeld worden met correcte naam, serienummer, MAC-adres, fabrikant, type en IP-adres.
 
 \section{Resultaat na NetBox Discovery en NetworkTool voor `Ridefort`}
 
@@ -71,7 +71,7 @@ Voorafgaand aan NetBox Discovery werden oude AP-records/devices verwijderd, zoda
 
 In de baseline waren slechts \textbf{3 van de 6} kabelrelaties van de AP's naar de switch correct gedocumenteerd. Na discovery en LLDP-gebaseerde verwerking via \texttt{NetworkTool} stonden de kabelrelaties \textbf{allemaal correct}. Deze correctheid werd gevalideerd aan de hand van de LLDP-informatie van de switch.
 
-Een belangrijk aandachtspunt betreft het \textbf{IP-adres} van Ruckus access points: dit kon via de vSZ-methode niet betrouwbaar in NetBox worden opgenomen. Daardoor blijft voor deze vendorflow een extra stap nodig wanneer IP-velden volledig moeten worden gevalideerd.
+Voor de Ruckus-vSZ-flow worden IP-adressen mee verwerkt in NetBox, zodat dit dataveld deel uitmaakt van de automatische synchronisatie.
 
 \section{Overzicht voor/na (Ridefort)}
 
@@ -90,7 +90,7 @@ Een belangrijk aandachtspunt betreft het \textbf{IP-adres} van Ruckus access poi
   \end{tabular}
 \end{table}
 
-De Ruckus vSZ-uitbreiding werd afzonderlijk geëvalueerd als vendor-specifieke aanvulling op de basisflow, en maakt daarom geen deel uit van deze `Ridefort`-voor/na-tabel. Voor die uitbreiding geldt dat naam, serienummer, MAC-adres, fabrikant en type automatisch kunnen worden overgenomen, terwijl IP-adressering via deze methode een aandachtspunt blijft.
+De Ruckus vSZ-uitbreiding werd afzonderlijk geëvalueerd als vendor-specifieke aanvulling op de basisflow, en maakt daarom geen deel uit van deze `Ridefort`-voor/na-tabel. Voor die uitbreiding geldt dat naam, serienummer, MAC-adres, fabrikant, type en IP-adres automatisch kunnen worden overgenomen.
 
 \section{Extra observatie: site `Deleers Go4tech`}
 
@@ -118,7 +118,7 @@ Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \text
   \item correcte device-naamgeving: \texttt{[in te vullen]};
   \item correctheid van device-types: \texttt{[in te vullen]};
   \item correcte kabelrelaties: \texttt{[in te vullen]};
-  \item aandachtspunten, zoals IP-adressering of serienummers: \texttt{[in te vullen]}.
+  \item overige aandachtspunten binnen de sitecontext: \texttt{[in te vullen]}.
 \end{itemize}
 
 Deze structuur laat toe om dezelfde voor/na-logica als in `Ridefort` te hanteren en de vergelijkbaarheid tussen sites te verhogen.
@@ -142,14 +142,14 @@ Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \text
   \item correcte device-naamgeving: \texttt{[in te vullen]};
   \item correctheid van device-types: \texttt{[in te vullen]};
   \item correcte kabelrelaties: \texttt{[in te vullen]};
-  \item aandachtspunten, zoals IP-adressering of serienummers: \texttt{[in te vullen]}.
+  \item overige aandachtspunten binnen de sitecontext: \texttt{[in te vullen]}.
 \end{itemize}
 
 Door deze case mee op te nemen kan worden nagegaan of de meerwaarde van discovery ook duidelijk is in sites waar naamgeving al goed is, maar topologiedata onvolledig blijft.
 
 \section{Resultaatduiding}
 
-Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig, bijvoorbeeld exacte aantallen velden en gecorrigeerde relaties. In dit hoofdstuk ligt de focus daarom op de casusspecifieke effecten die tijdens de evaluatie in NetBox werden vastgesteld: directe detectie van inconsistenties na discovery, volledige correctie van kabelrelaties na discovery met \texttt{NetworkTool}, en een aandachtspunt rond IP-adressering bij Ruckus AP's via de vSZ-methode.
+Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig, bijvoorbeeld exacte aantallen velden en gecorrigeerde relaties. In dit hoofdstuk ligt de focus daarom op de casusspecifieke effecten die tijdens de evaluatie in NetBox werden vastgesteld: directe detectie van inconsistenties na discovery, volledige correctie van kabelrelaties na discovery met \texttt{NetworkTool}, en uitbreiding van de Ruckus-vSZ-synchronisatie met IP-adressering.
 
 De resultaten ondersteunen daarmee een \textbf{duidelijke richtinggevende conclusie} over effectiviteit binnen deze scope, maar geen statistische generalisatie naar alle sites of alle vendormixen zonder bijkomende metingen op grotere schaal.
 

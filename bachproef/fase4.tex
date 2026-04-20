@@ -352,7 +352,7 @@ if not kabel_bestaat_al_goed:
 
 \subsection{Vendordekking en beperkingen}
 
-De vernieuwde tool ondersteunt operationeel MikroTik, Huawei en Fortinet. Voor Ruckus access points is bijkomend een vSZ API-koppeling voorzien. Via die koppeling kunnen AP's per zone aan een NetBox-site gekoppeld worden met correcte naam, serienummer, MAC-adres, fabrikant en type.
+De vernieuwde tool ondersteunt operationeel MikroTik, Huawei en Fortinet. Voor Ruckus access points is bijkomend een vSZ API-koppeling voorzien. Via die koppeling kunnen AP's per zone aan een NetBox-site gekoppeld worden met correcte naam, serienummer, MAC-adres, fabrikant, type en IP-adres.
 
 \begin{listing}[H]
   \caption{Ruckus vSZ: inventarisdatadict richting NetBox}
@@ -373,9 +373,9 @@ if ap_vlan:
     data["description"] = f"Management VLAN: {ap_vlan}"
 
 # Vervolgens wordt het device aangemaakt of geüpdatet met data,
-# zonder IP-adres-assign via deze vSZ-stap.
+# inclusief IP-adresverwerking via deze vSZ-stap.
   \end{minted}
 \end{listing}
 
-Een belangrijk aandachtspunt is dat het IP-adres van Ruckus AP's via deze vSZ-methode niet betrouwbaar in NetBox kan worden overgenomen. De synchronisatie focust daarom op inventarisatiedata en niet op een sluitende IP-koppeling voor deze vendorflow. Dit sluit aan op de evaluatiebevindingen in fase~5 en de aanbevelingen in fase~6.
+Met de huidige vSZ-koppeling kunnen voor Ruckus AP's naast naam, serienummer, MAC-adres, fabrikant en type ook IP-adressen in NetBox verwerkt worden. Daardoor ondersteunt deze vendorflow zowel inventarisvelden als IP-gerelateerde documentatie.
 

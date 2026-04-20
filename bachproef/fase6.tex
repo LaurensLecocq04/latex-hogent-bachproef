@@ -25,7 +25,7 @@ De aanvullende observatie op de site `Deleers Go4tech` onderstreept bovendien da
 
 \subsection{Kabelrelaties en topologie}
 
-Waar NetBox Discovery/Orb via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via \texttt{NetworkTool} met NetBox API. De evaluatie op site `Ridefort` toont daarbij dat:
+Waar NetBox Discovery met Orb en Diode via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via \texttt{NetworkTool} met NetBox API. De evaluatie op site `Ridefort` toont daarbij dat:
 
 \begin{itemize}
   \item de discrepanties in NetBox al direct zichtbaar werden na het ontdekken van de apparaten; in de baseline waren 3/6 kabelrelaties correct;
@@ -34,11 +34,11 @@ Waar NetBox Discovery/Orb via de standaard discoveryketen de LLDP-gebaseerde rel
 
 Deze bevinding ondersteunt de conclusie dat NetBox Discovery vooral sterk is als \emph{inventarislaag}, terwijl de \emph{relatie-/topologie-invulling} afhankelijk kan zijn van extra brondata en/of uitbreidingen.
 
-\subsection{Aandachtspunten: IP-adressering en datatypes}
+\subsection{Vendor-specifieke datatypes}
 
-Door de toevoeging van de vSZ API-koppeling konden voor Ruckus access points extra inventarisvelden automatisch worden gevuld, waaronder naam, serienummer, MAC-adres, fabrikant en type. Daarmee is de vroegere beperking rond serienummerdata grotendeels weggewerkt voor deze vendorflow.
+Via de vSZ API-koppeling worden voor Ruckus access points inventarisvelden automatisch gevuld, waaronder naam, serienummer, MAC-adres, fabrikant, type en IP-adres.
 
-Een belangrijk aandachtspunt blijft echter het \textbf{IP-adres} van Ruckus access points: via de vSZ-methode kon dit niet betrouwbaar in NetBox worden opgenomen. Hierdoor blijft het eindresultaat sterk op inventarisniveau, maar niet volledig voor alle IP-gerelateerde velden.
+Hierdoor dekt het resultaat in deze flow niet alleen inventaris, maar ook IP-gerelateerde velden voor Ruckus AP's.
 
 In deze evaluatie werden duplicaten vermeden doordat oude AP-records/devices verwijderd werden vóór de discovery. Bij opschaling naar andere sites blijft een \textbf{cleanup}-stap en naming governance echter noodzakelijk om consistentie te garanderen en regressies te vermijden.
 
@@ -62,7 +62,7 @@ De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen `Ri
   \item \textbf{Vraag 5 (bestaande technieken en tools):} de studie situeert NetBox Discovery als open-source optie en positioneert daarnaast Slurp'it als een beloftevolle maar binnen budget en schaal minder haalbare alternatieve tool.
   \item \textbf{Vraag 6 (prestatie van tools):} NetBox Discovery met Diode presteert goed voor inventaris/naamgeving, maar strandt bij LLDP-neighbors/kabelrelaties in de standaard keten. De \texttt{NetworkTool}-aanvulling vult dit effectief aan.
   \item \textbf{Vraag 7 (verbetering):} de evaluatie toont dat AP-namen volledig correct werden na discovery en dat cable connections correct konden worden aangevuld na discovery + \texttt{NetworkTool}. Hierdoor stijgt de bruikbaarheid van NetBox als SSOT voor inventaris en bekabeling.
-  \item \textbf{Vraag 8 (organisatorische processen):} duurzame borging vereist dat de documentatieflow niet enkel gebaseerd is op CSV-import, maar dat discovery en topologie-aanvulling periodiek uitgevoerd en gevalideerd worden, inclusief een cleanup-stap om duplicaten te vermijden en een aanpak voor Ruckus IP-adressering waar nodig.
+  \item \textbf{Vraag 8 (organisatorische processen):} duurzame borging vereist dat de documentatieflow niet enkel gebaseerd is op CSV-import, maar dat discovery en topologie-aanvulling periodiek uitgevoerd en gevalideerd worden, inclusief een cleanup-stap om duplicaten te vermijden.
 \end{itemize}
 
 \section{Aanbevelingen voor Citymesh}
@@ -73,21 +73,21 @@ NetBox Discovery met Diode blijkt in de casus effectief om verouderde device-att
 
 \subsection{Aanbeveling 2: gebruik \texttt{NetworkTool} voor kabelrelaties}
 
-Omdat de standaard Orb/NetBox discovery-flow in deze case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. \texttt{NetworkTool} is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
+Omdat de standaard discoveryflow met Orb en Diode in deze case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. \texttt{NetworkTool} is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
 
 \subsection{Aanbeveling 3: neem cleanup en naming governance op in het proces}
 
 Bij infrastructurele wijzigingen (bv. AP-vervanging) is het essentieel dat oude records niet blijven bestaan met afwijkende namen. Een vooraf gedefinieerde naming-conventie en een cleanup-procedure moeten standaard onderdeel worden van de discovery/correctiecyclus.
 
-\subsection{Aanbeveling 4: plan voor Ruckus IP-adressering}
+\subsection{Aanbeveling 4: borg de vSZ-synchronisatie operationeel}
 
-Voor Ruckus-serienummers biedt de vSZ API inmiddels een bruikbare datastroom. Voor IP-adressering via dezelfde route blijft een bijkomende aanpak nodig. Citymesh kan hiervoor een aanvullende bron of validatiestap voorzien, afhankelijk van device-type en operationele constraints.
+De vSZ API levert nu een bruikbare datastroom voor naam, serienummer, MAC-adres, fabrikant, type en IP-adres. Het is daarom aangewezen om deze synchronisatie structureel op te nemen in de operationele documentatieflow, inclusief periodieke validatie en monitoring.
 
 \section{Reflectie en beperkingen}
 
 De resultaten steunen op een primaire voor/na-casus (`Ridefort`), aangevuld met observaties op bijkomende sites. De analyse in NetBox focust op created/last updated en op de zichtbare correctheid van attributen. Een bredere validatie met volledige voor/na-metingen op meerdere sites zou de generaliseerbaarheid verder verhogen.
 
-Daarnaast is de evaluatie sterk gericht op datavelden en relaties die in de casus relevant bleken (naam, type, cable connections). Voor bepaalde vendor-specifieke velden, in het bijzonder IP-adressering bij Ruckus via vSZ, blijven methodologische beperkingen bestaan omdat niet elke discoverybron dezelfde datavelden volledig en betrouwbaar aanlevert.
+Daarnaast is de evaluatie sterk gericht op datavelden en relaties die in de casus relevant bleken (naam, type, cable connections). Een algemene beperking blijft dat niet elke discoverybron dezelfde datavelden in elke omgeving even volledig aanlevert.
 
 \subsection*{Bedreigingen voor validiteit}
 
