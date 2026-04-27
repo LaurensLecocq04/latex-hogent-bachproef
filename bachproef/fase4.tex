@@ -9,6 +9,8 @@
 
 In dit gedeelte wordt de concrete configuratie van de Orb agent beschreven die gebruikt wordt om discovery-data via Diode naar NetBox te sturen. De belangrijkste configuratie gebeurt in YAML-bestanden, aangevuld met shellscripts die de vereiste omgevingsvariabelen instellen en de agentcontainer starten.
 
+In de onderstaande YAML- en shellfragmenten staat de site-naam in NetBox als \texttt{Oostkamp Ridefort}; in de hoofdtekst wordt deze site kortweg als \emph{Ridefort} aangeduid. Credentials zoals \texttt{DEVICE\_USERNAME}, \texttt{DEVICE\_PASSWORD} en de SNMP-community \texttt{public} dienen in deze listings als \textbf{placeholders} en worden in productie via een secret manager respectievelijk een niet-publieke community vervangen.
+
 \subsection{Voorbeeldconfiguratie voor device discovery}
 
 \begin{listing}[H]

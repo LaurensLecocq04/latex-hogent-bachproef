@@ -21,11 +21,11 @@ De baseline toonde aan dat na de access point-vervanging niet alle relevante att
 
 De evaluatie leert vervolgens dat NetBox Discovery met Diode de \textbf{actualiteit van inventarisdata} snel kan herstellen voor minstens de \textbf{AP-namen}: na discovery stonden alle AP-namen correct. Dit bevestigt dat het discovery-proces in staat is om een deel van de verouderde documentatie effectief te vervangen door data die overeenkomt met de realiteit.
 
-De aanvullende observatie op de site `Deleers Go4tech` onderstreept bovendien dat het probleem niet beperkt blijft tot ``oude'' documentatie. Hoewel de documentatie daar slechts ongeveer twee maanden oud was, werden na herdiscovering toch 3 switches met een incorrect device type geïdentificeerd. Dit toont aan dat automatische discovery ook waardevol is als kwaliteitscontrole, zelfs kort na (handmatige) documentatie.
+De aanvullende observatie op de site \enquote{Deleers Go4tech} onderstreept bovendien dat het probleem niet beperkt blijft tot ``oude'' documentatie. Hoewel de documentatie daar slechts ongeveer twee maanden oud was, werden na herdiscovering toch 3 switches met een incorrect device type geïdentificeerd. Dit toont aan dat automatische discovery ook waardevol is als kwaliteitscontrole, zelfs kort na (handmatige) documentatie.
 
 \subsection{Kabelrelaties en topologie}
 
-Waar NetBox Discovery met Orb en Diode via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via \texttt{NetworkTool} met NetBox API. De evaluatie op site `Ridefort` toont daarbij dat:
+Waar NetBox Discovery met Orb en Diode via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via \texttt{NetworkTool} met NetBox API. De evaluatie op site \enquote{Ridefort} toont daarbij dat:
 
 \begin{itemize}
   \item de discrepanties in NetBox al direct zichtbaar werden na het ontdekken van de apparaten; in de baseline waren 3/6 kabelrelaties correct;
@@ -45,7 +45,7 @@ In deze evaluatie werden duplicaten vermeden doordat oude AP-records/devices ver
 
 \section{Beantwoording van de deelonderzoeksvragen}
 
-De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen `Ridefort` en `Deleers Go4tech`.
+De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen \enquote{Ridefort}, \enquote{Deleers Go4tech}, \enquote{Koninklijke Stallingen} en \enquote{WZC Riethove}.
 
 \subsection*{Probleemdomeinvragen}
 
@@ -61,7 +61,7 @@ De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen `Ri
 \begin{itemize}
   \item \textbf{Vraag 5 (bestaande technieken en tools):} de studie situeert NetBox Discovery als open-source optie en positioneert daarnaast Slurp'it als een beloftevolle maar binnen budget en schaal minder haalbare alternatieve tool.
   \item \textbf{Vraag 6 (prestatie van tools):} NetBox Discovery met Diode presteert goed voor inventaris/naamgeving, maar strandt bij LLDP-neighbors/kabelrelaties in de standaard keten. De \texttt{NetworkTool}-aanvulling vult dit effectief aan.
-  \item \textbf{Vraag 7 (verbetering):} de evaluatie toont dat AP-namen volledig correct werden na discovery en dat cable connections correct konden worden aangevuld na discovery + \texttt{NetworkTool}. Hierdoor stijgt de bruikbaarheid van NetBox als SSOT voor inventaris en bekabeling.
+  \item \textbf{Vraag 7 (verbetering):} de evaluatie toont dat AP-namen, AP-types en kabelrelaties op \enquote{Ridefort} volledig correct werden (3/6 $\rightarrow$ 6/6 voor namen en kabelrelaties, 5/6 $\rightarrow$ 6/6 voor types). Op \enquote{Koninklijke Stallingen} werden alle cable connections correct aangemaakt en bleef de naamgeving consistent. Op \enquote{WZC Riethove} werden alle switch--switch- en switch--router-relaties correct aangelegd en werden 53 van de 70 AP-relaties opgenomen via de 3 online switches; de resterende 17 AP-relaties hangen vast aan één fysiek offline switch en worden bij een volgende discovery aangevuld. Hierdoor stijgt de bruikbaarheid van NetBox als SSOT voor inventaris en bekabeling, met de operationele beschikbaarheid van apparatuur als duidelijke randvoorwaarde.
   \item \textbf{Vraag 8 (organisatorische processen):} duurzame borging vereist dat de documentatieflow niet enkel gebaseerd is op CSV-import, maar dat discovery en topologie-aanvulling periodiek uitgevoerd en gevalideerd worden, inclusief een cleanup-stap om duplicaten te vermijden.
 \end{itemize}
 
@@ -85,7 +85,7 @@ De vSZ API levert nu een bruikbare datastroom voor naam, serienummer, MAC-adres,
 
 \section{Reflectie en beperkingen}
 
-De resultaten steunen op een primaire voor/na-casus (`Ridefort`), aangevuld met observaties op bijkomende sites. De analyse in NetBox focust op created/last updated en op de zichtbare correctheid van attributen. Een bredere validatie met volledige voor/na-metingen op meerdere sites zou de generaliseerbaarheid verder verhogen.
+De resultaten steunen op een primaire voor/na-casus (\enquote{Ridefort}), aangevuld met voor/na-observaties op \enquote{Koninklijke Stallingen} en \enquote{WZC Riethove} en een herdiscovery-observatie op \enquote{Deleers Go4tech}. De analyse in NetBox focust op created/last updated en op de zichtbare correctheid van attributen. Een bredere validatie met volledige voor/na-metingen op nog meer sites en vendormixen zou de generaliseerbaarheid verder verhogen.
 
 Daarnaast is de evaluatie sterk gericht op datavelden en relaties die in de casus relevant bleken (naam, type, cable connections). Een algemene beperking blijft dat niet elke discoverybron dezelfde datavelden in elke omgeving even volledig aanlevert.
 

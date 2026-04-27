@@ -9,7 +9,7 @@ Dit hoofdstuk beschrijft de evaluatie van NetBox Discovery met Diode en de bijho
 
 \section{Evaluatiemethode}
 
-De evaluatie gebeurde in een casestudy-context. Concreet werd de bestaande NetBox-inhoud voor de site `Ridefort` beschouwd als baseline, zie Hoofdstuk~\ref{ch:fase3}. Daarna werden NetBox Discovery met Diode en de aanvullende \texttt{NetworkTool}-werking uit Hoofdstuk~\ref{ch:fase4} ingezet om:
+De evaluatie gebeurde in een casestudy-context. Concreet werd de bestaande NetBox-inhoud voor de site \enquote{Ridefort} beschouwd als baseline, zie Hoofdstuk~\ref{ch:fase3}. Daarna werden NetBox Discovery met Diode en de aanvullende \texttt{NetworkTool}-werking uit Hoofdstuk~\ref{ch:fase4} ingezet om:
 
 \begin{itemize}
   \item de NetBox-inventaris te vernieuwen op basis van wat de discovery daadwerkelijk ziet;
@@ -40,17 +40,11 @@ Om interpretatieverschillen te vermijden, zijn de belangrijkste indicatoren als 
   \item \textbf{Aandachtspunt:} een relevant dataveld kan niet automatisch via de gebruikte discoveryketen aangeleverd worden.
 \end{itemize}
 
-Deze definities werden consequent toegepast op baseline en eindtoestand in de casus `Ridefort`.
+Deze definities werden consequent toegepast op baseline en eindtoestand in de casus \enquote{Ridefort}.
 
-\section{Evaluatie-observatie op site `Ridefort`}
+\section{Evaluatie-observatie op site \enquote{Ridefort}}
 
-In de casus `Ridefort` was de bestaande NetBox-documentatie uit 2020 opgebouwd en werd in 2022 een access point-vervanging uitgevoerd. Bij de evaluatie werd vervolgens vastgesteld dat de fouten/inconsistenties in de vorige documentatie niet verborgen bleven: \textbf{na het ontdekken van de apparaten kon direct in NetBox gezien worden dat er afwijkingen waren}. Deze afwijkingen vielen in dezelfde categorieën als in de baseline:
-
-\begin{itemize}
-  \item \textbf{AP-namen:} een deel van de AP's had niet de correcte naam door verouderde of foutieve attributen.
-  \item \textbf{AP-types:} een deel van de AP's had niet het correcte type na de infrastructuurwijziging.
-  \item \textbf{Kabelrelaties:} kabelrelaties naar de switch waren incompleet; slechts een subset van de verwachte kabelverbindingen was correct aanwezig.
- \end{itemize}
+In de casus \enquote{Ridefort} was de bestaande NetBox-documentatie uit 2020 opgebouwd en werd in 2022 een access point-vervanging uitgevoerd. Bij de evaluatie bleek dat de fouten en inconsistenties uit de baseline (zie Hoofdstuk~\ref{ch:fase3}) niet verborgen bleven: \textbf{na het ontdekken van de apparaten werden de afwijkingen op AP-namen, AP-types en kabelrelaties direct zichtbaar in NetBox}. Het discovery-proces fungeerde daardoor niet alleen als correctiemechanisme, maar ook als detectiemechanisme voor verouderde documentatie.
 
 Deze directe zichtbaarheid vormt een meetbaar effect in de context van \emph{actualiteit}: het discovery-proces maakt inconsistenties sneller zichtbaar en vermindert daardoor de tijd die nodig is om te detecteren waar de documentatie afwijkt van de realiteit.
 
@@ -65,7 +59,7 @@ Uit het evaluatiegedrag volgt dat NetBox Discovery/Orb vooral effectief is voor 
 
 Voor Ruckus access points werd een bijkomende vSZ API-stap gebruikt. Daarmee konden AP's per zone aan een site in NetBox gekoppeld worden met correcte naam, serienummer, MAC-adres, fabrikant, type en IP-adres.
 
-\section{Resultaat na NetBox Discovery en NetworkTool voor `Ridefort`}
+\section{Resultaat na NetBox Discovery en NetworkTool voor \enquote{Ridefort}}
 
 Voorafgaand aan NetBox Discovery werden oude AP-records/devices verwijderd, zodat duplicaten vermeden werden. Na uitvoering van NetBox Discovery stonden de \textbf{AP-namen} correct.
 
@@ -77,55 +71,69 @@ Voor de Ruckus-vSZ-flow worden IP-adressen mee verwerkt in NetBox, zodat dit dat
 
 \begin{table}[H]
   \centering
-  \caption{Samenvatting van de belangrijkste voor/na resultaten voor de site `Ridefort`}
+  \caption{Samenvatting van de belangrijkste voor/na resultaten voor de site \enquote{Ridefort}}
   \label{tab:ridefort-voor-na}
   \begin{tabular}{p{0.46\linewidth} p{0.22\linewidth} p{0.22\linewidth}}
     \toprule
     \textbf{Indicator} & \textbf{Baseline} & \textbf{Na discovery + NetworkTool} \\
     \midrule
     Correcte AP-namen in NetBox & 3/6 correct & 6/6 correct \\
-    Correcte AP-types in NetBox & 5/6 correct & correct \\
+    Correcte AP-types in NetBox & 5/6 correct & 6/6 correct \\
     Kabelrelaties AP $\rightarrow$ switch & 3/6 correct & 6/6 correct \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-De Ruckus vSZ-uitbreiding werd afzonderlijk geëvalueerd als vendor-specifieke aanvulling op de basisflow, en maakt daarom geen deel uit van deze `Ridefort`-voor/na-tabel. Voor die uitbreiding geldt dat naam, serienummer, MAC-adres, fabrikant, type en IP-adres automatisch kunnen worden overgenomen.
+De Ruckus vSZ-uitbreiding werd afzonderlijk geëvalueerd als vendor-specifieke aanvulling op de basisflow, en maakt daarom geen deel uit van deze \enquote{Ridefort}-voor/na-tabel. Voor die uitbreiding geldt dat naam, serienummer, MAC-adres, fabrikant, type en IP-adres automatisch kunnen worden overgenomen.
 
-\section{Extra observatie: site `Deleers Go4tech`}
+\section{Extra observatie: site \enquote{Deleers Go4tech}}
 
-Naast `Ridefort` werd ook een grotere site ontdekt: `Deleers Go4tech`. Deze site omvat 11 switches, 1 router, 1 Fortinet firewall en 48 access points. De bestaande documentatie in NetBox was ongeveer twee maanden oud. Desondanks werd bij het opnieuw uitvoeren van discovery vastgesteld dat \textbf{3 switches} een \textbf{verkeerd type} hadden in NetBox.
+Naast \enquote{Ridefort} werd ook een grotere site ontdekt: \enquote{Deleers Go4tech}. Deze site omvat 11 switches, 1 router, 1 Fortinet firewall en 48 access points. De bestaande documentatie in NetBox was ongeveer twee maanden oud. Desondanks werd bij het opnieuw uitvoeren van discovery vastgesteld dat \textbf{3 switches} een \textbf{verkeerd type} hadden in NetBox.
 
 Deze observatie is belangrijk omdat ze aantoont dat documentatie zelfs wanneer ze recent is opgebouwd alsnog fouten kan bevatten. Door apparaten periodiek opnieuw te ontdekken worden afwijkingen sneller zichtbaar en wordt de menselijke factor, zoals vergeten updates of foutieve typekeuze, gedeeltelijk uit de documentatiestroom gehaald.
 
-\section{Voor/na-kader in voorbereiding: site `Koninklijke Stallingen`}
+\section{Voor/na-resultaten: site \enquote{Koninklijke Stallingen}}
 
-Naast de reeds uitgewerkte casussen wordt ook de site `Koninklijke Stallingen` opgenomen in de evaluatie. Voor deze site is de baseline al vastgesteld; de na-meting na discovery wordt toegevoegd zodra de discovery- en synchronisatiestappen volledig zijn uitgevoerd.
+Naast de reeds uitgewerkte casussen werd ook de site \enquote{Koninklijke Stallingen} opgenomen in de evaluatie. Voor deze site zijn baseline en na-meting beschikbaar.
 
 \subsection{Baseline, reeds vastgesteld}
 
-De site `Koninklijke Stallingen` bevat 1 MikroTik-router, 2 Huawei-switches en 5 Ruckus access points. In de baseline werden volgende afwijkingen vastgesteld:
+De site \enquote{Koninklijke Stallingen} bevat 1 MikroTik-router, 2 Huawei-switches en 5 Ruckus access points. In de baseline werden volgende observaties gedaan:
 \begin{itemize}
-  \item inconsistente device-naamgeving;
-  \item gebruik van twee verschillende Ruckus-types in de documentatie;
+  \item device-naamgeving was al consistent met de effectieve namen op de apparaten;
+  \item de 5 AP's bestaan uit twee verschillende Ruckus-types, wat een correcte weergave is van de feitelijke samenstelling van de site (geen documentatiefout);
   \item geen gedocumenteerde cable connections.
 \end{itemize}
 
-\subsection{Na-meting, in te vullen na discovery}
+\subsection{Na-meting na discovery en synchronisatie}
 
-Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \texttt{NetworkTool} worden onderstaande indicatoren ingevuld:
+Na uitvoering van NetBox Discovery en aanvullende verwerking via \texttt{NetworkTool} werden onderstaande observaties bevestigd:
 \begin{itemize}
-  \item correcte device-naamgeving: \texttt{[in te vullen]};
-  \item correctheid van device-types: \texttt{[in te vullen]};
-  \item correcte kabelrelaties: \texttt{[in te vullen]};
-  \item overige aandachtspunten binnen de sitecontext: \texttt{[in te vullen]}.
+  \item \textbf{correcte device-naamgeving:} consistent en in overeenstemming met de feitelijke namen op de apparaten;
+  \item \textbf{correcte kabelrelaties:} alle cable connections werden aangemaakt en staan correct in NetBox;
+  \item \textbf{overige aandachtspunten:} geen bijkomende afwijkingen gerapporteerd binnen deze sitecontext.
 \end{itemize}
 
-Deze structuur laat toe om dezelfde voor/na-logica als in `Ridefort` te hanteren en de vergelijkbaarheid tussen sites te verhogen.
+\begin{table}[H]
+  \centering
+  \caption{Voor/na-resultaten voor de site \enquote{Koninklijke Stallingen}}
+  \label{tab:ks-voor-na}
+  \begin{tabular}{p{0.46\linewidth} p{0.22\linewidth} p{0.22\linewidth}}
+    \toprule
+    \textbf{Indicator} & \textbf{Baseline} & \textbf{Na discovery + NetworkTool} \\
+    \midrule
+    Device-naamgeving & consistent & consistent \\
+    AP-types in NetBox & correct (heterogeen, by design) & correct (heterogeen, by design) \\
+    Cable connections gedocumenteerd & 0 & alle correct \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
-\section{Voor/na-kader in voorbereiding: site `WZC Riethove`}
+Deze case bevestigt dat de discoveryflow ook op sites met reeds correcte naamgeving toegevoegde waarde heeft, met name door de topologie/documentatie van kabelrelaties volledig te maken.
 
-De site `WZC Riethove` wordt eveneens opgenomen in de evaluatie met hetzelfde voor/na-principe. De baseline is reeds vastgesteld; de na-meting wordt toegevoegd na uitvoering van discovery en synchronisatie.
+\section{Voor/na-resultaten: site \enquote{WZC Riethove}}
+
+De site \enquote{WZC Riethove} werd eveneens opgenomen in de evaluatie met hetzelfde voor/na-principe. De baseline is vastgesteld en de na-meting werd uitgevoerd na discovery en synchronisatie.
 
 \subsection{Baseline, reeds vastgesteld}
 
@@ -135,21 +143,43 @@ De site bevat 1 router, 4 switches en 70 access points. In de baseline werd vast
   \item er geen gedocumenteerde cable connections aanwezig zijn.
 \end{itemize}
 
-\subsection{Na-meting, in te vullen na discovery}
+\subsection{Na-meting na discovery en synchronisatie}
 
-Na uitvoering van NetBox Discovery en eventuele aanvullende verwerking via \texttt{NetworkTool} worden onderstaande indicatoren ingevuld:
+Na uitvoering van NetBox Discovery en aanvullende verwerking via \texttt{NetworkTool} werden volgende resultaten vastgesteld:
 \begin{itemize}
-  \item correcte device-naamgeving: \texttt{[in te vullen]};
-  \item correctheid van device-types: \texttt{[in te vullen]};
-  \item correcte kabelrelaties: \texttt{[in te vullen]};
-  \item overige aandachtspunten binnen de sitecontext: \texttt{[in te vullen]}.
+  \item \textbf{switchbereikbaarheid:} 3 van de 4 switches waren online tijdens de meting; 1 switch was \textbf{fysiek offline} en kon daardoor niet gediscovered worden;
+  \item \textbf{infrastructuurrelaties:} alle switch--switch- en switch--router-kabelrelaties werden correct aangemaakt in NetBox;
+  \item \textbf{AP-relaties naar online switches:} 53/70 AP's konden via de 3 online switches gekoppeld worden in NetBox;
+  \item \textbf{resterende lacune:} 17/70 AP's konden in deze run niet gekoppeld worden, omdat de bijhorende switch fysiek offline was; deze relaties komen er bij in een volgende discovery zodra die switch terug operationeel is.
 \end{itemize}
 
-Door deze case mee op te nemen kan worden nagegaan of de meerwaarde van discovery ook duidelijk is in sites waar naamgeving al goed is, maar topologiedata onvolledig blijft.
+\begin{table}[H]
+  \centering
+  \caption{Voor/na-resultaten voor de site \enquote{WZC Riethove}}
+  \label{tab:wzc-voor-na}
+  \begin{tabular}{p{0.46\linewidth} p{0.22\linewidth} p{0.22\linewidth}}
+    \toprule
+    \textbf{Indicator} & \textbf{Baseline} & \textbf{Na discovery + NetworkTool} \\
+    \midrule
+    Device-naamgeving & consistent & consistent \\
+    Bereikbare switches & n.v.t. & 3/4 online (1 fysiek offline) \\
+    Switch--switch \& switch--router relaties & 0 & alle correct \\
+    AP-kabelrelaties in NetBox & 0/70 & 53/70 (17 niet bereikbaar) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Door deze case mee op te nemen wordt zichtbaar dat de meerwaarde van discovery op topologie sterk samenhangt met de operationele beschikbaarheid van netwerkcomponenten tijdens de meting: voor alle bereikbare apparatuur werd de bekabeling correct aangelegd, terwijl de niet-bereikbare apparatuur een duidelijk afgebakende lacune oplevert die opgelost wordt zodra die switch terug online komt.
 
 \section{Resultaatduiding}
 
-Voor een volledige kwantitatieve voor-na vergelijking is bijkomende vastlegging nodig, bijvoorbeeld exacte aantallen velden en gecorrigeerde relaties. In dit hoofdstuk ligt de focus daarom op de casusspecifieke effecten die tijdens de evaluatie in NetBox werden vastgesteld: directe detectie van inconsistenties na discovery, volledige correctie van kabelrelaties na discovery met \texttt{NetworkTool}, en uitbreiding van de Ruckus-vSZ-synchronisatie met IP-adressering.
+De evaluatie levert vier complementaire bevindingen op over de bestudeerde sites:
+\begin{itemize}
+  \item op \enquote{Ridefort} werd de NetBox-documentatie volledig hersteld op de drie geëvalueerde indicatoren (AP-namen, AP-types en kabelrelaties allen 6/6 correct na discovery met \texttt{NetworkTool});
+  \item op \enquote{Koninklijke Stallingen} werden de ontbrekende cable connections volledig aangemaakt, terwijl de naamgeving consistent bleef;
+  \item op \enquote{WZC Riethove} werden alle switch--switch- en switch--router-relaties correct aangemaakt en werden 53/70 AP-relaties aangelegd via de 3 online switches; de resterende 17 AP-relaties hingen vast aan een fysiek offline switch en zullen na herstel via een volgende discovery aangevuld worden;
+  \item op \enquote{Deleers Go4tech} toonde herdiscovery aan dat ook recent opgebouwde documentatie nog vendor-/typefouten kan bevatten en motiveert dit periodieke herdiscovery als kwaliteitscontrole.
+\end{itemize}
 
 De resultaten ondersteunen daarmee een \textbf{duidelijke richtinggevende conclusie} over effectiviteit binnen deze scope, maar geen statistische generalisatie naar alle sites of alle vendormixen zonder bijkomende metingen op grotere schaal.
 

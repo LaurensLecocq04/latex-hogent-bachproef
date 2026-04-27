@@ -43,7 +43,7 @@ NetBox Discovery werkt door middel van discovery jobs die periodiek worden uitge
 \begin{itemize}
   \item \textbf{SNMP-discovery:} Via Simple Network Management Protocol (SNMP) worden netwerkapparaten bevraagd om informatie te verzamelen over apparaten, interfaces, en configuraties.
   \item \textbf{NMAP-network-scanning:} De network-discovery backend gebruikt NMAP om targets (bv. IP-adressen, IP-ranges en subnets) te scannen en zo live hosts en bijhorende IP-informatie te identificeren.
-  \item \textbf{Koppeling via workers/orkestratie:} NetBox Discovery orkestreert discovery-jobs die door workers worden uitgevoerd. In deze bachelorproef gebeurt die discovery-orkestratie in combinatie met Orb/Diode.
+  \item \textbf{Koppeling via workers/orkestratie:} NetBox Discovery orkestreert discovery-jobs die door workers worden uitgevoerd. In deze bachelorproef gebeurt die discovery-orkestratie in combinatie met Orb/Diode.\autocite{DiodeDocs,NetBoxDiodeAgent}
 \end{itemize}
 
 Wanneer NetBox Discovery een apparaat ontdekt, wordt automatisch gecontroleerd of dit apparaat al bestaat in NetBox. Indien het apparaat nog niet bestaat, wordt het automatisch aangemaakt met de verzamelde informatie. Bestaande apparaten worden bijgewerkt met nieuwe informatie, waardoor de documentatie actueel blijft.
