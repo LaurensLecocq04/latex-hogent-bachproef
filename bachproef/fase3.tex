@@ -5,7 +5,7 @@
 \chapter{\IfLanguageName{dutch}{Baselinemetingen en implementatievoorbereiding}{Baseline measurements and implementation preparation}}%
 \label{ch:fase3}
 
-In dit hoofdstuk wordt de baseline geschetst van de huidige kwaliteit van de netwerkdocumentatie in NetBox vóór de implementatie van de automatische discoveryflow. De baseline is gebaseerd op wat voorafgaand aan de pilot en implementatie teruggevonden werd in NetBox voor de site \enquote{Ridefort} van Citymesh.
+In dit hoofdstuk wordt de baseline geschetst van de huidige kwaliteit van de netwerkdocumentatie in NetBox vóór de implementatie van de automatische discoveryflow. De baseline is gebaseerd op wat voorafgaand aan de pilot en implementatie teruggevonden werd in NetBox voor de site Ridefort van Citymesh.
 
 \section{Dataverzameling en afbakening}
 
@@ -19,11 +19,11 @@ De baseline werd opgesteld door de relevante devices in NetBox te bekijken en de
 
 Omdat dit een casestudie is, is de baseline primair beschrijvend en bedoeld om de aard van het probleem van veroudering en incomplete kabelrelaties te concretiseren. Voor de kwantificatie van effecten door de implementatie wordt in fase~5 een aparte evaluatiemeting uitgevoerd.
 
-\section{Primaire baselinecase: \enquote{Ridefort}}
+\section{Primaire baselinecase: Ridefort}
 
 \subsection{Historiek van de site}
 
-Voor de site \enquote{Ridefort} werd de NetBox-inhoud opgebouwd in \textbf{2020}. Op dat moment werden de relevante \textbf{devices}, namelijk AP's, switch en router, gedocumenteerd in NetBox. In \textbf{2022} vonden er vervolgens \textbf{wijzigingen} plaats aan de draadloze infrastructuur: de access points werden vervangen.
+Voor de site Ridefort werd de NetBox-inhoud opgebouwd in \textbf{2020}. Op dat moment werden de relevante \textbf{devices}, namelijk AP's, switch en router, gedocumenteerd in NetBox. In \textbf{2022} vonden er vervolgens \textbf{wijzigingen} plaats aan de draadloze infrastructuur: de access points werden vervangen.
 
 Op basis van het inspecteren van de apparaten in NetBox, met focus op de velden \emph{created} en \emph{last updated}, werd vastgesteld dat na de AP-vervanging in 2022 een deel van de gewijzigde toestand niet volledig en niet consistent in NetBox was aangepast. Voor de 6 access points werd het volgende vastgesteld:
 
@@ -42,18 +42,18 @@ De bovenstaande observaties vertalen zich naar concrete baseline-indicatoren, in
 \begin{itemize}
   \item \textbf{Aantal verouderde items:} 3/6 AP's met ontbrekende of verouderde kabelconnecties, plus deels incorrecte naamgeving en in beperkte mate type na de AP-vervanging.
   \item \textbf{Inconsistenties/foutgraad:} niet alle velden, vooral naam, type en kabelrelaties, waren synchroon met de vernieuwde realiteit.
-  \item \textbf{Arbeidsintuïtie en effort:} het documenteren van een kleine site zoals \enquote{Ridefort} kost in de praktijk ongeveer \textbf{een half uur} wanneer er in het begin geen fouten in zitten. Wanneer wijzigingen achteraf vergeten worden, bijvoorbeeld na AP-vervanging, neemt het correctiewerk toe doordat beheerders opnieuw moeten zoeken naar ontbrekende aanpassingen en kabelrelaties opnieuw moeten ingeven of herimporteren.
+  \item \textbf{Arbeidsintuïtie en effort:} het documenteren van een kleine site zoals Ridefort kost in de praktijk ongeveer \textbf{een half uur} wanneer er in het begin geen fouten in zitten. Wanneer wijzigingen achteraf vergeten worden, bijvoorbeeld na AP-vervanging, neemt het correctiewerk toe doordat beheerders opnieuw moeten zoeken naar ontbrekende aanpassingen en kabelrelaties opnieuw moeten ingeven of herimporteren.
 \end{itemize}
 
 \section{Aanvullende baselinecases}
 
-\subsection{\enquote{Deleers Go4tech}}
+\subsection{Deleers Go4tech}
 
-Om de bevindingen uit \enquote{Ridefort} te contextualiseren, werd later ook een grotere site gedetecteerd: \enquote{Deleers Go4tech} met 11 switches, 1 router, 1 Fortinet firewall en 48 access points. Hoewel de NetBox-documentatie daar slechts ongeveer twee maanden oud was, bleken na herdiscovering 3 switches een incorrect type te hebben in NetBox. Dit illustreert dat fouten niet enkel ontstaan door oude documentatie, maar ook door de menselijke factor bij initiële input, en motiveert het belang van periodieke discovery als kwaliteitscontrole.
+Om de bevindingen uit Ridefort te contextualiseren, werd later ook een grotere site gedetecteerd: Deleers Go4tech met 11 switches, 1 router, 1 Fortinet firewall en 48 access points. Hoewel de NetBox-documentatie daar slechts ongeveer twee maanden oud was, bleken na herdiscovering 3 switches een incorrect type te hebben in NetBox. Dit illustreert dat fouten niet enkel ontstaan door oude documentatie, maar ook door de menselijke factor bij initiële input, en motiveert het belang van periodieke discovery als kwaliteitscontrole.
 
-\subsection{\enquote{Koninklijke Stallingen}}
+\subsection{Koninklijke Stallingen}
 
-Naast \enquote{Ridefort} en \enquote{Deleers Go4tech} wordt de site \enquote{Koninklijke Stallingen} opgenomen om de baseline-observaties verder te verbreden. Voor deze site is de \textbf{baseline} al beschikbaar; de \textbf{na-meting na discovery} volgt in een volgende stap van het onderzoek.
+Naast Ridefort en Deleers Go4tech wordt de site Koninklijke Stallingen opgenomen om de baseline-observaties verder te verbreden. Voor deze site is de \textbf{baseline} al beschikbaar; de \textbf{na-meting na discovery} volgt in een volgende stap van het onderzoek.
 
 \subsubsection{Sitesamenstelling}
 
@@ -69,15 +69,15 @@ De site bevat:
 Op eerste inspectie in NetBox werden volgende observaties gedaan:
 \begin{itemize}
   \item \textbf{Consistente naamgeving:} device-benamingen zijn op deze site al in lijn met de gebruikte conventie en met de namen op de fysieke apparaten;
-  \item \textbf{Heterogene AP-mix (by design):} de 5 access points bestaan uit twee verschillende Ruckus-types; dit is geen documentatiefout maar een feitelijke samenstelling van de site die ook in NetBox correct dient weergegeven te worden;
+  \item \textbf{Twee Ruckus-types:} de 5 access points bestaan uit twee verschillende Ruckus-types; dit is geen documentatiefout maar de feitelijke samenstelling van de site;
   \item \textbf{Ontbrekende topologie:} er zijn momenteel geen cable connections gedocumenteerd.
 \end{itemize}
 
 Deze baseline is relevant omdat ze opnieuw de nood aan topologie-aanvulling zichtbaar maakt in een sitecontext waar naamgeving al correct is. In fase~5 wordt deze site aangevuld met een voor/na-vergelijking zodra de discovery- en synchronisatiestappen uitgevoerd zijn.
 
-\subsection{\enquote{WZC Riethove}}
+\subsection{WZC Riethove}
 
-Een bijkomende site die in de baselinefase is opgenomen, is \enquote{WZC Riethove}. Ook hier is de baseline reeds gekend en wordt de na-meting toegevoegd zodra discovery en synchronisatie zijn afgerond.
+Een bijkomende site die in de baselinefase is opgenomen, is WZC Riethove. Ook hier is de baseline reeds gekend en wordt de na-meting toegevoegd zodra discovery en synchronisatie zijn afgerond.
 
 \subsubsection{Sitesamenstelling}
 
