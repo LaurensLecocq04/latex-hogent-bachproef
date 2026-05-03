@@ -9,10 +9,10 @@ Dit hoofdstuk beschrijft de methodologie die gebruikt wordt om de onderzoeksvrag
 
 \section{Onderzoeksopzet}
 
-Dit onderzoek volgt een \textbf{praktijkgerichte casestudy-opzet} met een combinatie van:
+Dit onderzoek volgt een \emph{praktijkgerichte casestudy-opzet} met een combinatie van:
 \begin{itemize}
-  \item \textbf{kwalitatieve dataverzameling}: gesprekken met netwerkbeheerders, observaties van de bestaande werkwijze en analyse van implementatielogs (zie \S\ref{sec:kwalitatieve-data});
-  \item \textbf{gerichte voor/na-metingen}: correctheid van device-attributen en kabelrelaties in NetBox vóór en na de toepassing van NetBox Discovery, op vier sites met verschillende profielen (zie \S\ref{sec:operationalisering}).
+  \item \emph{kwalitatieve dataverzameling}: gesprekken met netwerkbeheerders, observaties van de bestaande werkwijze en analyse van implementatielogs (zie \S\ref{sec:kwalitatieve-data});
+  \item \emph{gerichte voor/na-metingen}: correctheid van device-attributen en kabelrelaties in NetBox vóór en na de toepassing van NetBox Discovery, op vier sites met verschillende profielen (zie \S\ref{sec:operationalisering}).
 \end{itemize}
 
 De keuze voor een casestudy is verantwoord omdat de onderzoeksvraag contextafhankelijk is: de bruikbaarheid van automatische discovery hangt af van de bestaande processen, de toolketen en de vendor-mix binnen Citymesh. Het doel is niet om een universele effectgrootte te claimen, maar om in een realistische operationele setting te bepalen welke verbetering haalbaar is, waar de grenzen liggen en welke procesaanpassingen nodig zijn voor duurzame borging.
@@ -20,7 +20,7 @@ De keuze voor een casestudy is verantwoord omdat de onderzoeksvraag contextafhan
 \section{Kwalitatieve dataverzameling}
 \label{sec:kwalitatieve-data}
 
-Om de huidige werkwijze, pijnpunten en verwachtingen rond netwerkdocumentatie bij Citymesh in beeld te brengen, werden in de loop van het onderzoek meerdere gesprekken gevoerd met de \textbf{Network Engineer} en \textbf{cosupervisor} bij Citymesh, Tom Pirlet, en met andere netwerkbeheerders die in de praktijk met NetBox werken. De gesprekken waren \textbf{semi-gestructureerd}: er werd vertrokken van een vooraf bepaalde lijst van thema's en kernvragen, maar er was bewust ruimte om door te vragen op concrete voorbeelden uit de operationele praktijk. Naast deze gesprekken werden ook observaties gedaan tijdens het uitvoeren van imports en het inspecteren van bestaande NetBox-data, en werd de output van implementatielogs (Orb agent, Diode, NetBox API) gebruikt om de bevindingen te onderbouwen.
+Om de huidige werkwijze, pijnpunten en verwachtingen rond netwerkdocumentatie bij Citymesh in beeld te brengen, werden in de loop van het onderzoek meerdere gesprekken gevoerd met de \emph{Network Engineer} en \emph{cosupervisor} bij Citymesh, Tom Pirlet, en met andere netwerkbeheerders die in de praktijk met NetBox werken. De gesprekken waren \emph{semi-gestructureerd}: er werd vertrokken van een vooraf bepaalde lijst van thema's en kernvragen, maar er was bewust ruimte om door te vragen op concrete voorbeelden uit de operationele praktijk. Naast deze gesprekken werden ook observaties gedaan tijdens het uitvoeren van imports en het inspecteren van bestaande NetBox-data, en werd de output van implementatielogs (Orb agent, Diode, NetBox API) gebruikt om de bevindingen te onderbouwen.
 
 \subsection{Thema's en gespreksonderwerpen}
 
@@ -64,26 +64,26 @@ De gesprekken werden opgebouwd rond vijf thema's, met telkens enkele leidende vr
 
 \subsection{Wat de gesprekken concreet hebben opgeleverd}
 
-De gesprekken hebben drie soorten input opgeleverd voor dit onderzoek. Ten eerste werd het beeld van de \textbf{pijnpunten} gevalideerd en aangescherpt; de vaststelling dat een NetBox-record na een AP-vervanging vaak niet wordt bijgewerkt, kwam meermaals expliciet ter sprake en wordt verder uitgewerkt in Hoofdstuk~\ref{ch:context}. Ten tweede werden de \textbf{requirements} voor de oplossing concreter, onder meer rond vendor-dekking (MikroTik, Huawei, RUCKUS, Fortinet) en rond de noodzaak van een \emph{cleanup}-stap vóór herdiscovery. Ten derde werden enkele \textbf{operationele randvoorwaarden} duidelijk, zoals het gebruik van OAuth2-credentials, de noodzaak om geen plain-text wachtwoorden in YAML-bestanden te zetten en het feit dat agents per site moeten kunnen draaien. Deze input is verwerkt in de implementatie (Hoofdstuk~\ref{ch:implementatie}) en in de aanbevelingen voor Citymesh (Hoofdstuk~\ref{ch:analyse}).
+De gesprekken hebben drie soorten input opgeleverd voor dit onderzoek. Ten eerste werd het beeld van de \emph{pijnpunten} gevalideerd en aangescherpt; de vaststelling dat een NetBox-record na een AP-vervanging vaak niet wordt bijgewerkt, kwam meermaals expliciet ter sprake en wordt verder uitgewerkt in Hoofdstuk~\ref{ch:context}. Ten tweede werden de \emph{requirements} voor de oplossing concreter, onder meer rond vendor-dekking (MikroTik, Huawei, RUCKUS, Fortinet) en rond de noodzaak van een \emph{cleanup}-stap vóór herdiscovery. Ten derde werden enkele \emph{operationele randvoorwaarden} duidelijk, zoals het gebruik van OAuth2-credentials, de noodzaak om geen plain-text wachtwoorden in YAML-bestanden te zetten en het feit dat agents per site moeten kunnen draaien. Deze input is verwerkt in de implementatie (Hoofdstuk~\ref{ch:implementatie}) en in de aanbevelingen voor Citymesh (Hoofdstuk~\ref{ch:analyse}).
 
 \section{Operationalisering van de kernindicatoren}
 \label{sec:operationalisering}
 
 Om de centrale onderzoeksvraag toetsbaar te maken, werden de volgende kernindicatoren vooraf vastgelegd:
 \begin{itemize}
-  \item \textbf{Actualiteit}: mate waarin NetBox-data overeenkomt met de actuele infrastructuurtoestand (geverifieerd via discovery-output);
-  \item \textbf{Correctheid van inventaris}: juistheid van device-attributen, in het bijzonder \emph{naam} en \emph{device type}, gemeten als ``aantal correct / totaal'';
-  \item \textbf{Volledigheid van topologie}: aanwezigheid en correctheid van kabelrelaties tussen switches onderling, tussen switches en routers en tussen access points en hun upstream-switch, opnieuw gemeten als ``aantal correct / totaal'';
-  \item \textbf{Resterende manuele last}: datavelden of relaties die ook na discovery nog manueel of via aanvullende verwerking met \texttt{NetworkTool} verwerkt moeten worden.
+  \item \emph{Actualiteit}: mate waarin NetBox-data overeenkomt met de actuele infrastructuurtoestand (geverifieerd via discovery-output);
+  \item \emph{Correctheid van inventaris}: juistheid van device-attributen, in het bijzonder \emph{naam} en \emph{device type}, gemeten als ``aantal correct / totaal'';
+  \item \emph{Volledigheid van topologie}: aanwezigheid en correctheid van kabelrelaties tussen switches onderling, tussen switches en routers en tussen access points en hun upstream-switch, opnieuw gemeten als ``aantal correct / totaal'';
+  \item \emph{Resterende manuele last}: datavelden of relaties die ook na discovery nog manueel of via aanvullende verwerking met \texttt{NetworkTool} verwerkt moeten worden.
 \end{itemize}
 
 Deze indicatoren worden in de casestudy (Hoofdstuk~\ref{ch:casestudy}) per site beoordeeld via een voor/na-vergelijking. De casestudy omvat vier sites met opzettelijk verschillende profielen, zodat de bevindingen niet afhankelijk zijn van \'e\'en specifieke configuratie:
 
 \begin{itemize}
-  \item \textbf{Ridefort}: kleinere site (1 router, 1 switch, 6 AP's) waarvan de NetBox-documentatie uit 2020 dateert en waar in 2022 een AP-vervanging gebeurde. Primaire voor/na-casus.
-  \item \textbf{Deleers Go4tech}: grotere site (1 router, 1 firewall, 11 switches, 48 AP's) met relatief recente documentatie (\textasciitilde{}2 maanden oud). Gebruikt om de waarde van \emph{periodieke} discovery te toetsen op recent gedocumenteerde data.
-  \item \textbf{Koninklijke Stallingen}: kleinere site (1 router, 2 switches, 5 AP's) met al consistente naamgeving maar zonder gedocumenteerde kabelrelaties.
-  \item \textbf{WZC Riethove}: grote site (1 router, 4 switches, 70 AP's) met consistente naamgeving en zonder gedocumenteerde kabelrelaties; ook bedoeld om het effect van een fysiek offline switch op de meting te observeren.
+  \item \emph{Ridefort}: kleinere site (1 router, 1 switch, 6 AP's) waarvan de NetBox-documentatie uit 2020 dateert en waar in 2022 een AP-vervanging gebeurde. Primaire voor/na-casus.
+  \item \emph{Deleers Go4tech}: grotere site (1 router, 1 firewall, 11 switches, 48 AP's) met relatief recente documentatie (\textasciitilde{}2 maanden oud). Gebruikt om de waarde van \emph{periodieke} discovery te toetsen op recent gedocumenteerde data.
+  \item \emph{Koninklijke Stallingen}: kleinere site (1 router, 2 switches, 5 AP's) met al consistente naamgeving maar zonder gedocumenteerde kabelrelaties.
+  \item \emph{WZC Riethove}: grote site (1 router, 4 switches, 70 AP's) met consistente naamgeving en zonder gedocumenteerde kabelrelaties; ook bedoeld om het effect van een fysiek offline switch op de meting te observeren.
 \end{itemize}
 
 \section{Onderzoeksfasen en planning}
@@ -114,20 +114,20 @@ Het onderzoek is opgedeeld in zes fasen die deels sequentieel en deels parallel 
 Voor de uitvoering van dit onderzoek werden onder meer de volgende tools gebruikt. De achterliggende werking en alternatieven worden besproken in Hoofdstuk~\ref{ch:stand-van-zaken}.
 
 \begin{itemize}
-  \item \textbf{NetBox} als bestaande SSOT bij Citymesh, gebruikt voor zowel baseline- als evaluatiemetingen.\autocite{NetBoxOSS}
-  \item \textbf{NetBox Discovery, Diode en de Orb agent} als primaire automatische detectiestack.\autocite{NetBoxDiscoveryDocs,DiodeDocs,NetBoxLabsOrbAgent}
-  \item \textbf{\texttt{NetworkTool}}: een eigen Streamlit-applicatie\autocite{Streamlit} die de NetBox-API aanstuurt om datatypes te capteren die de standaard discoveryflow niet automatisch in NetBox plaatst (in het bijzonder LLDP-gebaseerde kabelrelaties en de RUCKUS vSZ-koppeling\autocite{RuckusVSZ}). NAPALM\autocite{NAPALM} wordt gebruikt als multi-vendor abstractielaag.
-  \item \textbf{Docker} om de Orb agent en Diode reproduceerbaar uit te rollen per site.
-  \item \textbf{Python en de NetBox REST/GraphQL-API} voor analyse-, sync- en validatiescripts.
+  \item \emph{NetBox} als bestaande SSOT bij Citymesh, gebruikt voor zowel baseline- als evaluatiemetingen\autocite{NetBoxOSS}.
+  \item \emph{NetBox Discovery, Diode en de Orb agent} als primaire automatische detectiestack\autocite{NetBoxDiscoveryDocs,DiodeDocs,NetBoxLabsOrbAgent}.
+  \item \texttt{NetworkTool}: een eigen ontwikkeling, opgebouwd als Streamlit-applicatie\autocite{Streamlit}, die de NetBox-API aanstuurt om datatypes te capteren die de standaard discoveryflow niet automatisch in NetBox plaatst (in het bijzonder LLDP-gebaseerde kabelrelaties en de RUCKUS vSZ-koppeling\autocite{RuckusVSZ}). NAPALM\autocite{NAPALM} wordt gebruikt als multi-vendor abstractielaag.
+  \item \emph{Docker} om de Orb agent en Diode reproduceerbaar uit te rollen per site.
+  \item \emph{Python en de NetBox REST/GraphQL-API} voor analyse-, sync- en validatiescripts.
 \end{itemize}
 
 \section{Kwaliteitsborging en beperkingen van de methode}
 
 Om de betrouwbaarheid van de bevindingen te verhogen, zijn drie principes toegepast:
 \begin{itemize}
-  \item \textbf{Triangulatie van bronnen}: combinatie van NetBox-observaties, kwalitatieve input uit gesprekken met netwerkbeheerders en implementatielogs van Orb/Diode/NetworkTool.
-  \item \textbf{Transparante voor/na-logica}: baseline en eindmeting worden op dezelfde indicatoren vergeleken, met dezelfde meetdefinities (zie Hoofdstuk~\ref{ch:casestudy}).
-  \item \textbf{Expliciete afbakening}: claims worden beperkt tot de geobserveerde scope (vier sites, geselecteerde vendors, NetBox als SSOT) en tot indicatoren die direct in NetBox toetsbaar zijn.
+  \item \emph{Triangulatie van bronnen}: combinatie van NetBox-observaties, kwalitatieve input uit gesprekken met netwerkbeheerders en implementatielogs van Orb/Diode/NetworkTool.
+  \item \emph{Transparante voor/na-logica}: baseline en eindmeting worden op dezelfde indicatoren vergeleken, met dezelfde meetdefinities (zie Hoofdstuk~\ref{ch:casestudy}).
+  \item \emph{Expliciete afbakening}: claims worden beperkt tot de geobserveerde scope (vier sites, geselecteerde vendors, NetBox als SSOT) en tot indicatoren die direct in NetBox toetsbaar zijn.
 \end{itemize}
 
 De belangrijkste methodologische beperkingen zijn de beperkte steekproefomvang (vier sites), de afhankelijkheid van beschikbare discovery-protocollen per vendor en het feit dat niet elk datatype in elke context even goed meetbaar is met dezelfde automatiseringsgraad. De conclusies zijn daardoor in de eerste plaats geldig voor de Citymesh-context en moeten bij overname naar andere organisaties opnieuw lokaal gevalideerd worden.

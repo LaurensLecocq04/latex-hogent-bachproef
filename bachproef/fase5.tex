@@ -13,13 +13,17 @@ In dit hoofdstuk worden de vier sites uit de casestudy uitgewerkt. Per site word
 Om interpretatieverschillen tussen sites te vermijden, zijn de belangrijkste indicatoren consequent als volgt geïnterpreteerd:
 
 \begin{itemize}
-  \item \textbf{Correcte device-naam}: de NetBox-naam stemt overeen met de actuele naming op het fysieke apparaat. Gemeten als ``aantal correct / totaal''.
-  \item \textbf{Correct device type}: het toegewezen device type in NetBox stemt overeen met het effectief geplaatste toesteltype. Gemeten als ``aantal correct / totaal''.
-  \item \textbf{Correcte kabelrelatie}: de kabelverbinding in NetBox komt overeen met de LLDP-observatie op de switch (gevalideerd via NAPALM-output). Gemeten als ``aantal correct / totaal''.
-  \item \textbf{Resterend aandachtspunt}: een datatype dat na discovery + \texttt{NetworkTool} nog niet correct in NetBox staat, met een expliciete oorzaak (bv.\ device niet bereikbaar, vendor niet ondersteund).
+  \item \emph{Correcte device-naam}: de NetBox-naam stemt overeen met de actuele naming op het fysieke apparaat. Gemeten als ``aantal correct / totaal''.
+  \item \emph{Correct device type}: het toegewezen device type in NetBox stemt overeen met het effectief geplaatste toesteltype. Gemeten als ``aantal correct / totaal''.
+  \item \emph{Correcte kabelrelatie}: de kabelverbinding in NetBox komt overeen met de LLDP-observatie op de switch (gevalideerd via NAPALM-output). Gemeten als ``aantal correct / totaal''.
+  \item \emph{Resterend aandachtspunt}: een datatype dat na discovery + \texttt{NetworkTool} nog niet correct in NetBox staat, met een expliciete oorzaak (bv.\ device niet bereikbaar, vendor niet ondersteund).
 \end{itemize}
 
-De baseline werd in de praktijk opgesteld door per device de bestaande NetBox-records (naam, type, interfaces, kabels) te vergelijken met de fysieke realiteit, gebruikmakend van \emph{created}- en \emph{last updated}-velden om in te schatten of een record sinds de laatste infrastructuurwijziging was bijgewerkt. De na-meting werd uitgevoerd nadat de Orb agent (zie \S\ref{sec:architectuur}) een volledige run had voltooid en \texttt{NetworkTool} de LLDP-gebaseerde verwerking had uitgevoerd.
+De baseline werd voor elke site in twee stappen vastgelegd. Eerst werden \emph{per device alle relevante NetBox-records geëxporteerd} via de NetBox-API, met name device-naam, device type, manufacturer, status, interfaces, IP-adressen en kabelobjecten. Vervolgens werden die records vergeleken met de \emph{fysieke realiteit} op de site, voor zover die kon worden geverifieerd (op basis van foto's, configuratiedumps van de devices zelf en informatie uit het ticketsysteem). Per veld werd genoteerd of het overeenkwam, ontbrak, of foutief was.
+
+Bij twijfelgevallen werd ook gekeken naar de NetBox-velden \texttt{created} en \texttt{last\_updated} per record. Het \texttt{created}-veld geeft aan wanneer een record voor het eerst in NetBox werd aangemaakt; \texttt{last\_updated} geeft aan wanneer het voor het laatst werd gewijzigd. Door deze tijdstempels te vergelijken met \emph{bekende infrastructuurmijlpalen} (bv. de AP-vervanging in 2022 op Ridefort), kon worden beoordeeld of een record nog actueel was: een record met een \texttt{last\_updated} \emph{vóór} een gekende vervanging is per definitie niet bijgewerkt. Op die manier werd voorkomen dat een record dat per toeval correct was (bv. AP-naam die toevallig nog overeenkwam) ten onrechte als ``bijgewerkt'' werd geteld.
+
+De na-meting werd uitgevoerd nadat de Orb agent (zie \S\ref{sec:architectuur}) een volledige run had voltooid en \texttt{NetworkTool} de LLDP-gebaseerde verwerking had uitgevoerd. Dezelfde indicatoren werden opnieuw gemeten met dezelfde definities, zodat baseline en na-meting strikt vergelijkbaar zijn.
 
 \section{Site Ridefort}
 \label{sec:ridefort}
@@ -64,7 +68,7 @@ Deleers Go4tech is een grotere site met 1 router, 1 Fortinet firewall, 11 switch
 
 \subsection{Baseline}
 
-De baseline is hier eerder ``goed maar niet perfect'': namen waren in lijn met de conventie en kabelrelaties waren grotendeels aanwezig. Bij de eerste herdiscovery werden echter \textbf{3 van de 11 switches} geïdentificeerd met een \textbf{verkeerd device type} in NetBox. Deze fouten zijn niet ontstaan door verouderde documentatie, maar door menselijke vergissingen bij de initiële invoer.
+De baseline is hier eerder ``goed maar niet perfect'': namen waren in lijn met de conventie en kabelrelaties waren grotendeels aanwezig. Bij de eerste herdiscovery werden echter \emph{3 van de 11 switches} geïdentificeerd met een \emph{verkeerd device type} in NetBox. Deze fouten zijn niet ontstaan door verouderde documentatie, maar door menselijke vergissingen bij de initiële invoer.
 
 \subsection{Na-meting}
 
@@ -139,7 +143,7 @@ In de baseline werd vastgesteld dat de device-naamgeving consistent was, maar da
 Na uitvoering van NetBox Discovery en de \texttt{NetworkTool}-verwerking:
 
 \begin{itemize}
-  \item 3 van de 4 switches waren online tijdens de meting; 1 switch was \textbf{fysiek offline} en kon daardoor niet gediscovered worden;
+  \item 3 van de 4 switches waren online tijdens de meting; 1 switch was \emph{fysiek offline} en kon daardoor niet gediscovered worden;
   \item alle switch--switch- en switch--router-kabelrelaties tussen de bereikbare apparatuur werden correct aangemaakt in NetBox (4/4);
   \item van de 70 AP's konden er 53/70 via de 3 online switches worden gekoppeld in NetBox;
   \item de resterende 17/70 AP's hingen vast aan de offline switch en konden in deze run niet via LLDP worden geobserveerd; deze relaties zullen in een volgende discovery aangevuld worden zodra de offline switch terug operationeel is.
@@ -188,3 +192,38 @@ Tabel~\ref{tab:synthese} bundelt de resultaten van de vier sites op één plaats
 \end{table}
 
 De resultaten ondersteunen \'e\'en duidelijke richtinggevende conclusie binnen de scope van deze casestudy: voor alle bereikbare apparatuur werd de NetBox-documentatie volledig hersteld op de geëvalueerde indicatoren. Resterende lacunes zijn telkens herleidbaar tot een concrete, externe oorzaak (een fysiek offline switch in Riethove). Voor de aanbevelingen die hieruit volgen, zie \S\ref{sec:aanbevelingen}.
+
+\section{Analyse over de sites heen}
+\label{sec:analyse-cross-site}
+
+De synthese-tabel laat toe om enkele uitspraken te doen die niet beperkt blijven tot \'e\'en site. Deze sectie bundelt die observaties per aspect.
+
+\subsection{Actualiteit en consistentie van inventarisdata}
+\label{sec:analyse-inventaris}
+
+Op sites waar de NetBox-data verouderd was (Ridefort) of waar er menselijke fouten in de initiële invoer zaten (Deleers Go4tech), bracht NetBox Discovery met Diode de inventaris snel terug op orde: 5/6 $\rightarrow$ 6/6 voor AP-types op Ridefort en 8/11 $\rightarrow$ 11/11 voor switch-types op Deleers Go4tech. Op sites waar de inventaris al consistent was (Koninklijke Stallingen, WZC Riethove) had de discovery hierop geen negatief effect: de bestaande correcte data bleef gewoon correct.
+
+De observatie op Deleers Go4tech is bijzonder relevant omdat ze aantoont dat het probleem niet beperkt blijft tot ``oude'' documentatie: ook na slechts twee maanden manuele input bevatte NetBox 3 switches met een foutief device type. Dit motiveert de keuze voor \emph{periodieke} discovery (requirement R10) als kwaliteitscontrole, niet alleen als eenmalige correctieslag.
+
+\subsection{Kabelrelaties en topologie}
+\label{sec:analyse-kabels}
+
+De grootste meerwaarde van de geïmplementeerde oplossing zit in de kabel- en topologielaag. Tabel~\ref{tab:synthese} toont dat zowel Ridefort (3/6 $\rightarrow$ 6/6) als Koninklijke Stallingen (0/7 $\rightarrow$ 7/7) als WZC Riethove (0/74 $\rightarrow$ 57/74) op deze indicator de duidelijkste vooruitgang tonen. Bij WZC Riethove werd ook concreet zichtbaar dat één externe oorzaak (een fysiek offline switch) eenduidig vertaalt naar één afgebakende lacune (17 AP--switch-relaties die wachten tot de switch terug online is). Deze \emph{traceerbaarheid} is op zich een vooruitgang ten opzichte van een handmatig opgebouwde topologie, waar de oorzaak van een ontbrekende relatie vaak niet meer te achterhalen is.
+
+Tegelijk illustreert deze laag ook de limiet van de standaard NetBox Discovery-stack: zonder de aanvullende \texttt{NetworkTool}-stap zouden de LLDP-buren niet automatisch in NetBox als kabelobjecten landen. Dit is geen tekortkoming van NetBox Discovery zelf, maar een keten-issue dat in \S\ref{sec:wat-orb-oplevert} concreet wordt toegelicht.
+
+\subsection{Vendor-specifieke datatypes}
+\label{sec:analyse-vendor}
+
+Voor RUCKUS-AP's is de vSZ-API\autocite{RuckusVSZ} een essentiële aanvulling: zonder die API zouden naam, serienummer, MAC-adres en fabrikant per AP niet betrouwbaar in NetBox terechtkomen. Deze case bevestigt het bredere principe dat een SSOT-implementatie maar zo goed is als de \emph{bronkwaliteit per vendor} en dat het verstandig is om per vendor te evalueren of de standaard discoveryflow (SNMP + LLDP) volstaat of dat een vendor-API nodig is.
+
+\subsection{Operationele waarnemingen}
+\label{sec:analyse-operationeel}
+
+Een tweede categorie waarnemingen heeft betrekking op de operationele kant van de implementatie. Drie zaken kwamen consistent terug over de vier sites:
+
+\begin{itemize}
+  \item \emph{Cleanup vóór herdiscovery is essentieel}: zonder de cleanup-stap voor de Ridefort-AP's zouden de oude AP-records duplicaten hebben gegenereerd (zie \S\ref{sec:issues-valkuilen}).
+  \item \emph{Dry-run vóór live-write}: de tweetraps-aanpak (eerst dry-run, dan live) van \texttt{NetworkTool} (zie \S\ref{sec:schaalbaarheid}) heeft op meerdere sites foutieve mass-updates voorkomen.
+  \item \emph{Credential-/secret-management is geen detail}: in een omgeving met 25.000+ devices is het onhoudbaar om credentials in YAML-bestanden te zetten. De template-met-envsubst-aanpak (\S\ref{sec:issues-valkuilen}) is een werkbare overgangsoplossing, maar moet in productie aangevuld worden met een centrale secret manager.
+\end{itemize}

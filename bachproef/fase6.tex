@@ -1,52 +1,24 @@
 %%=============================================================================
-%% Analyse en aanbevelingen
+%% Aanbevelingen en reflectie
 %%=============================================================================
 
-\chapter{\IfLanguageName{dutch}{Analyse en aanbevelingen}{Analysis and recommendations}}%
+\chapter{\IfLanguageName{dutch}{Aanbevelingen en reflectie}{Recommendations and reflection}}%
 \label{ch:analyse}
 
-In dit hoofdstuk worden de resultaten van de casestudy uit Hoofdstuk~\ref{ch:casestudy} geanalyseerd en vertaald naar concrete aanbevelingen voor Citymesh. Het hoofdstuk sluit af met een reflectie op de validiteit en de beperkingen van de gehanteerde aanpak. De beknopte beantwoording van de onderzoeksvragen volgt in Hoofdstuk~\ref{ch:conclusie}.
-
-\section{Analyse van de resultaten}
-
-\subsection{Actualiteit en consistentie van inventarisdata}
-
-De combinatie van de vier sites laat een consistent patroon zien. Op sites waar de NetBox-data verouderd was (Ridefort) of waar er menselijke fouten in de initiële invoer zaten (Deleers Go4tech), bracht NetBox Discovery met Diode de inventaris snel terug op orde: 5/6 $\rightarrow$ 6/6 voor AP-types op Ridefort en 8/11 $\rightarrow$ 11/11 voor switch-types op Deleers Go4tech. Op sites waar de inventaris al consistent was (Koninklijke Stallingen, WZC Riethove) had de discovery hierop geen negatief effect: de bestaande correcte data bleef gewoon correct.
-
-De observatie op Deleers Go4tech is bijzonder relevant omdat ze aantoont dat het probleem niet beperkt blijft tot ``oude'' documentatie: ook na slechts twee maanden manuele input bevatte NetBox 3 switches met een foutief device type. Dit motiveert de keuze voor \emph{periodieke} discovery (requirement R10) als kwaliteitscontrole, niet alleen als eenmalige correctieslag.
-
-\subsection{Kabelrelaties en topologie}
-
-De grootste meerwaarde van de geïmplementeerde oplossing zit in de \emph{kabel- en topologielaag}. Tabel~\ref{tab:synthese} toont dat zowel Ridefort (3/6 $\rightarrow$ 6/6) als Koninklijke Stallingen (0/7 $\rightarrow$ 7/7) als WZC Riethove (0/74 $\rightarrow$ 57/74) op deze indicator de duidelijkste vooruitgang tonen. Bij WZC Riethove werd ook concreet zichtbaar dat één externe oorzaak (een fysiek offline switch) eenduidig vertaalt naar één afgebakende lacune (17 AP--switch-relaties die wachten tot de switch terug online is). Deze \emph{traceerbaarheid} is op zich een vooruitgang ten opzichte van een handmatig opgebouwde topologie, waar de oorzaak van een ontbrekende relatie vaak niet meer te achterhalen is.
-
-Tegelijk illustreert deze laag ook duidelijk de limiet van de standaard NetBox Discovery-stack: zonder de aanvullende \texttt{NetworkTool}-stap zouden de LLDP-buren niet automatisch in NetBox als kabelobjecten landen. Dit is geen tekortkoming van NetBox Discovery zelf, maar een keten-issue (zie \S\ref{sec:wat-orb-oplevert}).
-
-\subsection{Vendor-specifieke datatypes}
-
-Voor RUCKUS-AP's is de vSZ-API\autocite{RuckusVSZ} een essentiële aanvulling: zonder die API zouden naam, serienummer, MAC-adres en fabrikant per AP niet betrouwbaar in NetBox terechtkomen. Deze case bevestigt het bredere principe dat een SSOT-implementatie maar zo goed is als de \emph{bronkwaliteit per vendor} en dat het verstandig is om per vendor te evalueren of de standaard discoveryflow (SNMP + LLDP) volstaat of dat een vendor-API nodig is.
-
-\subsection{Operationele waarnemingen}
-
-Een tweede categorie waarnemingen heeft betrekking op de operationele kant van de implementatie. Drie zaken kwamen consistent terug over de vier sites:
-
-\begin{itemize}
-  \item \textbf{Cleanup vóór herdiscovery is essentieel}: zonder de cleanup-stap voor de Ridefort-AP's zouden de oude AP-records duplicaten hebben gegenereerd (zie \S\ref{sec:issues-valkuilen}).
-  \item \textbf{Dry-run before live-write}: de tweetraps-aanpak (eerst dry-run, dan live) van \texttt{NetworkTool} (zie \S\ref{sec:schaalbaarheid}) heeft op meerdere sites foutieve mass-updates voorkomen.
-  \item \textbf{Credential-/secret-management is geen detail}: in een omgeving met 25.000+ devices is het onhoudbaar om credentials in YAML-bestanden te zetten. De template-met-envsubst-aanpak (\S\ref{sec:issues-valkuilen}) is een werkbare overgangsoplossing, maar moet in productie aangevuld worden met een centrale secret manager.
-\end{itemize}
+Dit hoofdstuk vertaalt de bevindingen uit Hoofdstuk~\ref{ch:casestudy} (en in het bijzonder de cross-site analyse in \S\ref{sec:analyse-cross-site}) naar concrete aanbevelingen voor Citymesh. Het hoofdstuk sluit af met een reflectie op de validiteit en de beperkingen van de gehanteerde aanpak. De beknopte beantwoording van de onderzoeksvragen volgt in Hoofdstuk~\ref{ch:conclusie}.
 
 \section{Aanbevelingen voor Citymesh}
 \label{sec:aanbevelingen}
 
-Op basis van bovenstaande analyse worden de volgende aanbevelingen geformuleerd. Ze zijn afgestemd op de operationele context van Citymesh (Hoofdstuk~\ref{ch:context}) en op de uitrolarchitectuur uit Hoofdstuk~\ref{ch:implementatie}.
+De aanbevelingen zijn afgestemd op de operationele context van Citymesh (Hoofdstuk~\ref{ch:context}) en op de uitrolarchitectuur uit Hoofdstuk~\ref{ch:implementatie}.
 
 \subsection{Aanbeveling 1: adopteer NetBox Discovery met Diode als inventarisbasis}
 
-NetBox Discovery met Diode bleek in alle vier sites effectief om de inventarislaag (devices, types, interfaces) actueel te houden. De aanbeveling is om deze stack als \emph{standaard inventaris\-pipeline} te gebruiken voor alle nieuwe en bestaande sites, met één Orb agent per site (\S\ref{sec:schaalbaarheid}).
+NetBox Discovery met Diode bleek in alle vier sites effectief om de inventarislaag (devices, types, interfaces) actueel te houden (zie \S\ref{sec:analyse-inventaris}). De aanbeveling is om deze stack als \emph{standaard inventarispipeline} te gebruiken voor alle nieuwe en bestaande sites, met één Orb agent per site (\S\ref{sec:schaalbaarheid}).
 
 \subsection{Aanbeveling 2: gebruik \texttt{NetworkTool} als topologie-aanvulling}
 
-Zolang de standaard NetBox Discovery-stack LLDP-buren niet automatisch als kabelobjecten in NetBox plaatst, is een aanvullende verwerking nodig. \texttt{NetworkTool} (zie \S\ref{sec:architectuur}) biedt deze laag en heeft op de vier sites concrete resultaten geleverd (synthese in tabel~\ref{tab:synthese}). Deze aanbeveling is voorlopig: als NetBox Labs deze stap in een toekomstige Diode- of Orb-versie native afdekt, kan \texttt{NetworkTool} herleid worden tot enkel de niet-LLDP-onderdelen (vSZ, vendor-API's).
+Zolang de standaard NetBox Discovery-stack LLDP-buren niet automatisch als kabelobjecten in NetBox plaatst (zie \S\ref{sec:wat-orb-oplevert}), is een aanvullende verwerking nodig. \texttt{NetworkTool} (zie \S\ref{sec:architectuur}) biedt deze laag en heeft op de vier sites concrete resultaten geleverd (synthese in tabel~\ref{tab:synthese}). Deze aanbeveling is voorlopig: als NetBox Labs deze stap in een toekomstige Diode- of Orb-versie native afdekt, kan \texttt{NetworkTool} herleid worden tot enkel de niet-LLDP-onderdelen (vSZ, vendor-API's).
 
 \subsection{Aanbeveling 3: standaardiseer cleanup en naming-governance in het wijzigingsproces}
 
@@ -62,7 +34,7 @@ Op WZC Riethove (\S\ref{sec:riethove}) bleek dat een offline switch direct verta
 
 \subsection{Aanbeveling 6: introduceer een centrale secret manager}
 
-De template-met-envsubst-aanpak voor Diode-credentials en device-credentials werkt in een bachelorproefcontext, maar in productie moet dit aangevuld worden met een centrale secret manager (Vault, AWS Secrets Manager, K8s secrets). De aanbeveling is om deze stap mee op te nemen vóór de uitrol naar tientallen sites, zodat het rotatie- en revocatieproces beheersbaar blijft.
+De template-met-envsubst-aanpak voor Diode-credentials en device-credentials werkt in een bachelorproefcontext, maar in productie moet dit aangevuld worden met een centrale secret manager (Vault, AWS Secrets Manager of K8s-secrets). De aanbeveling is om deze stap mee op te nemen vóór de uitrol naar tientallen sites, zodat het rotatie- en revocatieproces beheersbaar blijft.
 
 \section{Reflectie en beperkingen}
 
@@ -71,9 +43,9 @@ De resultaten van deze bachelorproef steunen op vier sites met opzettelijk versc
 \subsection*{Bedreigingen voor validiteit}
 
 \begin{itemize}
-  \item \textbf{Interne validiteit}: verbeteringen in datakwaliteit zijn gemeten in een operationele omgeving waar meerdere wijzigingen dicht op elkaar kunnen gebeuren. Door een expliciete baseline en een voor/na-logica op dezelfde indicatoren werd dit risico beperkt, maar niet weggewerkt.
-  \item \textbf{Constructvaliditeit}: niet alle aspecten van ``documentatiekwaliteit'' zijn in deze studie gemeten. De focus lag op naamgeving, type en kabelrelaties, omdat die direct operationele impact hebben en toetsbaar zijn binnen de scope. Aspecten zoals up-to-date IP-toewijzing per VLAN of correctheid van firmware-versies zijn niet apart gerapporteerd.
-  \item \textbf{Externe validiteit}: de resultaten zijn sterk contextgebonden (Citymesh, geselecteerde sites, specifieke vendormix). Generalisatie naar andere organisaties is plausibel qua \emph{aanpak}, maar vereist lokale validatie qua effectgrootte.
+  \item \emph{Interne validiteit}: verbeteringen in datakwaliteit zijn gemeten in een operationele omgeving waar meerdere wijzigingen dicht op elkaar kunnen gebeuren. Door een expliciete baseline en een voor/na-logica op dezelfde indicatoren werd dit risico beperkt, maar niet weggewerkt.
+  \item \emph{Constructvaliditeit}: niet alle aspecten van ``documentatiekwaliteit'' zijn in deze studie gemeten. De focus lag op naamgeving, type en kabelrelaties, omdat die direct operationele impact hebben en toetsbaar zijn binnen de scope. Aspecten zoals up-to-date IP-toewijzing per VLAN of correctheid van firmware-versies zijn niet apart gerapporteerd.
+  \item \emph{Externe validiteit}: de resultaten zijn sterk contextgebonden (Citymesh, geselecteerde sites, specifieke vendormix). Generalisatie naar andere organisaties is plausibel qua \emph{aanpak}, maar vereist lokale validatie qua effectgrootte.
 \end{itemize}
 
-Deze reflectie betekent dat de studie vooral een \textbf{praktisch onderbouwde} en \textbf{reproduceerbare} implementatiestrategie oplevert, eerder dan een universeel prestatiecijfer dat zonder context kan worden overgenomen.
+Deze reflectie betekent dat de studie vooral een praktisch onderbouwde en reproduceerbare implementatiestrategie oplevert, eerder dan een universeel prestatiecijfer dat zonder context kan worden overgenomen.

@@ -5,26 +5,26 @@ Dit hoofdstuk vormt de literatuurstudie van deze bachelorproef. De bedoeling is 
 
 \section{Single source of truth in netwerkbeheer}
 
-Het concept van een \emph{single source of truth} (SSOT) verwijst naar het principe waarbij alle data afkomstig is uit \'e\'en gecentraliseerde, betrouwbare bron.\autocite{NetBoxOSS} In de context van netwerkbeheer betekent dit dat alle netwerkdocumentatie, inventarisaties en configuratie-informatie op \'e\'en plaats wordt bijgehouden en beheerd, typisch in een centraal IPAM/DCIM- of CMDB-systeem.\autocite{NetBoxPlanning} Het ontbreken van een betrouwbare SSOT leidt tot verouderde documentatie en topologiemodellen, wat op zijn beurt problemen veroorzaakt bij netwerkbeheer, troubleshooting en beveiligingsaudits.\autocite{NetBoxOSS}
+Het concept van een \emph{single source of truth} (SSOT) verwijst naar het principe waarbij alle data afkomstig is uit \'e\'en gecentraliseerde, betrouwbare bron\autocite{NetBoxOSS}. In de context van netwerkbeheer betekent dit dat alle netwerkdocumentatie, inventarissen en configuratie-informatie op \'e\'en plaats wordt bijgehouden en beheerd, typisch in een centraal IPAM/DCIM- of CMDB-systeem\autocite{NetBoxPlanning}. Het ontbreken van een betrouwbare SSOT leidt tot verouderde documentatie en topologiemodellen, wat op zijn beurt problemen veroorzaakt bij netwerkbeheer, troubleshooting en beveiligingsaudits\autocite{NetBoxOSS}.
 
-Een netwerk-SSOT bevat doorgaans minstens vier soorten data: (1) \textbf{inventaris} van fysieke en virtuele devices (manufacturer, type, serienummer, status); (2) \textbf{IPAM-data} (IP-adressen, prefixes, VLAN's, VRF's); (3) \textbf{DCIM-data} (racks, locaties, voedingen) en (4) \textbf{topologie} (interfaces, kabels, LLDP-buren). Een centrale SSOT vereenvoudigt change management en automatisering doordat geautomatiseerde processen telkens hun beslissingen op dezelfde data kunnen baseren in plaats van op meerdere, mogelijk uiteenlopende bronnen.
+Een netwerk-SSOT bevat doorgaans minstens vier soorten data: (1) \emph{inventaris} van fysieke en virtuele devices (manufacturer, type, serienummer, status); (2) \emph{IPAM-data} (IP-adressen, prefixes, VLAN's, VRF's); (3) \emph{DCIM-data} (racks, locaties, voedingen) en (4) \emph{topologie} (interfaces, kabels, LLDP-buren). Een centrale SSOT vereenvoudigt change management en automatisering doordat geautomatiseerde processen telkens hun beslissingen op dezelfde data kunnen baseren in plaats van op meerdere, mogelijk uiteenlopende bronnen.
 
 \section{Automatische netwerkdetectie: protocollen en aanpakken}
 
 Automatische netwerkdetectie omvat technieken en systemen waarmee netwerkapparaten, configuraties en topologie automatisch ontdekt, geanalyseerd en gedocumenteerd worden. In de praktijk komen drie protocollen telkens terug:
 
 \begin{itemize}
-  \item \textbf{ICMP/NMAP-scans}: een eerste sweep om \emph{live hosts} te identificeren in een subnet of IP-range. Dit is goedkoop, vendor-neutraal en typisch de eerste stap van elke discoveryflow.
-  \item \textbf{SNMP} (\emph{Simple Network Management Protocol}): wordt al decennia gebruikt om device-attributen, interfaceconfiguratie, ARP-tabellen en routingtabellen uit te lezen. Op basis van SNMP kan een topologie deels gereconstrueerd worden, maar de techniek heeft beperkingen: vendor-specifieke MIB's, beperkte schaalbaarheid bij grote walks en credential-/community-management.\autocite{SnmpTopologyDiscoveryIEEE2013}
-  \item \textbf{LLDP} (\emph{Link Layer Discovery Protocol}): een Layer-2-broadcastprotocol waarbij elk apparaat zijn identiteit en interface-info bekendmaakt aan zijn directe buren. LLDP is vendor-neutraal en is in de praktijk het meest betrouwbare uitgangspunt voor automatische kabel-/topologiediscovery.\autocite{LLDP_IJCA}
+  \item \emph{ICMP/NMAP-scans}: een eerste sweep om \emph{live hosts} te identificeren in een subnet of IP-range. Dit is goedkoop, vendor-neutraal en typisch de eerste stap van elke discoveryflow.
+  \item \emph{SNMP} (Simple Network Management Protocol): wordt al decennia gebruikt om device-attributen, interfaceconfiguratie, ARP-tabellen en routingtabellen uit te lezen. Op basis van SNMP kan een topologie deels gereconstrueerd worden, maar de techniek heeft beperkingen: vendor-specifieke MIB's, beperkte schaalbaarheid bij grote walks en credential-/community-management\autocite{SnmpTopologyDiscoveryIEEE2013}.
+  \item \emph{LLDP} (Link Layer Discovery Protocol): een Layer-2-broadcastprotocol waarbij elk apparaat zijn identiteit en interface-info bekendmaakt aan zijn directe buren. LLDP is vendor-neutraal en is in de praktijk het meest betrouwbare uitgangspunt voor automatische kabel-/topologiediscovery\autocite{LLDP_IJCA}.
 \end{itemize}
 
-In sommige discoveryarchitecturen worden deze protocollen aangevuld met vendor-specifieke API's (bijvoorbeeld voor draadloze controllers of firewalls) of met SSH/CLI-parsing (al dan niet via TextFSM-templates) om gestructureerde data uit CLI-uitvoer te extraheren. Een veelgebruikte abstractielaag hiervoor is NAPALM (\emph{Network Automation and Programmability Abstraction Layer with Multivendor support}), die per ondersteunde driver methoden aanbiedt zoals \texttt{get\_lldp\_neighbors()} en \texttt{get\_facts()}.\autocite{NAPALM} Deze abstracties zijn essentieel om vendor-onafhankelijk te kunnen automatiseren.
+In sommige discoveryarchitecturen worden deze protocollen aangevuld met vendor-specifieke API's (bijvoorbeeld voor draadloze controllers of firewalls) of met SSH/CLI-parsing (al dan niet via TextFSM-templates) om gestructureerde data uit CLI-uitvoer te extraheren. Een veelgebruikte abstractielaag hiervoor is NAPALM (\emph{Network Automation and Programmability Abstraction Layer with Multivendor support}), die per ondersteunde driver methoden aanbiedt zoals \texttt{get\_lldp\_neighbors()} en \texttt{get\_facts()}\autocite{NAPALM}. Deze abstracties zijn essentieel om vendor-onafhankelijk te kunnen automatiseren.
 
 \section{NetBox als IPAM/DCIM-platform}
 \label{sec:netbox-platform}
 
-NetBox is een open-source IPAM/DCIM-platform dat ontworpen is om netwerkinfrastructuren te documenteren en te beheren.\autocite{NetBoxOSS,NetBoxDiscoveryDocs} Het platform is gebouwd op het Django-webframework en biedt een webgebaseerde interface, een uitgebreide REST API en een GraphQL-API om programmatisch met de data te interageren. Daardoor kan NetBox dienen als de centrale netwerkinventaris waarop andere automatiseringen (CI/CD-pipelines, configuratiegeneratoren, monitoring) zich baseren. Een commercieel ondersteund ecosysteem rond NetBox wordt aangeboden door \emph{NetBox Labs}, dat ook de meeste tools in deze studie publiceert.\autocite{NetBoxLabsAbout}
+NetBox is een open-source IPAM/DCIM-platform dat ontworpen is om netwerkinfrastructuren te documenteren en te beheren\autocite{NetBoxOSS,NetBoxDiscoveryDocs}. Het platform is gebouwd op het Django-webframework en biedt een webgebaseerde interface, een uitgebreide REST API en een GraphQL-API om programmatisch met de data te interageren. Daardoor kan NetBox dienen als de centrale netwerkinventaris waarop andere automatiseringen (CI/CD-pipelines, configuratiegeneratoren, monitoring) zich baseren. Een commercieel ondersteund ecosysteem rond NetBox wordt aangeboden door \emph{NetBox Labs}, dat ook de meeste tools in deze studie publiceert\autocite{NetBoxLabsAbout}.
 
 \subsection{Wat NetBox modelleert}
 
@@ -32,9 +32,9 @@ NetBox biedt een sterk gestructureerd datamodel dat onder meer omvat: sites, rac
 
 \subsection{Mogelijkheden en limitaties van NetBox zelf}
 
-\textbf{Mogelijkheden}: NetBox biedt een gevalideerd datamodel, change-logging, role-based access control, custom fields, webhooks, een uitgebreide REST/GraphQL-API en een actieve open-source community.\autocite{NetBoxOSS} Door de duidelijke scheiding tussen ``intent'' (gewenste documentatie) en ``state'' (werkelijke toestand) is NetBox uitstekend geschikt als SSOT.
+\emph{Mogelijkheden}: NetBox biedt een gevalideerd datamodel, change-logging, role-based access control, custom fields, webhooks, een uitgebreide REST/GraphQL-API en een actieve open-source community\autocite{NetBoxOSS}. Door de duidelijke scheiding tussen ``intent'' (gewenste documentatie) en ``state'' (werkelijke toestand) is NetBox uitstekend geschikt als SSOT.
 
-\textbf{Limitaties}: NetBox zelf voert g\'e\'en discovery uit. Het is een passief systeem: data komt erin via handmatige invoer, CSV-import of API-pushes. Bovendien valideert NetBox standaard niet of de gedocumenteerde toestand nog overeenkomt met de werkelijke infrastructuur. Beide eigenschappen verklaren waarom organisaties die NetBox alleen handmatig vullen, snel last krijgen van veroudering en drift.
+\emph{Limitaties}: NetBox zelf voert g\'e\'en discovery uit. Het is een passief systeem: data komt erin via handmatige invoer, CSV-import of API-pushes. Bovendien valideert NetBox standaard niet of de gedocumenteerde toestand nog overeenkomt met de werkelijke infrastructuur. Beide eigenschappen verklaren waarom organisaties die NetBox alleen handmatig vullen, snel last krijgen van veroudering en drift.
 
 \section{NetBox Discovery, Diode en de Orb agent}
 \label{sec:netbox-discovery-stack}
@@ -46,33 +46,33 @@ Om bovenstaande limitatie weg te werken, biedt NetBox Labs een combinatie van dr
 NetBox Discovery is de discoverylaag binnen het NetBox-ecosysteem. Het ondersteunt de discovery via twee primaire backends:\autocite{NetBoxDiscoveryDocs}
 
 \begin{itemize}
-  \item \textbf{network-discovery}: gebruikt NMAP om IP-adressen, IP-ranges en subnets te scannen op live hosts en open poorten. Het is de eerste stap om uit te vissen welke devices bereikbaar zijn.
-  \item \textbf{device-discovery / SNMP-discovery}: gebruikt SNMP en device-drivers om bevestigde devices verder te bevragen op hun identiteit, interfaces, IP-adressen en (waar beschikbaar) LLDP-buren.
+  \item \emph{network-discovery}: gebruikt NMAP om IP-adressen, IP-ranges en subnets te scannen op live hosts en open poorten. Het is de eerste stap om uit te vissen welke devices bereikbaar zijn.
+  \item \emph{device-discovery / SNMP-discovery}: gebruikt SNMP en device-drivers om bevestigde devices verder te bevragen op hun identiteit, interfaces, IP-adressen en (waar beschikbaar) LLDP-buren.
 \end{itemize}
 
 NetBox Discovery werkt op basis van \emph{policies}: configuratie-objecten die per device of per subnet beschrijven hoe en met welke frequentie discovery uitgevoerd moet worden, met welke credentials, en welke standaardwaarden (site, role, tenant) toegekend mogen worden. Discovery-jobs worden periodiek (bijvoorbeeld via een cron-expressie) door een agent uitgevoerd. Wanneer een apparaat wordt ontdekt, controleert het systeem of het al bestaat in NetBox; bestaande devices worden bijgewerkt, nieuwe devices worden aangemaakt.
 
 \subsection{Diode als ingest-laag}
 
-Diode is de ingest-laag tussen de discovery-agents en NetBox.\autocite{DiodeDocs,NetBoxDiodeAgent} Het is een open-source service die discoverydata via een gRPC-API ontvangt, valideert tegen het NetBox-datamodel en in NetBox laadt. Diode lost een aantal concrete problemen op die ontstaan wanneer agents rechtstreeks naar de NetBox-API zouden schrijven: (1) discovery-output is vaak \emph{partial} en vereist diff-/merge-logica, (2) gelijktijdige writes door meerdere agents kunnen race conditions veroorzaken, en (3) credentials voor NetBox moeten anders centraal beschikbaar zijn op elke agent. Door Diode tussen agents en NetBox te plaatsen, wordt de schrijflaag gecentraliseerd en gemonitored.
+Diode is de ingest-laag tussen de discovery-agents en NetBox\autocite{DiodeDocs,NetBoxDiodeAgent}. Het is een open-source service die discoverydata via een gRPC-API ontvangt, valideert tegen het NetBox-datamodel en in NetBox laadt. Diode lost een aantal concrete problemen op die ontstaan wanneer agents rechtstreeks naar de NetBox-API zouden schrijven: (1) discovery-output is vaak \emph{partial} en vereist diff-/merge-logica, (2) gelijktijdige writes door meerdere agents kunnen race conditions veroorzaken, en (3) credentials voor NetBox moeten anders centraal beschikbaar zijn op elke agent. Door Diode tussen agents en NetBox te plaatsen, wordt de schrijflaag gecentraliseerd en gemonitored.
 
 Diode werkt met OAuth2-credentials (een \texttt{client\_id} en \texttt{client\_secret} per agent) en biedt een audit-trail van wat wanneer in NetBox geschreven werd. Dat maakt het mogelijk om bij problemen terug te traceren welke agent welke wijzigingen aanleverde.
 
 \subsection{Orb agent}
 
-De Orb agent is de lichtgewicht discovery-agent van NetBox Labs.\autocite{NetBoxLabsOrbAgent} Het wordt typisch als Docker-container uitgerold, leest een YAML-configuratie en voert daarop de geconfigureerde \emph{policies} (zoals \texttt{network\_discovery}, \texttt{device\_discovery} en \texttt{snmp\_discovery}) uit. De resultaten worden via Diode naar NetBox gepusht. Doordat de Orb agent zich in het netwerksegment van de te ontdekken devices bevindt, kunnen ook devices ontdekt worden die niet rechtstreeks vanuit het centrale NetBox-platform bereikbaar zijn, wat belangrijk is voor gedistribueerde, draadloze omgevingen zoals die van Citymesh.
+De Orb agent is de lichtgewicht discovery-agent van NetBox Labs\autocite{NetBoxLabsOrbAgent}. Het wordt typisch als Docker-container uitgerold, leest een YAML-configuratie en voert daarop de geconfigureerde \emph{policies} (zoals \texttt{network\_discovery}, \texttt{device\_discovery} en \texttt{snmp\_discovery}) uit. De resultaten worden via Diode naar NetBox gepusht. Doordat de Orb agent zich in het netwerksegment van de te ontdekken devices bevindt, kunnen ook devices ontdekt worden die niet rechtstreeks vanuit het centrale NetBox-platform bereikbaar zijn, wat belangrijk is voor gedistribueerde, draadloze omgevingen zoals die van Citymesh.
 
 \subsection{Mogelijkheden en limitaties van de NetBox Discovery-stack}
 
-\textbf{Mogelijkheden:}
+\emph{Mogelijkheden:}
 \begin{itemize}
-  \item Volledig open-source (NetBox, Diode en Orb).\autocite{NetBoxOSS,DiodeDocs,NetBoxLabsOrbAgent}
+  \item Volledig open-source (NetBox, Diode en Orb)\autocite{NetBoxOSS,DiodeDocs,NetBoxLabsOrbAgent}.
   \item Native integratie met NetBox als SSOT, zonder tussenliggende ETL-laag.
   \item Schaalbaar door meerdere Orb agents naast elkaar te draaien (\'e\'en per site/segment).
   \item Audit en validatie via Diode in plaats van rechtstreekse REST-writes.
 \end{itemize}
 
-\textbf{Limitaties die in de praktijk relevant bleken:}
+\emph{Limitaties die in de praktijk relevant bleken:}
 \begin{itemize}
   \item De LLDP-buren die de Orb agent verzamelt, worden binnen de standaard discoveryflow met Orb en Diode \emph{niet automatisch} als kabelobjecten in NetBox aangemaakt. Voor volledige topologie-discovery is een aanvullende stap nodig (bijvoorbeeld via een eigen tool die de NetBox API aanstuurt). Dit was een belangrijke vaststelling tijdens de evaluatie van deze bachelorproef.
   \item Vendor-dekking is afhankelijk van de beschikbare device-drivers in de Orb agent. Voor minder courante vendors of voor devices die alleen via een eigen API toegankelijk zijn (bijvoorbeeld draadloze controllers zoals RUCKUS vSZ\autocite{RuckusVSZ}), zijn aanvullende koppelingen nodig.
@@ -86,25 +86,25 @@ Om de keuze voor NetBox Discovery te kaderen, worden hier kort de belangrijkste 
 
 \subsection{Slurp'it}
 
-Slurp'it is een gespecialiseerde discovery- en inventarisatietool die netwerkapparaten via SSH en SNMP bevraagt en de CLI-uitvoer met behulp van TextFSM-templates parseert naar gestructureerde data zoals JSON of CSV.\autocite{SlurpitProduct,SlurpitPacketCoders} De oplossing wordt geleverd met een grote collectie templates en knowledge base, wat de \emph{time-to-value} relatief laag houdt voor courante vendors. Slurp'it biedt bovendien een NetBox-plugin die een rechtstreekse koppeling met NetBox toelaat en daardoor relevant is voor SSOT-architecturen.
+Slurp'it is een gespecialiseerde discovery- en inventarisatietool die netwerkapparaten via SSH en SNMP bevraagt en de CLI-uitvoer met behulp van TextFSM-templates parseert naar gestructureerde data zoals JSON of CSV\autocite{SlurpitProduct,SlurpitPacketCoders}. De oplossing wordt geleverd met een grote collectie templates en knowledge base, wat de \emph{time-to-value} relatief laag houdt voor courante vendors. Slurp'it biedt bovendien een NetBox-plugin die een rechtstreekse koppeling met NetBox toelaat en daardoor relevant is voor SSOT-architecturen.
 
-\textbf{Mogelijkheden:} brede vendor-dekking via templates, NetBox-plugin voor synchronisatie, ondersteuning voor SSH, SNMP en op termijn API-bronnen, en een bestuurbaar dashboard voor discovery-resultaten.\autocite{SlurpitProduct}
+\emph{Mogelijkheden:} brede vendor-dekking via templates, NetBox-plugin voor synchronisatie, ondersteuning voor SSH, SNMP en op termijn API-bronnen, en een bestuurbaar dashboard voor discovery-resultaten\autocite{SlurpitProduct}.
 
-\textbf{Limitaties in deze context:} Slurp'it hanteert een \emph{commercieel} licentiemodel dat grotendeels gebaseerd is op het aantal beheerde devices. De gratis variant ondersteunt slechts een tiental devices, terwijl Citymesh in de praktijk werkt met een orde van grootte van \textasciitilde 25.000 devices. Volgens de publiek beschikbare prijsinformatie kost een licentie ongeveer 15.000 USD per jaar voor minder dan 1000 devices; voor grotere aantallen geldt een offerteformule. Voor een bachelorproefcasus en voor de schaal van Citymesh was Slurp'it daardoor financieel niet haalbaar.
+\emph{Limitaties in deze context:} Slurp'it hanteert een \emph{commercieel} licentiemodel dat grotendeels gebaseerd is op het aantal beheerde devices. De gratis variant ondersteunt slechts een tiental devices, terwijl Citymesh in de praktijk werkt met een orde van grootte van \textasciitilde 25.000 devices. Volgens de publiek beschikbare prijsinformatie kost een licentie ongeveer 15.000 USD per jaar voor minder dan 1000 devices; voor grotere aantallen geldt een offerteformule. Voor een bachelorproefcasus en voor de schaal van Citymesh was Slurp'it daardoor financieel niet haalbaar.
 
 \subsection{Nautobot}
 
-Nautobot is een fork van NetBox door \emph{Network to Code} en wordt vooral gepositioneerd als ``Network Source of Truth and Network Automation Platform''.\autocite{Nautobot} Nautobot biedt een vergelijkbaar IPAM/DCIM-datamodel als NetBox, maar legt sterker de nadruk op uitbreidbaarheid via Jobs (Python-pluggables) en een breed plugin-ecosysteem (onder meer Nautobot Plugin Network Discovery). Voor organisaties die al sterk ge\"investeerd zijn in NetBox is migreren naar Nautobot doorgaans niet evident. Voor Citymesh, waar NetBox al in gebruik was, is NetBox Discovery dichter bij de bestaande SSOT en bijgevolg de natuurlijkere keuze.
+Nautobot is een fork van NetBox door \emph{Network to Code} en wordt vooral gepositioneerd als ``Network Source of Truth and Network Automation Platform''\autocite{Nautobot}. Nautobot biedt een vergelijkbaar IPAM/DCIM-datamodel als NetBox, maar legt sterker de nadruk op uitbreidbaarheid via Jobs (Python-pluggables) en een breed plugin-ecosysteem (onder meer Nautobot Plugin Network Discovery). Voor organisaties die al sterk ge\"investeerd zijn in NetBox is migreren naar Nautobot doorgaans niet evident. Voor Citymesh, waar NetBox al in gebruik was, is NetBox Discovery dichter bij de bestaande SSOT en bijgevolg de natuurlijkere keuze.
 
 \subsection{Open-source NMS-platformen}
 
-Klassieke NMS-platformen zoals \textbf{LibreNMS}\autocite{LibreNMS} en \textbf{OpenNMS}\autocite{OpenNMS} bieden discovery-functionaliteit via SNMP en CDP/LLDP en zijn primair gericht op monitoring en alarmering. Hun interne datamodellen zijn sterk geoptimaliseerd voor performance- en faultdata, niet voor SSOT-functies zoals kabelmodellen, racks of IPAM. Ze kunnen via API of polling-data wel waardevolle input leveren aan een centrale SSOT, maar zijn op zichzelf geen vervanging van een IPAM/DCIM-platform.
+Klassieke NMS-platformen zoals \emph{LibreNMS}\autocite{LibreNMS} en \emph{OpenNMS}\autocite{OpenNMS} bieden discovery-functionaliteit via SNMP en CDP/LLDP en zijn primair gericht op monitoring en alarmering. Hun interne datamodellen zijn sterk geoptimaliseerd voor performance- en faultdata, niet voor SSOT-functies zoals kabelmodellen, racks of IPAM. Ze kunnen via API of polling-data wel waardevolle input leveren aan een centrale SSOT, maar zijn op zichzelf geen vervanging van een IPAM/DCIM-platform.
 
 \subsection{Commerciële NMS- en ITSM-platformen}
 
-Onder de commerci\"ele tools zijn \textbf{SolarWinds Network Performance Monitor}\autocite{SolarWindsNPM} en \textbf{ManageEngine OpManager}\autocite{ManageEngineOpManager} bekende NMS-platformen die naast monitoring ook (Layer-2) topology mapping op basis van SNMP/LLDP/CDP aanbieden. Hun discoverydata blijft typisch binnen het eigen platform; integratie met een externe SSOT vergt API-koppelingen of exports.
+Onder de commerci\"ele tools zijn \emph{SolarWinds Network Performance Monitor}\autocite{SolarWindsNPM} en \emph{ManageEngine OpManager}\autocite{ManageEngineOpManager} bekende NMS-platformen die naast monitoring ook (Layer-2) topology mapping op basis van SNMP/LLDP/CDP aanbieden. Hun discoverydata blijft typisch binnen het eigen platform; integratie met een externe SSOT vergt API-koppelingen of exports.
 
-\textbf{ServiceNow Discovery} is een ITSM-georiënteerde discoveryflow die hoofdzakelijk een CMDB voedt, eerder dan een IPAM/DCIM.\autocite{ServiceNowDiscovery} ServiceNow Discovery dekt ook servers, applicaties en services en biedt diepe agentless probes, maar wordt typisch ingezet binnen organisaties die hun IT-operationsbeheer al op het ServiceNow-platform hebben gestandaardiseerd. Het licentiemodel en de tijdsinvestering om discovery in te richten plaatsen het buiten de scope van een bachelorproefcasestudy.
+\emph{ServiceNow Discovery} is een ITSM-georiënteerde discoveryflow die hoofdzakelijk een CMDB voedt, eerder dan een IPAM/DCIM\autocite{ServiceNowDiscovery}. ServiceNow Discovery dekt ook servers, applicaties en services en biedt diepe agentless probes, maar wordt typisch ingezet binnen organisaties die hun IT-operationsbeheer al op het ServiceNow-platform hebben gestandaardiseerd. Het licentiemodel en de tijdsinvestering om discovery in te richten plaatsen het buiten de scope van een bachelorproefcasestudy.
 
 \subsection{Vergelijkende samenvatting}
 
@@ -133,6 +133,6 @@ Uit deze vergelijking volgt dat de NetBox Discovery-stack \'e\'en van de weinige
 
 \section{Bestaand onderzoek naar automatische netwerkdocumentatie}
 
-Eerdere onderzoeksprojecten beschrijven frameworks om het proces van netwerkdocumentatie grotendeels te automatiseren, onder meer door netwerkapparaten via standaardprotocollen te bevragen en de resultaten in een gestructureerd datamodel op te slaan. Binnen dit domein wordt LLDP vaak aangehaald als sleutelprotocol voor vendor-neutrale buurdetectie, terwijl SNMP gebruikt wordt om discoverydata toegankelijk te maken voor beheertools.\autocite{SnmpTopologyDiscoveryIEEE2013,LLDP_IJCA}
+Eerdere onderzoeksprojecten beschrijven frameworks om het proces van netwerkdocumentatie grotendeels te automatiseren, onder meer door netwerkapparaten via standaardprotocollen te bevragen en de resultaten in een gestructureerd datamodel op te slaan. Binnen dit domein wordt LLDP vaak aangehaald als sleutelprotocol voor vendor-neutrale buurdetectie, terwijl SNMP gebruikt wordt om discoverydata toegankelijk te maken voor beheertools\autocite{SnmpTopologyDiscoveryIEEE2013,LLDP_IJCA}.
 
 Deze studies tonen aan dat automatische netwerkdetectie niet alleen kan helpen bij de initi\"ele opbouw van netwerkdocumentatie, maar ook bij het continu bijwerken en valideren van bestaande documentatie. Er is echter relatief weinig gepubliceerd over praktische evaluaties met concrete voor/na-observaties en toetsbare kwaliteitsindicatoren binnen concrete organisatiecontexten, en over de specifieke uitdagingen van zeer dynamische, draadloze omgevingen. Dit onderzoek positioneert zich in dat gat door een casestudy uit te voeren in een operatoromgeving met grootschalige WiFi- en private 4G/5G-netwerken, met focus op de documentatiekwaliteit van inventaris- en topologiedata die in NetBox effectief geëvalueerd konden worden.
