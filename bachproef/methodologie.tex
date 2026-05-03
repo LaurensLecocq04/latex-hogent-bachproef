@@ -5,121 +5,129 @@
 \chapter{\IfLanguageName{dutch}{Methodologie}{Methodology}}%
 \label{ch:methodologie}
 
-Dit hoofdstuk beschrijft de methodologie die gebruikt wordt om de onderzoeksvragen te beantwoorden. Het onderzoek combineert een vergelijkende studie met een praktische implementatie en evaluatie in de context van Citymesh. De methodologie bestaat uit verschillende fasen die elk bijdragen aan het beantwoorden van de centrale onderzoeksvraag en de deelonderzoeksvragen.
+Dit hoofdstuk beschrijft de methodologie die gebruikt wordt om de onderzoeksvragen te beantwoorden. Het onderzoek combineert een literatuurstudie (Hoofdstuk~\ref{ch:stand-van-zaken}) met een praktijkgerichte casestudy bij Citymesh waarin een implementatie van NetBox Discovery wordt opgezet en geëvalueerd op concrete sites.
 
 \section{Onderzoeksopzet}
 
 Dit onderzoek volgt een \textbf{praktijkgerichte casestudy-opzet} met een combinatie van:
 \begin{itemize}
-  \item \textbf{kwalitatieve dataverzameling} (gesprekken met netwerkbeheerders, procesanalyse, observaties tijdens implementatie);
-  \item \textbf{gerichte voor/na-metingen} (correctheid van attributen en relaties in NetBox vóór en na discovery).
+  \item \textbf{kwalitatieve dataverzameling}: gesprekken met netwerkbeheerders, observaties van de bestaande werkwijze en analyse van implementatielogs (zie \S\ref{sec:kwalitatieve-data});
+  \item \textbf{gerichte voor/na-metingen}: correctheid van device-attributen en kabelrelaties in NetBox vóór en na de toepassing van NetBox Discovery, op vier sites met verschillende profielen (zie \S\ref{sec:operationalisering}).
 \end{itemize}
 
-De keuze voor een casestudy is verantwoord omdat de onderzoeksvraag contextafhankelijk is: de bruikbaarheid van automatische discovery hangt af van bestaande processen, toolketens en vendor-mix binnen Citymesh. Het doel is niet om een universele effectgrootte te claimen, maar om in een realistische operationele setting te bepalen \emph{welke verbetering haalbaar is}, \emph{waar de grenzen liggen} en \emph{welke procesaanpassingen nodig zijn} voor duurzame borging.
+De keuze voor een casestudy is verantwoord omdat de onderzoeksvraag contextafhankelijk is: de bruikbaarheid van automatische discovery hangt af van de bestaande processen, de toolketen en de vendor-mix binnen Citymesh. Het doel is niet om een universele effectgrootte te claimen, maar om in een realistische operationele setting te bepalen welke verbetering haalbaar is, waar de grenzen liggen en welke procesaanpassingen nodig zijn voor duurzame borging.
+
+\section{Kwalitatieve dataverzameling}
+\label{sec:kwalitatieve-data}
+
+Om de huidige werkwijze, pijnpunten en verwachtingen rond netwerkdocumentatie bij Citymesh in beeld te brengen, werden in de loop van het onderzoek meerdere gesprekken gevoerd met de \textbf{Network Engineer} en \textbf{cosupervisor} bij Citymesh, Tom Pirlet, en met andere netwerkbeheerders die in de praktijk met NetBox werken. De gesprekken waren \textbf{semi-gestructureerd}: er werd vertrokken van een vooraf bepaalde lijst van thema's en kernvragen, maar er was bewust ruimte om door te vragen op concrete voorbeelden uit de operationele praktijk. Naast deze gesprekken werden ook observaties gedaan tijdens het uitvoeren van imports en het inspecteren van bestaande NetBox-data, en werd de output van implementatielogs (Orb agent, Diode, NetBox API) gebruikt om de bevindingen te onderbouwen.
+
+\subsection{Thema's en gespreksonderwerpen}
+
+De gesprekken werden opgebouwd rond vijf thema's, met telkens enkele leidende vragen.
+
+\paragraph{Thema 1 --- Huidige documentatieworkflow.}
+\begin{itemize}
+  \item Hoe wordt een nieuw site, switch of access point op dit moment in NetBox gedocumenteerd?
+  \item Welke tools (Excel, NetBox-import, scripts, monitoring) komen daarbij in welke volgorde tussen?
+  \item Wie is verantwoordelijk voor het bijwerken van NetBox bij wijzigingen (vervangingen, uitbreidingen, decommissions)?
+\end{itemize}
+
+\paragraph{Thema 2 --- Pijnpunten en frequentie ervan.}
+\begin{itemize}
+  \item Welke types fouten in NetBox komen in de praktijk het vaakst voor (verkeerde naam, verkeerd type, ontbrekende kabels, foute IP)?
+  \item Bij welke gebeurtenissen treden die fouten typisch op (initiële opbouw, vervanging, verhuizing, tijdelijke setup)?
+  \item Hoeveel tijd gaat er bij benadering naar het corrigeren van een typische site, en wat is de impact wanneer NetBox achterloopt?
+\end{itemize}
+
+\paragraph{Thema 3 --- Naamgevings- en data\-conventies.}
+\begin{itemize}
+  \item Welke naamgevingsconventies worden gebruikt voor sites, switches en access points?
+  \item Hoe worden IP-adressen toegekend (vaste ranges per site, opeenvolgend per AP-reeks)?
+  \item Welke velden in NetBox zijn ``contractueel'' verplicht en welke worden in de praktijk vaak overgeslagen?
+\end{itemize}
+
+\paragraph{Thema 4 --- Verwachtingen ten aanzien van automatische discovery.}
+\begin{itemize}
+  \item Welke datatypes zijn belangrijk om automatisch te kunnen ontdekken (devices, interfaces, IP, kabels, LLDP-buren)?
+  \item Welke vendors moeten minstens ondersteund worden (MikroTik, Huawei, RUCKUS, Fortinet)?
+  \item Hoe diep moet de tool ingrijpen op bestaande data (alleen toevoegen, of ook bijwerken/verwijderen bij drift)?
+  \item Welke randvoorwaarden zijn er rond credentials, secrets en netwerktoegang per site?
+\end{itemize}
+
+\paragraph{Thema 5 --- Organisatorische inbedding.}
+\begin{itemize}
+  \item Hoe vaak zou een discoveryflow per site moeten draaien om voldoende actueel te blijven?
+  \item Wie zou alarmen of drift-meldingen moeten oppikken?
+  \item Welke aanpassingen aan procedures (cleanup vóór discovery, validatieronde na discovery) zijn realistisch?
+\end{itemize}
+
+\subsection{Wat de gesprekken concreet hebben opgeleverd}
+
+De gesprekken hebben drie soorten input opgeleverd voor dit onderzoek. Ten eerste werd het beeld van de \textbf{pijnpunten} gevalideerd en aangescherpt; de vaststelling dat een NetBox-record na een AP-vervanging vaak niet wordt bijgewerkt, kwam meermaals expliciet ter sprake en wordt verder uitgewerkt in Hoofdstuk~\ref{ch:context}. Ten tweede werden de \textbf{requirements} voor de oplossing concreter, onder meer rond vendor-dekking (MikroTik, Huawei, RUCKUS, Fortinet) en rond de noodzaak van een \emph{cleanup}-stap vóór herdiscovery. Ten derde werden enkele \textbf{operationele randvoorwaarden} duidelijk, zoals het gebruik van OAuth2-credentials, de noodzaak om geen plain-text wachtwoorden in YAML-bestanden te zetten en het feit dat agents per site moeten kunnen draaien. Deze input is verwerkt in de implementatie (Hoofdstuk~\ref{ch:implementatie}) en in de aanbevelingen voor Citymesh (Hoofdstuk~\ref{ch:analyse}).
 
 \section{Operationalisering van de kernindicatoren}
+\label{sec:operationalisering}
 
-Om de centrale onderzoeksvraag toetsbaar te maken, werden kernindicatoren vooraf vastgelegd:
+Om de centrale onderzoeksvraag toetsbaar te maken, werden de volgende kernindicatoren vooraf vastgelegd:
 \begin{itemize}
-  \item \textbf{Actualiteit:} mate waarin NetBox-data overeenkomt met de actuele infrastructuurtoestand;
-  \item \textbf{Correctheid:} juistheid van device-attributen (o.a. naam en type) en relaties;
-  \item \textbf{Volledigheid van topologie:} aanwezigheid en correctheid van kabelrelaties voor relevante verbindingen;
-  \item \textbf{Resterende manuele last:} datavelden die na discovery nog manueel of via bijkomende \texttt{NetworkTool}-verwerking verwerkt moeten worden.
+  \item \textbf{Actualiteit}: mate waarin NetBox-data overeenkomt met de actuele infrastructuurtoestand (geverifieerd via discovery-output);
+  \item \textbf{Correctheid van inventaris}: juistheid van device-attributen, in het bijzonder \emph{naam} en \emph{device type}, gemeten als ``aantal correct / totaal'';
+  \item \textbf{Volledigheid van topologie}: aanwezigheid en correctheid van kabelrelaties tussen switches onderling, tussen switches en routers en tussen access points en hun upstream-switch, opnieuw gemeten als ``aantal correct / totaal'';
+  \item \textbf{Resterende manuele last}: datavelden of relaties die ook na discovery nog manueel of via aanvullende verwerking met \texttt{NetworkTool} verwerkt moeten worden.
 \end{itemize}
 
-De indicatoren worden in fase~5 beoordeeld via een voor/na-vergelijking op de primaire casus (Ridefort) en aanvullend getoetst op meerdere sites: een grotere site voor herdiscovery-observaties (Deleers Go4tech) en twee bijkomende sites voor voor/na-validatie (Koninklijke Stallingen en WZC Riethove). De nadruk ligt daarbij op direct toetsbare kwaliteitsindicatoren in NetBox, niet op een brede statistische effectmeting over alle Citymesh-omgevingen.
+Deze indicatoren worden in de casestudy (Hoofdstuk~\ref{ch:casestudy}) per site beoordeeld via een voor/na-vergelijking. De casestudy omvat vier sites met opzettelijk verschillende profielen, zodat de bevindingen niet afhankelijk zijn van \'e\'en specifieke configuratie:
 
-\section{Onderzoeksfasen}
-
-Het onderzoek is opgedeeld in zes fasen die sequentieel en gedeeltelijk parallel worden uitgevoerd. Elke fase heeft specifieke doelstellingen, deliverables en tijdschattingen.
-
-\subsection{Fase 1: Literatuurstudie en requirementsanalyse}
-
-In de eerste fase wordt een uitgebreide literatuurstudie uitgevoerd naar technieken en tools voor automatische netwerkdetectie en hun inzet voor het automatiseren van netwerkdocumentatie.\autocite{SnmpTopologyDiscoveryIEEE2013,LLDP_IJCA,NetBoxDiscoveryDocs} Daarnaast worden interviews afgenomen met netwerkbeheerders en engineers binnen Citymesh om de concrete requirements, bestaande documentatieprocessen en pijnpunten in kaart te brengen, met bijzondere aandacht voor draadloze technologieën (WiFi/WLAN, private 4G/5G, IoT/0G). Deze fase resulteert in een overzicht van relevante tools en een requirementsdocument dat de functionele en niet-functionele eisen voor een automatische detectieoplossing beschrijft.
-
-\textbf{Tijdschatting:} 2 weken
-
-\subsection{Fase 2: Toolselectie en vergelijkende evaluatie}
-
-Op basis van de literatuurstudie en de geformuleerde requirements wordt NetBox Discovery geëvalueerd als primaire oplossing, zoals gevraagd door Citymesh. Ter vergelijking worden ook alternatieve automatische netwerkdetectietools in beschouwing genomen, waaronder commerciële NMS- of ITSM-tools met discovery-functionaliteit indien beschikbaar binnen de organisatie.\autocite{NetBoxDiscoveryDocs,ServiceNowDiscovery} De evaluatiecriteria omvatten functionaliteiten en vooral of de aanpak toepasbaar is op draadloze infrastructuren (bv. WiFi-controllers, 4G/5G-core, IoT-gateways) als requirements/aandachtspunten, integratiemogelijkheden met bestaande documentatiesystemen, configuratiecomplexiteit, schaalbaarheid en onderhoudsvereisten. Deze fase resulteert in een vergelijkende analyse waarbij NetBox Discovery als primaire oplossing wordt gevalideerd tegen de requirements van Citymesh.
-
-\textbf{Tijdschatting:} 1 week
-
-\subsection{Fase 3: Baselinemetingen en implementatievoorbereiding}
-
-Voorafgaand aan de implementatie worden baselinemetingen uitgevoerd om de huidige staat van de netwerkdocumentatie binnen een afgebakende Citymesh-omgeving vast te leggen. Hierbij wordt onder meer nagegaan:
 \begin{itemize}
-  \item welke inventarisitems en relaties verouderd of onvolledig zijn;
-  \item waar manuele updates en correcties nodig blijven;
-  \item welke inconsistente of foutieve registraties in de documentatie zichtbaar zijn.
-\end{itemize}
-Tegelijkertijd wordt de implementatie voorbereid door de benodigde infrastructuur, toegangen en testomgevingen te voorzien, inclusief toegang tot relevante draadloze controllers en managementsystemen.
-
-\textbf{Tijdschatting:} 1 week
-
-\subsection{Fase 4: Implementatie en configuratie}
-
-NetBox Discovery wordt geïmplementeerd en geconfigureerd binnen de bestaande infrastructuur van Citymesh. Dit omvat de installatie, de configuratie van discoveryprotocollen (bijvoorbeeld SNMP en LLDP) en de orkestratie van discovery-jobs via workers/Orb agenten in combinatie met Diode\autocite{DiodeDocs}, de integratie met bestaande netwerkdocumentatiesystemen (zoals IPAM/DCIM of CMDB) en het opzetten van automatische synchronisatie- en validatieprocessen. Waar mogelijk wordt NetBox Discovery zo opgezet dat zowel vaste netwerkcomponenten als draadloze access points, small cells en corecomponenten automatisch ontdekt en bijgewerkt worden.
-
-\textbf{Tijdschatting:} 2 weken
-
-\subsection{Fase 5: Evaluatie en metingen}
-
-Na implementatie wordt een evaluatiefase uitgevoerd waarin de impact van automatische detectie binnen de casestudy systematisch wordt beoordeeld. Deze fase loopt parallel met het schrijven van de scriptie. Tijdens deze fase worden onder meer de volgende indicatoren beoordeeld:
-\begin{itemize}
-  \item verbetering in actualiteit van documentatie op basis van voor/na-observaties;
-  \item reductie van zichtbare fouten en ontbrekende registraties;
-  \item resterende datavelden of relaties die bijkomende verwerking vereisen;
-  \item benodigde correcties aan de automatische detectieconfiguratie.
+  \item \textbf{Ridefort}: kleinere site (1 router, 1 switch, 6 AP's) waarvan de NetBox-documentatie uit 2020 dateert en waar in 2022 een AP-vervanging gebeurde. Primaire voor/na-casus.
+  \item \textbf{Deleers Go4tech}: grotere site (1 router, 1 firewall, 11 switches, 48 AP's) met relatief recente documentatie (\textasciitilde{}2 maanden oud). Gebruikt om de waarde van \emph{periodieke} discovery te toetsen op recent gedocumenteerde data.
+  \item \textbf{Koninklijke Stallingen}: kleinere site (1 router, 2 switches, 5 AP's) met al consistente naamgeving maar zonder gedocumenteerde kabelrelaties.
+  \item \textbf{WZC Riethove}: grote site (1 router, 4 switches, 70 AP's) met consistente naamgeving en zonder gedocumenteerde kabelrelaties; ook bedoeld om het effect van een fysiek offline switch op de meting te observeren.
 \end{itemize}
 
-\textbf{Tijdschatting:} 3--4 weken (monitoring loopt parallel met fase 6)
+\section{Onderzoeksfasen en planning}
 
-\subsection{Fase 6: Analyse, aanbevelingen en scriptie}
+Het onderzoek is opgedeeld in zes fasen die deels sequentieel en deels parallel werden uitgevoerd. Tabel~\ref{tab:fasen-planning} vat de fasen, hun deliverables en de tijdschattingen samen.
 
-De verzamelde data wordt geanalyseerd en geïnterpreteerd met het oog op het beantwoorden van de centrale onderzoeksvraag en de deelonderzoeksvragen. Op basis van de resultaten worden concrete aanbevelingen geformuleerd voor netwerkbeheerders omtrent implementatie, configuratie, monitoring en organisatorische verankering van automatische detectietools in een context zoals die van Citymesh. Tegelijkertijd wordt de scriptie geschreven en afgerond.
-
-\textbf{Tijdschatting:} 3--4 weken (loopt parallel met fase 5)
-
-\textbf{Totale tijdsduur:} 12 weken (met parallelle uitvoering van fasen 5 en 6)
+\begin{table}[H]
+  \centering
+  \caption[Onderzoeksfasen, deliverables en tijdschatting]{Onderzoeksfasen, deliverables en tijdschatting}
+  \label{tab:fasen-planning}
+  \footnotesize
+  \begin{tabular}{p{0.04\linewidth} p{0.30\linewidth} p{0.50\linewidth} p{0.06\linewidth}}
+    \toprule
+    \textbf{Fase} & \textbf{Inhoud} & \textbf{Deliverable} & \textbf{Duur} \\
+    \midrule
+    1 & Literatuurstudie en kwalitatieve dataverzameling & Hoofdstuk~\ref{ch:stand-van-zaken} en gevalideerde lijst van pijnpunten/requirements & 2 wk \\
+    2 & Toolvergelijking & Vergelijkende bespreking (geïntegreerd in \S\ref{sec:alternatieven}) en motivering van de keuze voor de NetBox Discovery-stack & 1 wk \\
+    3 & Baselinemetingen & Per site een ``voor''-meting in NetBox (zie Hoofdstuk~\ref{ch:casestudy}) & 1 wk \\
+    4 & Implementatie en configuratie & Werkende Orb-agent + Diode-keten en \texttt{NetworkTool} (Hoofdstuk~\ref{ch:implementatie}) & 2 wk \\
+    5 & Evaluatie en metingen & Per site een ``na''-meting met voor/na-tabellen (Hoofdstuk~\ref{ch:casestudy}) & 3--4 wk \\
+    6 & Analyse, aanbevelingen en scriptie & Hoofdstuk~\ref{ch:analyse} en Hoofdstuk~\ref{ch:conclusie} & 3--4 wk \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \section{Tools en technologieën}
 
-Voor dit onderzoek zullen de volgende tools en technologieën gebruikt worden:
+Voor de uitvoering van dit onderzoek werden onder meer de volgende tools gebruikt. De achterliggende werking en alternatieven worden besproken in Hoofdstuk~\ref{ch:stand-van-zaken}.
+
 \begin{itemize}
-  \item \textbf{Automatische netwerkdetectietools:} NetBox Discovery als primaire oplossing, zoals gevraagd door Citymesh. In deze casus wordt NetBox Community gebruikt in combinatie met Diode en discovery agents (orb-agent) die de discovery uitvoeren en de data via Diode in NetBox laten landen. Ter vergelijking kunnen aanvullende NMS- of ITSM-oplossingen met discovery-functionaliteit worden geëvalueerd indien beschikbaar binnen de organisatie
-  \item \textbf{SNMP en Linux-tools:} Voor netwerkprotocolcommunicatie, verificatie en het uitvoeren van aanvullende metingen
-  \item \textbf{Documentatie- en inventorysystemen:} Bestaande systemen binnen Citymesh (bijvoorbeeld NetBox, CMDB, Confluence of andere platformen) voor het centraliseren van de SSOT
-  \item \textbf{Monitoring- en analysetools:} Voor het verzamelen en visualiseren van kwantitatieve data over documentatie-updates en foutpercentages
-\end{itemize}
-
-\section{Beantwoording onderzoeksvragen}
-
-De verschillende onderzoeksvragen worden als volgt beantwoord:
-
-\textbf{Probleemdomeinvragen:}
-\begin{itemize}
-  \item \textbf{Vraag 1 (manifestatie van het probleem):} Wordt beantwoord via interviews met netwerkbeheerders en engineers in fase 1, en via baselinemetingen in fase 3 die de huidige staat van de documentatie in kaart brengen.
-  \item \textbf{Vraag 2 (oorzaken):} Wordt beantwoord via interviews in fase 1 waarbij netwerkbeheerders gevraagd worden naar de oorzaken van verouderde documentatie en de factoren die hieraan bijdragen.
-  \item \textbf{Vraag 3 (huidige staat en gevolgen):} Wordt beantwoord via baselinemetingen in fase 3 die de huidige staat kwantificeren, en via interviews in fase 1 die de gevolgen voor het netwerkbeheer in kaart brengen.
-  \item \textbf{Vraag 4 (huidige processen):} Wordt beantwoord via interviews in fase 1 waarbij de huidige documentatieprocessen, gebruikte tools en werkwijzen worden gedocumenteerd.
-\end{itemize}
-
-\textbf{Oplossingsdomeinvragen:}
-\begin{itemize}
-  \item \textbf{Vraag 5 (bestaande technieken en tools):} Wordt beantwoord via de literatuurstudie in fase 1 en de vergelijkende tool-evaluatie in fase 2.
-  \item \textbf{Vraag 6 (prestatie van tools):} Wordt beantwoord via de evaluatie van NetBox Discovery in fase 2 en de implementatie in fase 4, waarbij de prestatie wordt gemeten op basis van de evaluatiecriteria.
-  \item \textbf{Vraag 7 (verbetering):} Wordt beantwoord via voor/na-observaties en gerichte metingen in fase 5 die de vergelijking maken tussen de huidige werkwijze en de implementatie van NetBox Discovery.
-  \item \textbf{Vraag 8 (organisatorische processen):} Wordt beantwoord via de analyse in fase 6, waarbij op basis van de implementatie-ervaring en metingen concrete aanbevelingen worden geformuleerd.
+  \item \textbf{NetBox} als bestaande SSOT bij Citymesh, gebruikt voor zowel baseline- als evaluatiemetingen.\autocite{NetBoxOSS}
+  \item \textbf{NetBox Discovery, Diode en de Orb agent} als primaire automatische detectiestack.\autocite{NetBoxDiscoveryDocs,DiodeDocs,NetBoxLabsOrbAgent}
+  \item \textbf{\texttt{NetworkTool}}: een eigen Streamlit-applicatie\autocite{Streamlit} die de NetBox-API aanstuurt om datatypes te capteren die de standaard discoveryflow niet automatisch in NetBox plaatst (in het bijzonder LLDP-gebaseerde kabelrelaties en de RUCKUS vSZ-koppeling\autocite{RuckusVSZ}). NAPALM\autocite{NAPALM} wordt gebruikt als multi-vendor abstractielaag.
+  \item \textbf{Docker} om de Orb agent en Diode reproduceerbaar uit te rollen per site.
+  \item \textbf{Python en de NetBox REST/GraphQL-API} voor analyse-, sync- en validatiescripts.
 \end{itemize}
 
 \section{Kwaliteitsborging en beperkingen van de methode}
 
 Om de betrouwbaarheid van de bevindingen te verhogen, zijn drie principes toegepast:
 \begin{itemize}
-  \item \textbf{Triangulatie van bronnen:} combinatie van NetBox-observaties, infrastructuurkennis uit de praktijk en implementatielogs.
-  \item \textbf{Transparante voor/na-logica:} baseline en eindmeting worden op dezelfde indicatoren vergeleken.
-  \item \textbf{Expliciete afbakening:} claims worden beperkt tot de geobserveerde scope en gebruikte toolketen.
+  \item \textbf{Triangulatie van bronnen}: combinatie van NetBox-observaties, kwalitatieve input uit gesprekken met netwerkbeheerders en implementatielogs van Orb/Diode/NetworkTool.
+  \item \textbf{Transparante voor/na-logica}: baseline en eindmeting worden op dezelfde indicatoren vergeleken, met dezelfde meetdefinities (zie Hoofdstuk~\ref{ch:casestudy}).
+  \item \textbf{Expliciete afbakening}: claims worden beperkt tot de geobserveerde scope (vier sites, geselecteerde vendors, NetBox als SSOT) en tot indicatoren die direct in NetBox toetsbaar zijn.
 \end{itemize}
 
-Belangrijkste methodologische beperkingen zijn de beperkte steekproefomvang (casestudy), de afhankelijkheid van beschikbare discovery-protocollen per vendor, en het feit dat niet elk datatype in elke context even goed meetbaar is met dezelfde automatiseringsgraad.
+De belangrijkste methodologische beperkingen zijn de beperkte steekproefomvang (vier sites), de afhankelijkheid van beschikbare discovery-protocollen per vendor en het feit dat niet elk datatype in elke context even goed meetbaar is met dezelfde automatiseringsgraad. De conclusies zijn daardoor in de eerste plaats geldig voor de Citymesh-context en moeten bij overname naar andere organisaties opnieuw lokaal gevalideerd worden.

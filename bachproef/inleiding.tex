@@ -5,7 +5,22 @@
 \chapter{\IfLanguageName{dutch}{Inleiding}{Introduction}}%
 \label{ch:inleiding}
 
-Netwerkbeheer vormt een kritieke component binnen moderne IT-infrastructuren. Het accuraat bijhouden van netwerkinventarisaties en -documentatie is essentieel voor efficiënt beheer, probleemoplossing en beveiliging. Echter, in veel organisaties raken deze inventarisaties snel verouderd omdat wijzigingen in de infrastructuur niet consistent worden bijgehouden. Dit probleem manifesteert zich vooral in dynamische IT-omgevingen waar systemen en apparaten voortdurend veranderen, waardoor handmatige documentatieprocessen onvoldoende zijn om de actualiteit te garanderen.\autocite{NetBoxPlanning}
+Netwerkbeheer vormt een kritieke component binnen moderne IT-infrastructuren. Het accuraat bijhouden van netwerkinventarisaties en -documentatie is essentieel voor efficiënt beheer, probleemoplossing en beveiliging. In veel organisaties raken deze inventarisaties echter snel verouderd omdat wijzigingen in de infrastructuur niet consistent worden bijgehouden. Dit probleem manifesteert zich vooral in dynamische IT-omgevingen waar systemen en apparaten voortdurend veranderen, waardoor handmatige documentatieprocessen onvoldoende zijn om de actualiteit te garanderen.\autocite{NetBoxPlanning}
+
+In deze bachelorproef worden enkele begrippen al vroeg in de tekst gebruikt. Voor de volledigheid worden ze hier kort geïntroduceerd; in Hoofdstuk~\ref{ch:stand-van-zaken} worden ze uitgebreider uitgewerkt:
+
+\begin{itemize}
+  \item \textbf{IPAM} (\emph{IP Address Management}): het beheer van de IP-adresruimte, subnetten en VLAN's binnen een netwerk.
+  \item \textbf{DCIM} (\emph{Data Center Infrastructure Management}): het beheer van fysieke en logische infrastructuurelementen zoals racks, devices, kabels en interfaces.
+  \item \textbf{NMS} (\emph{Network Management System}): platformen die netwerken bewaken en beheren, zoals SolarWinds NPM\autocite{SolarWindsNPM}, ManageEngine OpManager\autocite{ManageEngineOpManager} of LibreNMS\autocite{LibreNMS}.
+  \item \textbf{ITSM} (\emph{IT Service Management}): platformen voor IT-dienstenbeheer en CMDB-functionaliteit, zoals ServiceNow Discovery\autocite{ServiceNowDiscovery}.
+  \item \textbf{NetBox}: een open-source IPAM/DCIM-platform dat in deze bachelorproef centraal staat als \emph{single source of truth} (SSOT) voor netwerkdocumentatie\autocite{NetBoxOSS}.
+  \item \textbf{NetBox Discovery}: een uitbreiding op NetBox die automatische netwerkdetectie via SNMP en NMAP-scans uitvoert via discovery-jobs en de resultaten in NetBox synchroniseert\autocite{NetBoxDiscoveryDocs}.
+  \item \textbf{Diode}: een synchronisatielaag van NetBox Labs die discovery-data via gRPC en een client/server-architectuur valideert en in NetBox laadt\autocite{DiodeDocs}.
+  \item \textbf{Orb agent}: een lichtgewicht discovery-agent (container) van NetBox Labs die de eigenlijke discovery uitvoert en de resultaten via Diode aanlevert aan NetBox\autocite{NetBoxLabsOrbAgent}.
+  \item \textbf{LLDP} (\emph{Link Layer Discovery Protocol}): een vendor-neutraal Layer 2-protocol waarmee netwerkapparaten hun directe buren ontdekken; cruciaal voor het automatisch reconstrueren van kabel- en topologierelaties\autocite{LLDP_IJCA}.
+  \item \textbf{SNMP} (\emph{Simple Network Management Protocol}): een protocol voor het uitlezen van device-attributen en interfaceinformatie van netwerkapparatuur\autocite{SnmpTopologyDiscoveryIEEE2013}.
+\end{itemize}
 
 Dit onderzoek wordt uitgevoerd binnen de context van Citymesh, een Belgische telecomoperator en technologiebedrijf dat gespecialiseerd is in grootschalige draadloze netwerken en connectiviteitsoplossingen voor de zakelijke markt.\autocite{CitymeshAbout} Citymesh focust op zowel permanente als tijdelijke connectiviteit op basis van WiFi/WLAN, 0G/IoT, 4G en 5G en treedt op als vierde mobiele operator in België.\autocite{CitymeshAbout,Mice2022} Deze heterogene en sterk gedistribueerde draadloze infrastructuren veranderen frequent door nieuwe sites, tijdelijke events en uitbreidingen, waardoor het bijhouden van accurate netwerkdocumentatie een bijzondere uitdaging vormt. Citymesh heeft specifiek gevraagd om een evaluatie en implementatie van NetBox Discovery als oplossing voor deze uitdaging. Binnen die bredere context wordt de praktische uitwerking in deze bachelorproef bewust afgebakend tot een casestudy op concrete sites en op documentatie-elementen die in NetBox rechtstreeks toetsbaar waren, met name inventarisdata en kabel-/topologierelaties.
 
@@ -14,7 +29,7 @@ De doelgroep van dit onderzoek bestaat uit netwerkbeheerders en infrastructuurbe
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-Het centrale probleem dat dit onderzoek adresseert, is de snel verouderende netwerkdocumentatie binnen organisaties. Wanneer wijzigingen in de infrastructuur niet consistent worden bijgehouden, ontstaan onnauwkeurige of tegenstrijdige netwerkdocumentatie. Dit leidt tot het ontbreken van een betrouwbare single source of truth (SSOT), wat op zijn beurt risico's vormt voor efficiënt beheer, probleemoplossing en beveiliging.\autocite{NetBoxOSS} Het probleem wordt versterkt in dynamische IT-omgevingen zoals die van Citymesh, waar draadloze technologieën zoals grootschalige WiFi/WLAN, private 4G/5G-netwerken en IoT- of 0G-sensornetwerken continu evolueren en waar apparaten en sites frequent toegevoegd, verhuisd of verwijderd worden.\autocite{CitymeshAbout,CitymeshNetworkService}
+Het centrale probleem dat dit onderzoek adresseert, is de snel verouderende netwerkdocumentatie binnen organisaties. Wanneer wijzigingen in de infrastructuur niet consistent worden bijgehouden, ontstaat onnauwkeurige of tegenstrijdige netwerkdocumentatie. Dit leidt tot het ontbreken van een betrouwbare single source of truth (SSOT), wat op zijn beurt risico's vormt voor efficiënt beheer, probleemoplossing en beveiliging.\autocite{NetBoxOSS} Het probleem wordt versterkt in dynamische IT-omgevingen zoals die van Citymesh, waar draadloze technologieën zoals grootschalige WiFi/WLAN, private 4G/5G-netwerken en IoT- of 0G-sensornetwerken continu evolueren en waar apparaten en sites frequent toegevoegd, verhuisd of verwijderd worden.\autocite{CitymeshAbout,CitymeshNetworkService}
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
@@ -51,10 +66,10 @@ Om de centrale onderzoeksvraag te beantwoorden, worden de volgende deelonderzoek
 
 Het concrete eindresultaat van dit onderzoek bestaat uit:
 \begin{itemize}
-  \item Een evaluatie van NetBox Discovery, inclusief een vergelijking met alternatieve automatische netwerkdetectietools en hun effectiviteit in het bijhouden van netwerkdocumentatie
-  \item Een praktische implementatie en configuratie van NetBox Discovery binnen de infrastructuur van Citymesh
-  \item Een rapport met concrete voor/na-observaties en gerichte metingen over de verbetering in actualiteit en betrouwbaarheid van netwerkdocumentatie na implementatie van NetBox Discovery
-  \item Concrete aanbevelingen voor Citymesh over de implementatie, configuratie en organisatorische inbedding van NetBox Discovery
+  \item Een evaluatie van NetBox Discovery, inclusief een vergelijking met alternatieve automatische netwerkdetectietools en hun effectiviteit in het bijhouden van netwerkdocumentatie;
+  \item Een praktische implementatie en configuratie van NetBox Discovery binnen de infrastructuur van Citymesh, met aanvullende automatisering (\texttt{NetworkTool}) voor datatypes die de standaard discoveryflow niet automatisch in NetBox aanlevert;
+  \item Een rapport met concrete voor/na-observaties en gerichte metingen over de verbetering in actualiteit en betrouwbaarheid van netwerkdocumentatie na implementatie;
+  \item Concrete aanbevelingen voor Citymesh over de implementatie, configuratie en organisatorische inbedding van NetBox Discovery.
 \end{itemize}
 
 De bachelorproef kan als succes beschouwd worden wanneer een werkende implementatie gerealiseerd is die aantoonbaar bijdraagt aan het verbeteren van de actualiteit van netwerkdocumentatie, en wanneer concrete observaties en metingen beschikbaar zijn die de meerwaarde van automatische detectie binnen de afgebakende casus onderbouwen.
@@ -64,10 +79,14 @@ De bachelorproef kan als succes beschouwd worden wanneer een werkende implementa
 
 De rest van deze bachelorproef is als volgt opgebouwd:
 
-In Hoofdstuk~\ref{ch:stand-van-zaken} wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein, op basis van een literatuurstudie. Hierbij wordt ingegaan op het concept van single source of truth in netwerkbeheer, automatische netwerkdetectie en bestaand onderzoek naar automatische documentatie.
+In Hoofdstuk~\ref{ch:stand-van-zaken} wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein op basis van een literatuurstudie. Hierbij wordt ingegaan op het concept van \emph{single source of truth} in netwerkbeheer, op automatische netwerkdetectie, op een vergelijkende bespreking van NetBox Discovery, Diode, Orb en alternatieve discovery- en NMS/ITSM-platformen, en op de mogelijkheden en limitaties van die tools.
 
-In Hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht: de zes onderzoeksfasen, gebruikte tools en technologieën, en hoe de onderzoeksvragen worden beantwoord.
+Hoofdstuk~\ref{ch:methodologie} beschrijft de methodologie: de onderzoeksopzet, de manier waarop kwalitatieve data verzameld werd, de operationalisering van de kernindicatoren en de afbakening van de casestudy.
 
-Daarna volgen hoofdstukken die de uitwerking van die fasen beschrijven. In Hoofdstuk~\ref{ch:fase1} staat de requirementsanalyse bij Citymesh. Hoofdstuk~\ref{ch:fase2} behandelt de toolselectie en vergelijkende evaluatie. Hoofdstuk~\ref{ch:fase3} beschrijft de baselinemetingen en de voorbereiding van de implementatie. Hoofdstuk~\ref{ch:fase4} gaat over de implementatie en configuratie van NetBox Discovery (Orb agent, Diode). Hoofdstuk~\ref{ch:fase5} behandelt de evaluatie en metingen. Hoofdstuk~\ref{ch:fase6} bevat analyse, aanbevelingen en reflectie.
+Hoofdstuk~\ref{ch:context} concretiseert de context bij Citymesh: de pijnpunten van de huidige werkwijze, de bestaande CSV-import\-workflow en de daaruit afgeleide concrete requirements voor de oplossing.
 
-In Hoofdstuk~\ref{ch:conclusie}, tenslotte, wordt de conclusie gegeven en een antwoord geformuleerd op de onderzoeksvragen. Daarbij wordt ook een aanzet gegeven voor toekomstig onderzoek binnen dit domein.
+Hoofdstuk~\ref{ch:implementatie} bespreekt de implementatie en configuratie van NetBox Discovery met Diode en de aanvullende \texttt{NetworkTool}-applicatie. De nadruk ligt op de architectuur van de oplossing, op de issues en valkuilen die zich voordeden, en op de manier waarop de oplossing schaalbaar en herhaalbaar werd gemaakt. Grote codefragmenten zijn opgenomen in Bijlage~\ref{ch:bijlage-implementatie}.
+
+Hoofdstuk~\ref{ch:casestudy} beschrijft de casestudy. Voor elke geëvalueerde site (Ridefort, Deleers Go4tech, Koninklijke Stallingen en WZC Riethove) wordt de baseline samen met de na-meting gepresenteerd in vergelijkbare voor/na-tabellen.
+
+Hoofdstuk~\ref{ch:analyse} bevat de analyse van de resultaten en de aanbevelingen voor Citymesh. Hoofdstuk~\ref{ch:conclusie} sluit het werk af met een beknopte conclusie en een korte vooruitblik op verder onderzoek.

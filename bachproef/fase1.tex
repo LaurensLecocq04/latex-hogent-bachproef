@@ -1,62 +1,55 @@
 %%=============================================================================
-%% Requirementsanalyse
+%% Context en requirements bij Citymesh
 %%=============================================================================
 
-\chapter{\IfLanguageName{dutch}{Requirementsanalyse}{Requirements analysis}}%
-\label{ch:fase1}
+\chapter{\IfLanguageName{dutch}{Context en requirements bij Citymesh}{Context and requirements at Citymesh}}%
+\label{ch:context}
 
-In dit hoofdstuk worden de requirements van Citymesh geanalyseerd op basis van de concrete pijnpunten die netwerkbeheerders vandaag ervaren bij het beheren van netwerkdocumentatie in NetBox. De literatuurstudie die in fase~1 van de methodologie (zie Hoofdstuk~\ref{ch:methodologie}) is voorzien, is uitgewerkt in Hoofdstuk~\ref{ch:stand-van-zaken}; dit hoofdstuk focust op de requirementsanalyse. De requirements vormen de brug tussen de probleemstelling uit de inleiding en de oplossing die in latere hoofdstukken wordt uitgewerkt.
+In dit hoofdstuk wordt de operationele context bij Citymesh kort uitgewerkt en worden de daaruit afgeleide requirements voor een automatische discoveryflow opgesomd. De input voor dit hoofdstuk komt voornamelijk uit de kwalitatieve dataverzameling beschreven in \S\ref{sec:kwalitatieve-data}.
 
 \section{Pijnpunten bij de huidige werkwijze}
 
-Uit gesprekken met netwerkbeheerders bij Citymesh komen meerdere terugkerende pijnpunten naar voren:
+Uit de gesprekken met netwerkbeheerders bij Citymesh en uit observaties van bestaande NetBox-data komen drie terugkerende pijnpunten naar voren.
 
-\begin{itemize}
-  \item \textbf{Verouderde documentatie}: netwerkdocumentatie in NetBox loopt vaak achter op de realiteit. Wanneer bijvoorbeeld een access point (AP) vervangen wordt na een defect, wordt deze wijziging niet altijd (tijdig) doorgevoerd in NetBox. Daardoor ontstaat er een discrepantie tussen de fysieke infrastructuur en de gedocumenteerde situatie.
-  \item \textbf{Handmatige inventarisatie en import}: om NetBox te vullen of bij te werken, moeten beheerders regelmatig een CSV-bestand samenstellen met alle relevante devices en hun kenmerken (locatie, type, IP-adres, serienummer, enz.) om dit vervolgens te importeren. Dit is tijdrovend, foutgevoelig en moet bij grotere wijzigingen herhaald worden.
-  \item \textbf{Handmatig opbouwen van topologie}: de netwerk-topologie (bijvoorbeeld relaties tussen switches, routers, access points en andere netwerkcomponenten) moet grotendeels handmatig opgebouwd en bijgewerkt worden in NetBox. Dit vergt veel tijd en moet bij elke wijziging opnieuw uitgevoerd worden, waardoor de kans groot is dat de topologieweergave veroudert.
-\end{itemize}
+\paragraph{Verouderde documentatie na infrastructuurwijzigingen.} Wanneer een access point (AP) vervangen wordt na een defect of wanneer een hele site uitgebreid wordt, wordt de wijziging niet altijd (tijdig) doorgevoerd in NetBox. Daardoor ontstaat een discrepantie tussen de fysieke infrastructuur en de gedocumenteerde situatie. Een concreet voorbeeld is de site Ridefort, waar de NetBox-inhoud uit 2020 dateert maar de AP's in 2022 vervangen werden zonder dat de records consistent werden bijgewerkt (zie ook \S\ref{sec:ridefort}).
 
-\subsection{CSV-workflow en NetBox-templates}
+\paragraph{Tijdrovende handmatige import.} Om NetBox initieel te vullen of bij te werken, stellen beheerders typisch een CSV-bestand samen met alle relevante devices en hun kenmerken (locatie, type, IP-adres, serienummer). Dat bestand wordt vervolgens geïmporteerd in NetBox. Vaak zijn meerdere importrondes nodig (correcties, ontbrekende velden, afwijkingen na validatie). Een exacte tijdsmeting per site is in dit onderzoek niet systematisch vastgelegd, maar voor een grotere reeks AP's met bijhorende interface- en IP-gegevens, inclusief herimporten, bedraagt de doorlooptijd al snel \emph{enkele uren tot een halve werkdag}, afhankelijk van de omvang van de site, het aantal correctierondes en parallelle taken.
 
-Citymesh werkt traditioneel sterk met \textbf{CSV-bestanden}: er bestaan vaste templates met de velden die ingevuld moeten worden. Die templates worden \textbf{handmatig} aangevuld (bijvoorbeeld in Excel) en daarna geïmporteerd in NetBox. Voor access points wordt een \textbf{naamgevingsconventie} gehanteerd die het invullen vergemakkelijkt: namen worden zo gekozen dat ze in Excel doorgesleept kunnen worden, bijvoorbeeld \texttt{CI\_OK\_AP13}, \texttt{CI\_OK\_AP14}, \texttt{CI\_OK\_AP15}, enzovoort. Ook \textbf{IP-adressen} worden typisch \textbf{opeenvolgend} toegewezen vanaf het eerste AP in een reeks, wat het plannen in een spreadsheet ondersteunt.
+\paragraph{Handmatig opbouwen van topologie.} De netwerktopologie (relaties tussen routers, switches en access points) moet grotendeels handmatig opgebouwd en bijgewerkt worden in NetBox. Ook bij elke wijziging moet de topologie opnieuw nagekeken worden, waardoor de kans groot is dat de topologieweergave veroudert.
 
-In NetBox worden bovendien \textbf{templates} gebruikt voor de interfaces van toestellen; daar kunnen beheerders de IP-adressen koppelen aan de juiste interfaces. Dat maakt de data gestructureerder, maar het volledige traject---template vullen, CSV voorbereiden, importeren, controleren en bij fouten opnieuw importeren---blijft arbeidsintensief. Vaak is \textbf{meerdere keren een CSV-import} nodig (correcties, ontbrekende velden, afwijkingen na validatie).
+Deze pijnpunten leiden er samen toe dat NetBox in de praktijk niet altijd als een betrouwbare \emph{single source of truth} wordt ervaren, terwijl dat net de bedoeling is van het platform.
 
-Een exacte tijdsmeting per site of per wijzigingsronde is in dit onderzoek niet systematisch vastgelegd; naar \textbf{schatting} ligt de doorlooptijd voor het netjes documenteren van een grotere reeks AP's met bijbehorende interface- en IP-gegevens, inclusief herimporten, al snel in de orde van \textbf{enkele uren tot een halve werkdag}, afhankelijk van de omvang van de site, het aantal correctierondes en parallelle andere taken. Dit illustreert waarom reductie van handmatige stappen en automatische discovery een duidelijke meerwaarde kan hebben.
+\section{De bestaande CSV-workflow en naamgevings\-conventies}
 
-Deze pijnpunten leiden er samen toe dat NetBox niet altijd als een betrouwbare \emph{single source of truth} wordt ervaren, terwijl dat net de bedoeling is van het platform. Bovendien gaat er kostbare tijd van netwerkbeheerders naar administratieve taken in plaats van naar ontwerp, onderhoud en troubleshooting.
+Citymesh werkt traditioneel sterk met \textbf{CSV-bestanden}: er bestaan vaste templates met de velden die ingevuld moeten worden. Die templates worden manueel aangevuld (typisch in Excel) en daarna geïmporteerd in NetBox. Voor access points wordt een \textbf{naamgevingsconventie} gehanteerd die het invullen vergemakkelijkt: namen worden zo gekozen dat ze in Excel doorgesleept kunnen worden, bijvoorbeeld \texttt{CI\_OK\_AP13}, \texttt{CI\_OK\_AP14}, \texttt{CI\_OK\_AP15}, enzovoort. Ook IP-adressen worden typisch \emph{opeenvolgend} toegewezen vanaf het eerste AP in een reeks, wat het plannen in een spreadsheet ondersteunt. In NetBox worden bovendien \emph{interface-templates} gebruikt zodat IP-adressen aan de juiste interfaces kunnen gekoppeld worden.
 
-\section{Gefaseerde requirements}
+Deze workflow is consistent en herhaalbaar zolang de initiële opbouw netjes verloopt en zolang er geen wijzigingen na verloop van tijd doorgevoerd worden zonder de CSV-stap opnieuw te uitvoeren. Net dat laatste is moeilijk te garanderen in een dynamische omgeving zoals die van Citymesh.
 
-Op basis van bovenstaande pijnpunten worden de requirements voor een oplossing opgesplitst per onderzoeksfase, zoals beschreven in de methodologie.
+\section{Requirements voor de oplossing}
 
-\subsection{Requirements voor fase 1 (requirementsanalyse)}
+Op basis van bovenstaande pijnpunten en de gesprekken met netwerkbeheerders zijn de volgende functionele en niet-functionele requirements geformuleerd voor de automatische discoveryflow die in deze bachelorproef opgezet wordt. Tabel~\ref{tab:requirements} bundelt ze.
 
-De eerste fase moet resulteren in een helder en gevalideerd beeld van de behoeften van Citymesh:
+\begin{table}[H]
+  \centering
+  \caption[Requirements voor de automatische discoveryflow]{Requirements voor de automatische discoveryflow bij Citymesh}
+  \label{tab:requirements}
+  \footnotesize
+  \begin{tabular}{p{0.04\linewidth} p{0.20\linewidth} p{0.66\linewidth}}
+    \toprule
+    \textbf{Nr.} & \textbf{Type} & \textbf{Beschrijving} \\
+    \midrule
+    R1 & Functioneel & De oplossing moet automatisch netwerkdevices ontdekken en hun device type en serienummer correct in NetBox aanleveren. \\
+    R2 & Functioneel & De oplossing moet de kabelrelaties tussen routers, switches en access points (op basis van LLDP) in NetBox aanmaken of bijwerken. \\
+    R3 & Functioneel & De oplossing moet IP-adressen op interfaces koppelen, in lijn met de bestaande naamgevings- en IP-conventies. \\
+    R4 & Functioneel & De oplossing moet vendor-onafhankelijk zijn voor de in scope zijnde vendors: minstens MikroTik, Huawei, RUCKUS en Fortinet. \\
+    R5 & Functioneel & De oplossing moet bij detectie van afwijkingen op bestaande NetBox-data (drift) corrigerend kunnen optreden, in plaats van enkel toe te voegen. \\
+    R6 & Niet-functioneel & De oplossing moet schaalbaar zijn naar tientallen sites: per site een agent of equivalent inzetten zonder de centrale architectuur te overbelasten. \\
+    R7 & Niet-functioneel & Credentials (SNMP-community, device-logins, NetBox-tokens, Diode OAuth2) mogen niet plain-text in configuratiebestanden staan. \\
+    R8 & Niet-functioneel & De oplossing moet binnen het budget van een bachelorproef blijven en bij voorkeur open-source zijn. \\
+    R9 & Procesmatig & Een \emph{cleanup}-stap moet voorzien zijn vóór de eerste discovery, zodat oude/foutieve records geen duplicaten produceren. \\
+    R10 & Procesmatig & Discovery moet \emph{periodiek} herhaald kunnen worden om drift sneller te detecteren, ook op recent gedocumenteerde data. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
-\begin{itemize}
-  \item De bestaande documentatieprocessen, gebruikte tools en verantwoordelijkheden moeten in kaart gebracht worden.
-  \item De hierboven beschreven pijnpunten moeten verder geoperationaliseerd worden (frequentie, impact, concrete voorbeelden).
-  \item Er moet een requirementsdocument opgesteld worden dat zowel functionele als niet-functionele eisen voor automatische netwerkdetectie en documentatiebeschrijving bevat, afgestemd op de draadloze context van Citymesh.
-\end{itemize}
-
-\subsection{Requirements voor fase 2--4 (toolselectie, voorbereiding en implementatie)}
-
-Voor de selectie en implementatie van een oplossing gelden onder meer de volgende hoge-niveau requirements:
-
-\begin{itemize}
-  \item De oplossing moet automatisch netwerkdevices kunnen ontdekken, zodat verouderde documentatie tot een minimum wordt beperkt.
-  \item De oplossing moet integreren met NetBox zodat zowel inventarisgegevens als topologierelaties automatisch of semiautomatisch bijgewerkt kunnen worden.
-  \item De oplossing moet schaalbaar zijn naar de gedistribueerde en dynamische draadloze omgevingen van Citymesh (meerdere sites, tijdelijke opstellingen, uitbreidingen).
-\end{itemize}
-
-\subsection{Requirements voor fase 5--6 (evaluatie en borging)}
-
-Tot slot zijn er requirements rond evaluatie en duurzame verankering:
-
-\begin{itemize}
-  \item Er moeten meetbare indicatoren gedefinieerd worden om de verbetering in actualiteit, volledigheid en foutgraad van de documentatie na implementatie te kunnen evalueren.
-  \item De oplossing moet passen binnen de organisatie- en beheerprocessen van Citymesh, zodat automatische detectie en documentatie geen eenmalig project blijft maar duurzaam ingebed wordt.
-\end{itemize}
-
+Deze requirements vormen het toetsingskader voor de tool\-vergelijking in \S\ref{sec:alternatieven} en voor de implementatie in Hoofdstuk~\ref{ch:implementatie}. In de evaluatie (Hoofdstuk~\ref{ch:casestudy}) wordt voor elke site nagegaan in welke mate de gerealiseerde oplossing aan deze requirements voldoet.

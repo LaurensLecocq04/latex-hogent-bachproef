@@ -1,0 +1,351 @@
+%%=============================================================================
+%% Bijlage: implementatiecode
+%%=============================================================================
+
+\chapter{Implementatiecode}%
+\label{ch:bijlage-implementatie}
+
+Deze bijlage bevat de volledige codefragmenten die in Hoofdstuk~\ref{ch:implementatie} cherry-picked werden. De volgorde is dezelfde als die van het hoofdstuk, zodat de lezer per onderwerp eenvoudig kan terugbladeren.
+
+\section{Orb agent: YAML-configuraties}
+\label{sec:bijlage-orb-yaml}
+
+\subsection{Device discovery}
+
+\begin{listing}[H]
+  \caption[Orb agent voor device discovery]{Volledige Orb-agentconfiguratie voor device discovery via Diode (\S\ref{sec:architectuur})}
+  \label{lst:orb-device-discovery-config}
+  \begin{minted}[fontsize=\small]{yaml}
+orb:
+  log_level: DEBUG
+  config_manager:
+    active: local
+
+  backends:
+    common:
+      diode:
+        target: grpc://localhost:8080/diode
+        client_id: ${DIODE_CLIENT_ID}
+        client_secret: ${DIODE_CLIENT_SECRET}
+        agent_name: discovery_agent_01
+        dry_run: true
+        dry_run_output_dir: /opt/orb
+    device_discovery:
+      host: 0.0.0.0
+      port: 8072
+      log_level: DEBUG
+      log_format: TEXT
+
+  policies:
+    device_discovery:
+      oostkamp_router:
+        config:
+          schedule: "*/30 * * * *"
+          options:
+            port_scan_ports: [8722]
+            port_scan_timeout: 1.0
+            debug: true
+          defaults:
+            site: "Oostkamp Ridefort"
+            role: "Router"
+            tenant: "Oostkamp"
+        scope:
+          - hostname: "10.23.4.225"
+            driver: "ros"
+            username: "${DEVICE_USERNAME}"
+            password: "${DEVICE_PASSWORD}"
+            optional_args:
+              port: 8722
+              use_ssl: false
+              debug: true
+  \end{minted}
+\end{listing}
+
+\subsection{SNMP discovery}
+
+\begin{listing}[H]
+  \caption[Orb agent voor SNMP discovery]{Volledige Orb-agentconfiguratie voor SNMP discovery (\S\ref{sec:architectuur})}
+  \label{lst:orb-snmp-discovery-config}
+  \begin{minted}[fontsize=\small]{yaml}
+orb:
+  config_manager:
+    active: local
+
+  backends:
+    common:
+      diode:
+        target: grpc://127.0.0.1:8080/diode
+        client_id: ${DIODE_CLIENT_ID}
+        client_secret: ${DIODE_CLIENT_SECRET}
+        agent_name: discovery_agent_01
+
+  policies:
+    snmp_discovery:
+      oostkamp_ridefort:
+        config:
+          schedule: "*/30 * * * *"
+          timeout: 300
+          snmp_timeout: 5
+          retries: 3
+          lookup_extensions_dir: "/opt/orb/snmp-extensions/lookup_extensions"
+          defaults:
+            site: "Oostkamp Ridefort"
+            role: "network"
+            rack: "Oostkamp Ridefort"
+            tags: ["snmp-discovery", "orb"]
+            device:
+              tenant: "Oostkamp"
+              rack: "oostkamp_ridefort"
+              description: "SNMP discovered device"
+
+        scope:
+          targets:
+            - host: "10.23.4.225"
+              override_defaults:
+                role: "Router"
+
+            - host: "10.23.4.226"
+              override_defaults:
+                role: "Switch"
+
+            - host: "10.23.4.231-236"
+              override_defaults:
+                role: "Access Point"
+
+          authentication:
+            protocol_version: "SNMPv2c"
+            community: "public"
+  \end{minted}
+\end{listing}
+
+In bovenstaande YAML- en shellfragmenten staat de site-naam in NetBox als \texttt{Oostkamp Ridefort}; in de hoofdtekst wordt deze site kortweg \emph{Ridefort} genoemd. Credentials zoals \texttt{DEVICE\_USERNAME}, \texttt{DEVICE\_PASSWORD} en de SNMP-community \texttt{public} dienen in deze listings als placeholders en worden in productie via een secret manager respectievelijk een niet-publieke community vervangen.
+
+\section{Orb agent: shellscripts voor uitrol}
+\label{sec:bijlage-orb-scripts}
+
+\subsection{Script voor SNMP discovery}
+
+\begin{listing}[H]
+  \caption[Shellscript voor SNMP-discovery uitrol]{Volledig shellscript voor het genereren van \texttt{agent.yaml} voor SNMP discovery (\S\ref{sec:schaalbaarheid})}
+  \label{lst:orb-snmp-script}
+  \begin{minted}[fontsize=\small]{bash}
+#!/usr/bin/env bash
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+mkdir -p "$SCRIPT_DIR/snmp-extensions"
+
+CREDS_FILE="/opt/diode/oauth2/client/client-credentials.json"
+ALT_CREDS_FILE="/vagrant/diode/oauth2/client/client-credentials.json"
+
+if [ ! -f "$CREDS_FILE" ]; then
+  if [ -f "$ALT_CREDS_FILE" ]; then
+    CREDS_FILE="$ALT_CREDS_FILE"
+  else
+    echo "Fout: $CREDS_FILE niet gevonden."
+    exit 1
+  fi
+fi
+
+if ! command -v envsubst >/dev/null 2>&1; then
+  echo "envsubst niet gevonden. Installeer met: sudo apt-get install -y gettext-base"
+  exit 1
+fi
+
+export DIODE_CLIENT_ID="diode-ingest"
+export DIODE_CLIENT_SECRET=$(sudo jq -r '.[] | select(.client_id == "diode-ingest") | .client_secret' "$CREDS_FILE")
+
+if [ -z "$DIODE_CLIENT_SECRET" ]; then
+  echo "Fout: kon diode-ingest secret niet ophalen."
+  exit 1
+fi
+
+export DEVICE_USERNAME="user"
+export DEVICE_PASSWORD="pass"
+
+envsubst '${DIODE_CLIENT_ID} ${DIODE_CLIENT_SECRET} ${DEVICE_USERNAME} ${DEVICE_PASSWORD}' < agent.yaml.snmp > agent.yaml
+echo "agent.yaml gegenereerd met credentials."
+
+exec sudo docker run --rm --network host \
+  -v "$SCRIPT_DIR:/opt/orb" \
+  -e PIP_BREAK_SYSTEM_PACKAGES=1 \
+  netboxlabs/orb-agent:latest run -c /opt/orb/agent.yaml
+  \end{minted}
+\end{listing}
+
+\subsection{Script voor router/device discovery}
+
+\begin{listing}[H]
+  \caption[Shellscript voor router-discovery uitrol]{Volledig shellscript voor het genereren van \texttt{agent.yaml} voor router/device discovery (\S\ref{sec:schaalbaarheid})}
+  \label{lst:orb-router-script}
+  \begin{minted}[fontsize=\small]{bash}
+#!/usr/bin/env bash
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+mkdir -p "$SCRIPT_DIR/snmp-extensions"
+
+CREDS_FILE="/opt/diode/oauth2/client/client-credentials.json"
+ALT_CREDS_FILE="/vagrant/diode/oauth2/client/client-credentials.json"
+
+if [ ! -f "$CREDS_FILE" ]; then
+  if [ -f "$ALT_CREDS_FILE" ]; then
+    CREDS_FILE="$ALT_CREDS_FILE"
+  else
+    echo "Fout: $CREDS_FILE niet gevonden."
+    exit 1
+  fi
+fi
+
+if ! command -v envsubst >/dev/null 2>&1; then
+  echo "envsubst niet gevonden. Installeer met: sudo apt-get install -y gettext-base"
+  exit 1
+fi
+
+export DIODE_CLIENT_ID="diode-ingest"
+export DIODE_CLIENT_SECRET=$(sudo jq -r '.[] | select(.client_id == "diode-ingest") | .client_secret' "$CREDS_FILE")
+
+if [ -z "$DIODE_CLIENT_SECRET" ]; then
+  echo "Fout: kon diode-ingest secret niet ophalen."
+  exit 1
+fi
+
+export DEVICE_USERNAME="user"
+export DEVICE_PASSWORD="pass"
+
+envsubst '${DIODE_CLIENT_ID} ${DIODE_CLIENT_SECRET} ${DEVICE_USERNAME} ${DEVICE_PASSWORD}' < agent.yaml.router > agent.yaml
+echo "agent.yaml gegenereerd met credentials."
+
+exec sudo docker run --rm --network host \
+  -v "$SCRIPT_DIR:/opt/orb" \
+  -e INSTALL_DRIVERS_PATH=/opt/orb/drivers-router.txt \
+  -e PIP_BREAK_SYSTEM_PACKAGES=1 \
+  netboxlabs/orb-agent:2.5.0 run -c /opt/orb/agent.yaml
+  \end{minted}
+\end{listing}
+
+\section{NetworkTool: GUI-architectuur}
+\label{sec:bijlage-networktool-gui}
+
+\begin{listing}[H]
+  \caption[NetworkTool: module-imports en tabstructuur]{NetworkTool: module-imports en tabstructuur (\S\ref{sec:architectuur})}
+  \label{lst:networktool-gui-tabs-full}
+  \begin{minted}[fontsize=\small]{python}
+from config import AGENT_MAP, AGENT_DIR, MAPPING_FILE
+from utils import load_snmp_mapping, parse_ip_input, sweep_ip, guess_role_and_type
+from network_core import fetch_live_data
+from netbox_api import (
+    get_nb_sites, get_nb_devices, get_nb_roles,
+    get_nb_device_types, get_nb_tenants,
+    evaluate_and_sync_netbox, sync_snmp_devices
+)
+
+tab_agent, tab_scanner, tab_discovery, tab_cve = st.tabs(
+    ["Agent Manager", "Network Scanner", "SNMP Discovery", "CVE Scanner"]
+)
+  \end{minted}
+\end{listing}
+
+\section{NetworkTool: dry-run en live synchronisatie}
+\label{sec:bijlage-networktool-sync}
+
+\begin{listing}[H]
+  \caption[NetworkTool: dry-run gevolgd door live synchronisatie]{NetworkTool: dry-run-analyse gevolgd door live synchronisatie (\S\ref{sec:schaalbaarheid})}
+  \label{lst:networktool-dryrun-live}
+  \begin{minted}[fontsize=\small]{python}
+success, changes = evaluate_and_sync_netbox(
+    live_data_payload, d['ip'], d['site'], d['role'], d['rack'], d['tenant'], d['naam'],
+    nb_url, nb_token, selected_modules, d['vendor'], d['monitoring_env'], dry_run=True
+)
+
+success, messages = evaluate_and_sync_netbox(
+    live_data_payload, d['ip'], d['site'], d['role'], d['rack'], d['tenant'], d['naam'],
+    nb_url, nb_token, st.session_state.selected_modules, d['vendor'], d['monitoring_env'],
+    dry_run=False
+)
+  \end{minted}
+\end{listing}
+
+\section{NetworkTool: LLDP-verwerking en kabel-drift}
+\label{sec:bijlage-networktool-lldp}
+
+\subsection{LLDP ophalen via NAPALM-fallback}
+
+\begin{listing}[H]
+  \caption[NetworkTool: LLDP ophalen en formatteren]{NetworkTool: LLDP ophalen en formatteren met fallback (\S\ref{sec:issues-valkuilen})}
+  \label{lst:networktool-lldp-fetch}
+  \begin{minted}[fontsize=\small]{python}
+try:
+    details = device.get_lldp_neighbors_detail()
+    if details:
+        fmt_lldp = {}
+        for iface, neighbors in details.items():
+            fmt_lldp[iface] = [
+                {'hostname': n.get('remote_system_name', ''), 'port': n.get('remote_port', '')}
+                for n in neighbors
+            ]
+        data["lldp_neighbors"] = fmt_lldp
+    else:
+        data["lldp_neighbors"] = device.get_lldp_neighbors()
+except Exception:
+    try:
+        data["lldp_neighbors"] = device.get_lldp_neighbors()
+    except Exception:
+        pass
+  \end{minted}
+\end{listing}
+
+\subsection{Kabel-drift detecteren en corrigeren}
+
+\begin{listing}[H]
+  \caption[NetworkTool: kabel-drift detecteren en corrigeren]{NetworkTool: kabel-drift detecteren en corrigeren in NetBox (\S\ref{sec:issues-valkuilen})}
+  \label{lst:networktool-cable-drift}
+  \begin{minted}[fontsize=\small]{python}
+if cable_a:
+    endpoints = getattr(nb_intf_a, 'connected_endpoints', [])
+    if endpoints and len(endpoints) > 0:
+        ep = endpoints[0]
+        connected_dev_name = getattr(getattr(ep, 'device', None), 'name', 'Onbekend')
+        connected_port_name = getattr(ep, 'name', 'Onbekend')
+        if str(connected_dev_name).upper() != str(remote_host).upper() or \
+           str(connected_port_name).upper() != str(nb_intf_b.name).upper():
+            drift_detected = True
+
+if not kabel_bestaat_al_goed:
+    nb.dcim.cables.create({
+        "a_terminations": [{"object_type": "dcim.interface", "object_id": nb_intf_a.id}],
+        "b_terminations": [{"object_type": "dcim.interface", "object_id": nb_intf_b.id}],
+        "status": "connected"
+    })
+  \end{minted}
+\end{listing}
+
+\section{NetworkTool: RUCKUS vSZ-koppeling}
+\label{sec:bijlage-vsz}
+
+\begin{listing}[H]
+  \caption[RUCKUS vSZ: inventarisdict richting NetBox]{RUCKUS vSZ: inventarisdict richting NetBox (\S\ref{sec:issues-valkuilen})}
+  \label{lst:ruckus-vsz-netbox-inventory}
+  \begin{minted}[fontsize=\small]{python}
+data = {
+    "name": ap_name,
+    "device_type": dev_type.id,
+    "role": role.id,
+    "site": site.id,
+    "serial": ap_serial,
+    "status": "active",
+    "tenant": tenant.id if tenant else None,
+    "asset_tag": ap_mac
+}
+
+if ap_vlan:
+    data["description"] = f"Management VLAN: {ap_vlan}"
+
+# Vervolgens wordt het device aangemaakt of geüpdatet met data,
+# inclusief IP-adresverwerking via deze vSZ-stap.
+  \end{minted}
+\end{listing}

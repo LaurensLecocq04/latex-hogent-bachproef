@@ -1,102 +1,79 @@
 %%=============================================================================
-%% Analyse, aanbevelingen en reflectie
+%% Analyse en aanbevelingen
 %%=============================================================================
 
-\chapter{\IfLanguageName{dutch}{Analyse, aanbevelingen en reflectie}{Analysis, recommendations and reflection}}%
-\label{ch:fase6}
+\chapter{\IfLanguageName{dutch}{Analyse en aanbevelingen}{Analysis and recommendations}}%
+\label{ch:analyse}
 
-In dit hoofdstuk worden de resultaten van de casestudy geanalyseerd in functie van de centrale onderzoeksvraag en deelonderzoeksvragen. De analyse vertrekt vanuit:
-
-\begin{itemize}
-  \item de baseline die de bestaande toestand van NetBox-documentatie beschrijft in Hoofdstuk~\ref{ch:fase3};
-  \item de implementatie van NetBox Discovery en de aanvullende automatisering voor ontbrekende datatypes in Hoofdstuk~\ref{ch:fase4};
-  \item de evaluatieobservaties tijdens de discovery- en verwerkingsstappen in Hoofdstuk~\ref{ch:fase5}.
-\end{itemize}
+In dit hoofdstuk worden de resultaten van de casestudy uit Hoofdstuk~\ref{ch:casestudy} geanalyseerd en vertaald naar concrete aanbevelingen voor Citymesh. Het hoofdstuk sluit af met een reflectie op de validiteit en de beperkingen van de gehanteerde aanpak. De beknopte beantwoording van de onderzoeksvragen volgt in Hoofdstuk~\ref{ch:conclusie}.
 
 \section{Analyse van de resultaten}
 
 \subsection{Actualiteit en consistentie van inventarisdata}
 
-De baseline toonde aan dat na de access point-vervanging niet alle relevante attributen consequent waren aangepast in NetBox. Concreet waren een deel van de AP-records niet correct benoemd, niet correct getypeerd en waren vooral de kabelrelaties incompleet.
+De combinatie van de vier sites laat een consistent patroon zien. Op sites waar de NetBox-data verouderd was (Ridefort) of waar er menselijke fouten in de initiële invoer zaten (Deleers Go4tech), bracht NetBox Discovery met Diode de inventaris snel terug op orde: 5/6 $\rightarrow$ 6/6 voor AP-types op Ridefort en 8/11 $\rightarrow$ 11/11 voor switch-types op Deleers Go4tech. Op sites waar de inventaris al consistent was (Koninklijke Stallingen, WZC Riethove) had de discovery hierop geen negatief effect: de bestaande correcte data bleef gewoon correct.
 
-De evaluatie leert vervolgens dat NetBox Discovery met Diode de \textbf{actualiteit van inventarisdata} snel kan herstellen voor minstens de \textbf{AP-namen}: na discovery stonden alle AP-namen correct. Dit bevestigt dat het discovery-proces in staat is om een deel van de verouderde documentatie effectief te vervangen door data die overeenkomt met de realiteit.
-
-De aanvullende observatie op de site Deleers Go4tech onderstreept bovendien dat het probleem niet beperkt blijft tot ``oude'' documentatie. Hoewel de documentatie daar slechts ongeveer twee maanden oud was, werden na herdiscovering toch 3 switches met een incorrect device type geïdentificeerd. Dit toont aan dat automatische discovery ook waardevol is als kwaliteitscontrole, zelfs kort na (handmatige) documentatie.
+De observatie op Deleers Go4tech is bijzonder relevant omdat ze aantoont dat het probleem niet beperkt blijft tot ``oude'' documentatie: ook na slechts twee maanden manuele input bevatte NetBox 3 switches met een foutief device type. Dit motiveert de keuze voor \emph{periodieke} discovery (requirement R10) als kwaliteitscontrole, niet alleen als eenmalige correctieslag.
 
 \subsection{Kabelrelaties en topologie}
 
-Waar NetBox Discovery met Orb en Diode via de standaard discoveryketen de LLDP-gebaseerde relaties niet automatisch als NetBox-relaties aanmaakte, werd de topologie-aanvulling ingevuld via \texttt{NetworkTool} met NetBox API. De evaluatie op site Ridefort toont daarbij dat:
+De grootste meerwaarde van de geïmplementeerde oplossing zit in de \emph{kabel- en topologielaag}. Tabel~\ref{tab:synthese} toont dat zowel Ridefort (3/6 $\rightarrow$ 6/6) als Koninklijke Stallingen (0/7 $\rightarrow$ 7/7) als WZC Riethove (0/74 $\rightarrow$ 57/74) op deze indicator de duidelijkste vooruitgang tonen. Bij WZC Riethove werd ook concreet zichtbaar dat één externe oorzaak (een fysiek offline switch) eenduidig vertaalt naar één afgebakende lacune (17 AP--switch-relaties die wachten tot de switch terug online is). Deze \emph{traceerbaarheid} is op zich een vooruitgang ten opzichte van een handmatig opgebouwde topologie, waar de oorzaak van een ontbrekende relatie vaak niet meer te achterhalen is.
 
-\begin{itemize}
-  \item de discrepanties in NetBox al direct zichtbaar werden na het ontdekken van de apparaten; in de baseline waren 3/6 kabelrelaties correct;
-  \item na discovery en LLDP-gebaseerde verwerking de \textbf{cable connections} \textbf{allemaal} correct waren, gevalideerd met LLDP-informatie van de switch.
-\end{itemize}
-
-Deze bevinding ondersteunt de conclusie dat NetBox Discovery vooral sterk is als \emph{inventarislaag}, terwijl de \emph{relatie-/topologie-invulling} afhankelijk kan zijn van extra brondata en/of uitbreidingen.
+Tegelijk illustreert deze laag ook duidelijk de limiet van de standaard NetBox Discovery-stack: zonder de aanvullende \texttt{NetworkTool}-stap zouden de LLDP-buren niet automatisch in NetBox als kabelobjecten landen. Dit is geen tekortkoming van NetBox Discovery zelf, maar een keten-issue (zie \S\ref{sec:wat-orb-oplevert}).
 
 \subsection{Vendor-specifieke datatypes}
 
-Via de vSZ API-koppeling worden voor Ruckus access points inventarisvelden automatisch gevuld, waaronder naam, serienummer, MAC-adres, fabrikant, type en IP-adres.
+Voor RUCKUS-AP's is de vSZ-API\autocite{RuckusVSZ} een essentiële aanvulling: zonder die API zouden naam, serienummer, MAC-adres en fabrikant per AP niet betrouwbaar in NetBox terechtkomen. Deze case bevestigt het bredere principe dat een SSOT-implementatie maar zo goed is als de \emph{bronkwaliteit per vendor} en dat het verstandig is om per vendor te evalueren of de standaard discoveryflow (SNMP + LLDP) volstaat of dat een vendor-API nodig is.
 
-Hierdoor dekt het resultaat in deze flow niet alleen inventaris, maar ook IP-gerelateerde velden voor Ruckus AP's.
+\subsection{Operationele waarnemingen}
 
-In deze evaluatie werden duplicaten vermeden doordat oude AP-records/devices verwijderd werden vóór de discovery. Bij opschaling naar andere sites blijft een \textbf{cleanup}-stap en naming governance echter noodzakelijk om consistentie te garanderen en regressies te vermijden.
-
-
-\section{Beantwoording van de deelonderzoeksvragen}
-
-De deelonderzoeksvragen worden hieronder beantwoord op basis van de casussen Ridefort, Deleers Go4tech, Koninklijke Stallingen en WZC Riethove.
-
-\subsection*{Probleemdomeinvragen}
+Een tweede categorie waarnemingen heeft betrekking op de operationele kant van de implementatie. Drie zaken kwamen consistent terug over de vier sites:
 
 \begin{itemize}
-  \item \textbf{Vraag 1, manifestatie van het probleem:} het probleem manifesteert zich in NetBox als verouderde inventaris- en relatie-informatie die zichtbaar wordt wanneer apparaten opnieuw ontdekt worden.
-  \item \textbf{Vraag 2, oorzaken:} de belangrijkste oorzaak is het niet volledig bijwerken van NetBox na wijzigingen in de fysieke infrastructuur. In de casus leidde de AP-vervanging in 2022 tot inconsistenties in naam en type, en tot incompleet ingevulde kabelrelaties.
-  \item \textbf{Vraag 3, huidige staat en gevolgen:} de huidige staat vertoonde veroudering in meerdere attributen en vooral incompleet gedocumenteerde bekabeling. Dit resulteert in een beperkte betrouwbaarheid van NetBox als SSOT.
-  \item \textbf{Vraag 4, huidige processen:} Citymesh werkt historisch met CSV-templates die handmatig ingevuld worden en vervolgens geïmporteerd worden in NetBox. Daardoor blijft de workflow afhankelijk van administratieve opvolging na infrastructuurwijzigingen.
-\end{itemize}
-
-\subsection*{Oplossingsdomeinvragen}
-
-\begin{itemize}
-  \item \textbf{Vraag 5 (bestaande technieken en tools):} de studie situeert NetBox Discovery als open-source optie en positioneert daarnaast Slurp'it als een beloftevolle maar binnen budget en schaal minder haalbare alternatieve tool.
-  \item \textbf{Vraag 6 (prestatie van tools):} NetBox Discovery met Diode presteert goed voor inventaris/naamgeving, maar strandt bij LLDP-neighbors/kabelrelaties in de standaard keten. De \texttt{NetworkTool}-aanvulling vult dit effectief aan.
-  \item \textbf{Vraag 7 (verbetering):} de evaluatie toont dat AP-namen, AP-types en kabelrelaties op Ridefort volledig correct werden (3/6 $\rightarrow$ 6/6 voor namen en kabelrelaties, 5/6 $\rightarrow$ 6/6 voor types). Op Koninklijke Stallingen werden alle cable connections correct aangemaakt en bleef de naamgeving consistent. Op WZC Riethove werden alle switch--switch- en switch--router-relaties correct aangelegd en werden 53 van de 70 AP-relaties opgenomen via de 3 online switches; de resterende 17 AP-relaties hangen vast aan één fysiek offline switch en worden bij een volgende discovery aangevuld. Hierdoor stijgt de bruikbaarheid van NetBox als SSOT voor inventaris en bekabeling, met de operationele beschikbaarheid van apparatuur als duidelijke randvoorwaarde.
-  \item \textbf{Vraag 8 (organisatorische processen):} duurzame borging vereist dat de documentatieflow niet enkel gebaseerd is op CSV-import, maar dat discovery en topologie-aanvulling periodiek uitgevoerd en gevalideerd worden, inclusief een cleanup-stap om duplicaten te vermijden.
+  \item \textbf{Cleanup vóór herdiscovery is essentieel}: zonder de cleanup-stap voor de Ridefort-AP's zouden de oude AP-records duplicaten hebben gegenereerd (zie \S\ref{sec:issues-valkuilen}).
+  \item \textbf{Dry-run before live-write}: de tweetraps-aanpak (eerst dry-run, dan live) van \texttt{NetworkTool} (zie \S\ref{sec:schaalbaarheid}) heeft op meerdere sites foutieve mass-updates voorkomen.
+  \item \textbf{Credential-/secret-management is geen detail}: in een omgeving met 25.000+ devices is het onhoudbaar om credentials in YAML-bestanden te zetten. De template-met-envsubst-aanpak (\S\ref{sec:issues-valkuilen}) is een werkbare overgangsoplossing, maar moet in productie aangevuld worden met een centrale secret manager.
 \end{itemize}
 
 \section{Aanbevelingen voor Citymesh}
+\label{sec:aanbevelingen}
 
-\subsection{Aanbeveling 1: adopteer NetBox Discovery als inventarisbasis}
+Op basis van bovenstaande analyse worden de volgende aanbevelingen geformuleerd. Ze zijn afgestemd op de operationele context van Citymesh (Hoofdstuk~\ref{ch:context}) en op de uitrolarchitectuur uit Hoofdstuk~\ref{ch:implementatie}.
 
-NetBox Discovery met Diode blijkt in de casus effectief om verouderde device-attributen sneller te corrigeren. Dit maakt een basis SSOT mogelijk, waarop vervolgens processtappen en aanvullingen kunnen landen.
+\subsection{Aanbeveling 1: adopteer NetBox Discovery met Diode als inventarisbasis}
 
-\subsection{Aanbeveling 2: gebruik \texttt{NetworkTool} voor kabelrelaties}
+NetBox Discovery met Diode bleek in alle vier sites effectief om de inventarislaag (devices, types, interfaces) actueel te houden. De aanbeveling is om deze stack als \emph{standaard inventaris\-pipeline} te gebruiken voor alle nieuwe en bestaande sites, met één Orb agent per site (\S\ref{sec:schaalbaarheid}).
 
-Omdat de standaard discoveryflow met Orb en Diode in deze case geen LLDP-neighbors-relaties automatisch toevoegde, is een aanvullende aanpak voor kabelrelaties nodig. \texttt{NetworkTool} is daarvoor een praktische oplossing en reduceert het handmatige werk aanzienlijk.
+\subsection{Aanbeveling 2: gebruik \texttt{NetworkTool} als topologie-aanvulling}
 
-\subsection{Aanbeveling 3: neem cleanup en naming governance op in het proces}
+Zolang de standaard NetBox Discovery-stack LLDP-buren niet automatisch als kabelobjecten in NetBox plaatst, is een aanvullende verwerking nodig. \texttt{NetworkTool} (zie \S\ref{sec:architectuur}) biedt deze laag en heeft op de vier sites concrete resultaten geleverd (synthese in tabel~\ref{tab:synthese}). Deze aanbeveling is voorlopig: als NetBox Labs deze stap in een toekomstige Diode- of Orb-versie native afdekt, kan \texttt{NetworkTool} herleid worden tot enkel de niet-LLDP-onderdelen (vSZ, vendor-API's).
 
-Bij infrastructurele wijzigingen (bv. AP-vervanging) is het essentieel dat oude records niet blijven bestaan met afwijkende namen. Een vooraf gedefinieerde naming-conventie en een cleanup-procedure moeten standaard onderdeel worden van de discovery/correctiecyclus.
+\subsection{Aanbeveling 3: standaardiseer cleanup en naming-governance in het wijzigingsproces}
 
-\subsection{Aanbeveling 4: borg de vSZ-synchronisatie operationeel}
+Bij elke infrastructurele wijziging (AP-vervanging, switch-vervanging, decommissioning) moet de cleanup-stap (requirement R9) een standaard onderdeel zijn van de change-procedure. Idealiter wordt deze stap geautomatiseerd door bij het aanmaken van een vervangingsticket meteen een NetBox-cleanup-actie te triggeren. Daarnaast moet de bestaande naamgevingsconventie (Hoofdstuk~\ref{ch:context}) per vendor expliciet vastgelegd worden, zodat de discoveryflow eenduidig kan toetsen.
 
-De vSZ API levert nu een bruikbare datastroom voor naam, serienummer, MAC-adres, fabrikant, type en IP-adres. Het is daarom aangewezen om deze synchronisatie structureel op te nemen in de operationele documentatieflow, inclusief periodieke validatie en monitoring.
+\subsection{Aanbeveling 4: borg de RUCKUS vSZ-synchronisatie operationeel}
+
+De vSZ-koppeling levert nu een bruikbare datastroom voor naam, serienummer, MAC-adres, fabrikant, type en IP-adres voor RUCKUS-AP's (\S\ref{sec:issues-valkuilen}). Het is aangewezen om deze synchronisatie niet als ad-hoc tool te beschouwen maar structureel op te nemen in de operationele documentatieflow, inclusief periodieke validatie en monitoring van de vSZ-API-beschikbaarheid.
+
+\subsection{Aanbeveling 5: monitor offline devices als afgebakende ``known gaps''}
+
+Op WZC Riethove (\S\ref{sec:riethove}) bleek dat een offline switch direct vertaald kan worden naar een lijst van devices die nog niet via LLDP konden worden waargenomen (17 AP's). De aanbeveling is om de \texttt{NetworkTool}-output zo te enrichen dat dergelijke ``known gaps'' expliciet in een NetBox-report of -dashboard verschijnen, zodat een offline switch niet leidt tot stille onvolledigheid in NetBox.
+
+\subsection{Aanbeveling 6: introduceer een centrale secret manager}
+
+De template-met-envsubst-aanpak voor Diode-credentials en device-credentials werkt in een bachelorproefcontext, maar in productie moet dit aangevuld worden met een centrale secret manager (Vault, AWS Secrets Manager, K8s secrets). De aanbeveling is om deze stap mee op te nemen vóór de uitrol naar tientallen sites, zodat het rotatie- en revocatieproces beheersbaar blijft.
 
 \section{Reflectie en beperkingen}
 
-De resultaten steunen op een primaire voor/na-casus (Ridefort), aangevuld met voor/na-observaties op Koninklijke Stallingen en WZC Riethove en een herdiscovery-observatie op Deleers Go4tech. De analyse in NetBox focust op created/last updated en op de zichtbare correctheid van attributen. Een bredere validatie met volledige voor/na-metingen op nog meer sites en vendormixen zou de generaliseerbaarheid verder verhogen.
-
-Daarnaast is de evaluatie sterk gericht op datavelden en relaties die in de casus relevant bleken (naam, type, cable connections). Een algemene beperking blijft dat niet elke discoverybron dezelfde datavelden in elke omgeving even volledig aanlevert.
+De resultaten van deze bachelorproef steunen op vier sites met opzettelijk verschillende profielen. Deze afbakening is een keuze: het laat toe om de belangrijkste mechanismen (verouderde data, recente menselijke fouten, ontbrekende kabels en gedeeltelijke bereikbaarheid) elk minstens \'e\'en keer in een echte omgeving te observeren. Tegelijk blijft de steekproefomvang klein in vergelijking met de tientallen sites in de Citymesh-omgeving als geheel; dat moet bij elke generalisatie expliciet meegenomen worden.
 
 \subsection*{Bedreigingen voor validiteit}
 
 \begin{itemize}
-  \item \textbf{Interne validiteit:} verbeteringen in datakwaliteit zijn gemeten in een operationele omgeving waar meerdere wijzigingen dicht op elkaar kunnen gebeuren. Door een expliciete baseline en een voor/na-logica op dezelfde indicatoren werd dit risico beperkt.
-  \item \textbf{Constructvaliditeit:} niet alle aspecten van ``documentatiekwaliteit'' zijn in deze studie gemeten. De focus lag op naamgeving, typecorrectheid en kabelrelaties, omdat die direct operationele impact hebben en toetsbaar waren binnen de scope.
-  \item \textbf{Externe validiteit:} de resultaten zijn sterk contextgebonden (Citymesh, geselecteerde sites, specifieke vendormix). Generalisatie naar andere organisaties is plausibel qua \emph{aanpak}, maar vereist lokale validatie qua effectgrootte.
+  \item \textbf{Interne validiteit}: verbeteringen in datakwaliteit zijn gemeten in een operationele omgeving waar meerdere wijzigingen dicht op elkaar kunnen gebeuren. Door een expliciete baseline en een voor/na-logica op dezelfde indicatoren werd dit risico beperkt, maar niet weggewerkt.
+  \item \textbf{Constructvaliditeit}: niet alle aspecten van ``documentatiekwaliteit'' zijn in deze studie gemeten. De focus lag op naamgeving, type en kabelrelaties, omdat die direct operationele impact hebben en toetsbaar zijn binnen de scope. Aspecten zoals up-to-date IP-toewijzing per VLAN of correctheid van firmware-versies zijn niet apart gerapporteerd.
+  \item \textbf{Externe validiteit}: de resultaten zijn sterk contextgebonden (Citymesh, geselecteerde sites, specifieke vendormix). Generalisatie naar andere organisaties is plausibel qua \emph{aanpak}, maar vereist lokale validatie qua effectgrootte.
 \end{itemize}
 
 Deze reflectie betekent dat de studie vooral een \textbf{praktisch onderbouwde} en \textbf{reproduceerbare} implementatiestrategie oplevert, eerder dan een universeel prestatiecijfer dat zonder context kan worden overgenomen.
-
-
