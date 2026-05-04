@@ -22,9 +22,11 @@ In deze bachelorproef worden enkele begrippen al vroeg in de tekst gebruikt. Voo
   \item \emph{SNMP} (\emph{Simple Network Management Protocol}): een protocol voor het uitlezen van device-attributen en interfaceinformatie van netwerkapparatuur\autocite{SnmpTopologyDiscoveryIEEE2013}.
 \end{itemize}
 
-Dit onderzoek wordt uitgevoerd binnen de context van Citymesh, een Belgische telecomoperator en technologiebedrijf dat gespecialiseerd is in grootschalige draadloze netwerken en connectiviteitsoplossingen voor de zakelijke markt\autocite{CitymeshAbout}. Citymesh focust op zowel permanente als tijdelijke connectiviteit op basis van WiFi/WLAN, 0G/IoT, 4G en 5G en treedt op als vierde mobiele operator in België\autocite{CitymeshAbout,Mice2022}. Deze heterogene en sterk gedistribueerde draadloze infrastructuren veranderen frequent door nieuwe sites, tijdelijke events en uitbreidingen, waardoor het bijhouden van accurate netwerkdocumentatie een bijzondere uitdaging vormt. Citymesh heeft specifiek gevraagd om een evaluatie en implementatie van NetBox Discovery als oplossing voor deze uitdaging. Binnen die bredere context wordt de praktische uitwerking in deze bachelorproef bewust afgebakend tot een casestudy op concrete sites en op documentatie-elementen die in NetBox rechtstreeks toetsbaar waren, met name inventarisdata en kabel-/topologierelaties.
+Dit onderzoek wordt uitgevoerd binnen de context van Citymesh, een Belgische telecomoperator en technologiebedrijf dat gespecialiseerd is in grootschalige draadloze netwerken en connectiviteitsoplossingen voor de zakelijke markt\autocite{CitymeshAbout}. Citymesh focust op zowel permanente als tijdelijke connectiviteit op basis van WiFi/WLAN, 0G/IoT, 4G en 5G en treedt op als vierde mobiele operator in België\autocite{CitymeshAbout,Mice2022}. Deze heterogene en sterk gedistribueerde infrastructuur veranderen frequent door nieuwe sites, tijdelijke events en uitbreidingen, waardoor het bijhouden van accurate netwerkdocumentatie een bijzondere uitdaging vormt. Citymesh heeft specifiek gevraagd om een evaluatie en implementatie van NetBox Discovery als oplossing voor deze uitdaging.
 
-De doelgroep van dit onderzoek bestaat uit netwerkbeheerders en infrastructuurbeheerders binnen organisaties die te maken hebben met verouderde of inconsistente netwerkdocumentatie. Specifiek richt dit onderzoek zich op professionals binnen Citymesh die verantwoordelijk zijn voor het onderhoud van netwerkinventarissen in complexe draadloze omgevingen en die behoefte hebben aan geautomatiseerde oplossingen om een betrouwbare ``single source of truth'' te realiseren.
+\paragraph{Scope-afbakening.} Deze bachelorproef onderzoekt het probleem niet over de volledige Citymesh-technologiestack. De praktische evaluatie wordt bewust afgebakend tot een casestudy op een beperkt aantal \emph{WiFi-/AP-sites} bij Citymesh en tot documentatie-elementen die in NetBox rechtstreeks toetsbaar zijn: inventarisdata (devices, types, namen) en LLDP-gebaseerde kabel- en topologierelaties. Private 4G/5G-corecomponenten, 0G-/IoT-infrastructuur en draadloze controllers buiten de scope van NetBox worden in dit onderzoek niet geëvalueerd. De vermeldingen van die technologieën in deze bachelorproef dienen om de bredere bedrijfscontext te schetsen, niet om generaliserende uitspraken te doen over die domeinen.
+
+De doelgroep van dit onderzoek bestaat uit netwerkbeheerders en infrastructuurbeheerders binnen organisaties die te maken hebben met verouderde of inconsistente netwerkdocumentatie. Specifiek richt dit onderzoek zich op professionals binnen Citymesh die verantwoordelijk zijn voor het onderhoud van netwerkinventarissen op gedistribueerde WiFi-/AP-sites en die behoefte hebben aan geautomatiseerde oplossingen om een betrouwbare ``single source of truth'' te realiseren.
 
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
@@ -38,7 +40,7 @@ Het centrale probleem dat dit onderzoek adresseert, is de snel verouderende netw
 
 De hoofdonderzoeksvraag van dit onderzoek luidt:
 
-\textit{Hoe kan automatische netwerkdetectie bijdragen aan het up-to-date houden van netwerkdocumentatie en het realiseren van een betrouwbare `single source of truth' binnen de dynamische, draadloze IT-infrastructuren van Citymesh?}
+\textit{Hoe kan automatische netwerkdetectie bijdragen aan het up-to-date houden van netwerkdocumentatie en aan het realiseren van een betrouwbare `single source of truth' op geselecteerde WiFi-/AP-sites bij Citymesh, met focus op NetBox-inventarisdata en LLDP-gebaseerde kabel- en topologierelaties?}
 
 \subsection{Deelonderzoeksvragen}
 
@@ -46,7 +48,7 @@ Om de centrale onderzoeksvraag te beantwoorden, worden de volgende deelonderzoek
 
 \emph{Probleemdomeinvragen:}
 \begin{enumerate}
-  \item Hoe manifesteert het probleem van verouderde netwerkdocumentatie zich specifiek binnen de draadloze (WiFi/WLAN, private 4G/5G, IoT/0G) infrastructuur van Citymesh?
+  \item Hoe manifesteert het probleem van verouderde netwerkdocumentatie zich op de geselecteerde WiFi-/AP-sites van Citymesh?
   \item Wat zijn de oorzaken van verouderde netwerkdocumentatie bij Citymesh, en welke factoren dragen hieraan bij?
   \item Wat is de huidige staat van de netwerkdocumentatie bij Citymesh, en wat zijn de gevolgen van verouderde of inconsistente documentatie voor het netwerkbeheer?
   \item Hoe wordt netwerkdocumentatie momenteel bijgehouden bij Citymesh, en welke processen en tools worden daarbij gebruikt?
@@ -55,7 +57,7 @@ Om de centrale onderzoeksvraag te beantwoorden, worden de volgende deelonderzoek
 \emph{Oplossingsdomeinvragen:}
 \begin{enumerate}
   \setcounter{enumi}{4}
-  \item Welke bestaande technieken en tools voor automatische netwerkdetectie bestaan er, en in welke mate ondersteunen zij grootschalige draadloze omgevingen zoals die van Citymesh?
+  \item Welke bestaande technieken en tools voor automatische netwerkdetectie bestaan er, en in welke mate ondersteunen zij gedistribueerde WiFi-/AP-omgevingen zoals die van Citymesh?
   \item Hoe presteren geselecteerde automatische netwerkdetectietools (met focus op NetBox Discovery) qua nauwkeurigheid, dekking, integratiemogelijkheden en beheerlast in de context van Citymesh?
   \item In welke mate verbetert NetBox Discovery de actualiteit, het aantal documentatiefouten en de onderhoudstijd van de netwerkdocumentatie ten opzichte van de huidige werkwijze?
   \item Welke organisatorische processen, best practices en configuratie-aanpassingen zijn nodig om een duurzame SSOT voor netwerkdocumentatie te waarborgen met NetBox Discovery?

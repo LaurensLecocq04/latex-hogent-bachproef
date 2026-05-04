@@ -86,7 +86,7 @@ Na uitvoering van NetBox Discovery werden de 3 betrokken switches automatisch bi
     \midrule
     Correcte switch-types in NetBox & 8/11 & 11/11 \\
     Correcte device-naamgeving (router, firewall, switches, AP's) & 61/61 & 61/61 \\
-    Kabelrelaties (intern getoetst) & overeenstemmend met LLDP & overeenstemmend met LLDP \\
+    Drift op gedocumenteerde kabelrelaties (LLDP-vergelijking) & 0 (geen drift) & 0 (geen drift) \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -102,7 +102,7 @@ Koninklijke Stallingen is een kleinere site met 1 MikroTik-router, 2 Huawei-swit
 
 \subsection{Baseline}
 
-In de baseline werd vastgesteld dat de device-naamgeving in NetBox consistent was met de namen op de fysieke apparaten en dat het type van elke AP correct was. Wel waren er \emph{geen} kabelrelaties (cable connections) gedocumenteerd: 0/8 voor alle interne switch- en AP-verbindingen samen.
+In de baseline werd vastgesteld dat de device-naamgeving in NetBox consistent was met de namen op de fysieke apparaten en dat het type van elke AP correct was. Wel waren er \emph{geen} kabelrelaties (cable connections) gedocumenteerd: 0/7 voor alle interne kabelverbindingen samen, namelijk 2 switch--router-relaties en 5 AP--switch-relaties.
 
 \subsection{Na-meting}
 
@@ -149,7 +149,7 @@ Na uitvoering van NetBox Discovery en de \texttt{NetworkTool}-verwerking:
   \item de resterende 17/70 AP's hingen vast aan de offline switch en konden in deze run niet via LLDP worden geobserveerd; deze relaties zullen in een volgende discovery aangevuld worden zodra de offline switch terug operationeel is.
 \end{itemize}
 
-Tabel~\ref{tab:wzc-voor-na} vat de voor/na-resultaten voor deze site samen.
+In totaal werd dus voor 57 van de 74 te documenteren kabelrelaties (4 switch- en 53 AP-relaties) een correcte kabelobjectinvoer in NetBox gerealiseerd. Tabel~\ref{tab:wzc-voor-na} vat de voor/na-resultaten voor deze site samen.
 
 \subsection{Voor/na-tabel}
 
@@ -186,9 +186,9 @@ Tabel~\ref{tab:synthese} bundelt de resultaten van de vier sites op één plaats
     \textbf{Site} & \textbf{Schaal} & \textbf{Naamgeving (voor $\rightarrow$ na)} & \textbf{Type / inventaris (voor $\rightarrow$ na)} & \textbf{Kabelrelaties (voor $\rightarrow$ na)} \\
     \midrule
     Ridefort & 8 devices & 3/6 $\rightarrow$ 6/6 & 5/6 $\rightarrow$ 6/6 & 3/6 $\rightarrow$ 6/6 \\
-    Deleers Go4tech & 61 devices & 61/61 $\rightarrow$ 61/61 & 8/11 $\rightarrow$ 11/11 (switches) & overeenstemmend met LLDP \\
+    Deleers Go4tech & 61 devices & 61/61 $\rightarrow$ 61/61 & 8/11 $\rightarrow$ 11/11 (switches) & 0 drift $\rightarrow$ 0 drift \\
     Koninklijke Stallingen & 8 devices & 8/8 $\rightarrow$ 8/8 & 5/5 $\rightarrow$ 5/5 (AP-types) & 0/7 $\rightarrow$ 7/7 \\
-    WZC Riethove & 75 devices & 75/75 $\rightarrow$ 75/75 & n.v.t. & 0/74 $\rightarrow$ 57/74 (17 niet bereikbaar) \\
+    WZC Riethove & 75 devices & 75/75 $\rightarrow$ 75/75 & n.v.t. & 0/74 $\rightarrow$ 57/74 (4/4 + 53/70; 17 AP via offline switch) \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -198,7 +198,7 @@ De resultaten ondersteunen \'e\'en duidelijke richtinggevende conclusie binnen d
 \section{Analyse over de sites heen}
 \label{sec:analyse-cross-site}
 
-De synthese-tabel laat toe om enkele uitspraken te doen die niet beperkt blijven tot \'e\'en site. Deze sectie bundelt die observaties per aspect.
+De synthese-tabel laat toe om enkele uitspraken te doen die niet beperkt blijven tot \'e\'en site. Deze sectie bundelt die observaties per aspect en interpreteert ze waar nodig vanuit het kader van \emph{intended state} versus \emph{observed state} (zie \S\ref{sec:intended-vs-observed}).
 
 \subsection{Actualiteit en consistentie van inventarisdata}
 \label{sec:analyse-inventaris}
