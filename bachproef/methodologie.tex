@@ -50,7 +50,7 @@ De gesprekken werden opgebouwd rond vijf thema's, met telkens enkele leidende vr
 \paragraph{Thema 4 --- Verwachtingen ten aanzien van automatische discovery.}
 \begin{itemize}
   \item Welke datatypes zijn belangrijk om automatisch te kunnen ontdekken (devices, interfaces, IP, kabels, LLDP-buren)?
-  \item Welke vendors moeten minstens ondersteund worden (MikroTik, Huawei, RUCKUS, Fortinet)?
+  \item Welke vendors moeten minstens ondersteund worden (MikroTik, Huawei, RUCKUS)?
   \item Hoe diep moet de tool ingrijpen op bestaande data (alleen toevoegen, of ook bijwerken/verwijderen bij drift)?
   \item Welke randvoorwaarden zijn er rond credentials, secrets en netwerktoegang per site?
 \end{itemize}
@@ -64,7 +64,7 @@ De gesprekken werden opgebouwd rond vijf thema's, met telkens enkele leidende vr
 
 \subsection{Wat de gesprekken concreet hebben opgeleverd}
 
-De gesprekken hebben drie soorten input opgeleverd voor dit onderzoek. Ten eerste werd het beeld van de \emph{pijnpunten} gevalideerd en aangescherpt; de vaststelling dat een NetBox-record na een AP-vervanging vaak niet wordt bijgewerkt, kwam meermaals expliciet ter sprake en wordt verder uitgewerkt in Hoofdstuk~\ref{ch:context}. Ten tweede werden de \emph{requirements} voor de oplossing concreter, onder meer rond vendor-dekking (MikroTik, Huawei, RUCKUS, Fortinet) en rond de noodzaak van een \emph{cleanup}-stap vóór herdiscovery. Ten derde werden enkele \emph{operationele randvoorwaarden} duidelijk, zoals het gebruik van OAuth2-credentials, de noodzaak om geen plain-text wachtwoorden in YAML-bestanden te zetten en het feit dat agents per site moeten kunnen draaien. Deze input is verwerkt in de implementatie (Hoofdstuk~\ref{ch:implementatie}) en in de aanbevelingen voor Citymesh (Hoofdstuk~\ref{ch:analyse}).
+De gesprekken hebben drie soorten input opgeleverd voor dit onderzoek. Ten eerste werd het beeld van de \emph{pijnpunten} gevalideerd en aangescherpt; de vaststelling dat een NetBox-record na een AP-vervanging vaak niet wordt bijgewerkt, kwam meermaals expliciet ter sprake en wordt verder uitgewerkt in Hoofdstuk~\ref{ch:context}. Ten tweede werden de \emph{requirements} voor de oplossing concreter, onder meer rond vendor-dekking (MikroTik, Huawei, RUCKUS) en rond de noodzaak van een \emph{cleanup}-stap vóór herdiscovery. Ten derde werden enkele \emph{operationele randvoorwaarden} duidelijk, zoals het gebruik van OAuth2-credentials, de noodzaak om geen plain-text wachtwoorden in YAML-bestanden te zetten en het feit dat agents per site moeten kunnen draaien. Deze input is verwerkt in de implementatie (Hoofdstuk~\ref{ch:implementatie}) en in de aanbevelingen voor Citymesh (Hoofdstuk~\ref{ch:analyse}).
 
 \section{Operationalisering van de kernindicatoren}
 \label{sec:operationalisering}

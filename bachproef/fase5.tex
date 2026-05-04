@@ -38,7 +38,7 @@ Op basis van de inspectie van de devices in NetBox (met focus op \emph{created} 
 
 \subsection{Na-meting}
 
-Voorafgaand aan de discovery werden de oude AP-records verwijderd (cleanup, requirement R9). Na uitvoering van NetBox Discovery stonden alle AP-namen en device types correct. De LLDP-gebaseerde verwerking via \texttt{NetworkTool} maakte vervolgens alle 6 kabelrelaties van AP naar switch correct aan; de correctheid werd gevalideerd aan de hand van de LLDP-tabel op de switch.
+Voorafgaand aan de discovery werden de oude AP-records verwijderd (cleanup, requirement R9). Na uitvoering van NetBox Discovery stonden alle AP-namen en device types correct. De LLDP-gebaseerde verwerking via \texttt{NetworkTool} maakte vervolgens alle 6 kabelrelaties van AP naar switch correct aan; de correctheid werd gevalideerd aan de hand van de LLDP-tabel op de switch. Tabel~\ref{tab:ridefort-voor-na} vat de voor/na-resultaten voor deze site samen.
 
 \subsection{Voor/na-tabel}
 
@@ -72,7 +72,7 @@ De baseline is hier eerder ``goed maar niet perfect'': namen waren in lijn met d
 
 \subsection{Na-meting}
 
-Na uitvoering van NetBox Discovery werden de 3 betrokken switches automatisch bijgewerkt naar het correcte device type. De kabelrelaties die al gedocumenteerd waren, werden door \texttt{NetworkTool} gevalideerd tegen de LLDP-tabellen en bleven onveranderd.
+Na uitvoering van NetBox Discovery werden de 3 betrokken switches automatisch bijgewerkt naar het correcte device type. De kabelrelaties die al gedocumenteerd waren, werden door \texttt{NetworkTool} gevalideerd tegen de LLDP-tabellen en bleven onveranderd. Tabel~\ref{tab:deleers-voor-na} vat de voor/na-resultaten voor deze site samen.
 
 \subsection{Voor/na-tabel}
 
@@ -106,7 +106,7 @@ In de baseline werd vastgesteld dat de device-naamgeving in NetBox consistent wa
 
 \subsection{Na-meting}
 
-Na uitvoering van NetBox Discovery (Orb + Diode) en de daaropvolgende LLDP-verwerking via \texttt{NetworkTool} werden alle kabelrelaties correct aangemaakt: zowel de switch--router-relaties als de AP--switch-relaties. De device-naamgeving en device types bleven correct.
+Na uitvoering van NetBox Discovery (Orb + Diode) en de daaropvolgende LLDP-verwerking via \texttt{NetworkTool} werden alle kabelrelaties correct aangemaakt: zowel de switch--router-relaties als de AP--switch-relaties. De device-naamgeving en device types bleven correct. Tabel~\ref{tab:ks-voor-na} vat de voor/na-resultaten voor deze site samen.
 
 \subsection{Voor/na-tabel}
 
@@ -148,6 +148,8 @@ Na uitvoering van NetBox Discovery en de \texttt{NetworkTool}-verwerking:
   \item van de 70 AP's konden er 53/70 via de 3 online switches worden gekoppeld in NetBox;
   \item de resterende 17/70 AP's hingen vast aan de offline switch en konden in deze run niet via LLDP worden geobserveerd; deze relaties zullen in een volgende discovery aangevuld worden zodra de offline switch terug operationeel is.
 \end{itemize}
+
+Tabel~\ref{tab:wzc-voor-na} vat de voor/na-resultaten voor deze site samen.
 
 \subsection{Voor/na-tabel}
 

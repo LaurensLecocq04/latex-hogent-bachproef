@@ -349,3 +349,106 @@ if ap_vlan:
 # inclusief IP-adresverwerking via deze vSZ-stap.
   \end{minted}
 \end{listing}
+
+\section{Volledige uitrolprocedure Diode-server}
+\label{sec:bijlage-diode-uitrol}
+
+Deze bijlage documenteert de volledige uitrol van de Diode-server op de Citymesh-stagingomgeving, zoals samengevat in \S\ref{sec:uitrol-diode}. Concrete secret-waarden zijn vervangen door placeholders.
+
+\subsection{Prerequisites op de hostmachine}
+
+Vooraleer de Diode-stack kan opgestart worden, moeten op de hostmachine de volgende afhankelijkheden aanwezig zijn:
+
+\begin{itemize}
+  \item NetBox Community~4.2.3 of nieuwer (de gebruikte stagingomgeving draait op versie~4.4.10);
+  \item Docker~27.0.3 of nieuwer;
+  \item Bash~4.x of nieuwer;
+  \item \texttt{jq} (om OAuth2-credentials uit \texttt{client-credentials.json} te parsen);
+  \item een gebruikersaccount dat in de \texttt{docker}-groep zit, zodat \texttt{docker compose} zonder extra \texttt{sudo}-stappen kan draaien.
+\end{itemize}
+
+\begin{listing}[H]
+  \caption[Verificatie van de hostprerequisites]{Verificatie van de hostprerequisites vóór de Diode-installatie}
+  \label{lst:diode-prereq-verify}
+  \begin{minted}[fontsize=\small]{bash}
+echo "Bash version: $(bash --version | head -n 1)"
+echo "Jq version: $(jq --version)"
+docker --version
+groups $USER | grep -q "docker" \
+  && echo "Docker permissions: OK" \
+  || echo "Docker permissions: log out/in vereist"
+  \end{minted}
+\end{listing}
+
+\subsection{Diode-server: \texttt{quickstart.sh}}
+
+De Diode-stack zelf wordt opgezet met het door NetBox Labs aangeleverde \texttt{quickstart.sh}-script. Dat script genereert een \texttt{docker-compose.yaml}, een \texttt{nginx}-configuratie, een \texttt{.env}-bestand en het centrale \texttt{client-credentials.json}-bestand met OAuth2-credentials voor twee logische clients (\texttt{diode-ingest} voor de Orb agent en \texttt{netbox-to-diode} voor de NetBox-plugin).
+
+\begin{listing}[H]
+  \caption[Uitrol van de Diode-server via \texttt{quickstart.sh}]{Uitrol van de Diode-server via het door NetBox Labs aangeleverde \texttt{quickstart.sh}-script (\S\ref{sec:uitrol-diode})}
+  \label{lst:diode-quickstart}
+  \begin{minted}[fontsize=\small]{bash}
+sudo mkdir -p /opt/diode
+cd /opt/diode
+
+sudo curl -sSfLo quickstart.sh \
+  https://raw.githubusercontent.com/netboxlabs/diode/release/diode-server/docker/scripts/quickstart.sh
+sudo chmod +x quickstart.sh
+
+./quickstart.sh https://<netbox-host>
+
+docker compose up -d
+
+docker compose ps
+  \end{minted}
+\end{listing}
+
+Na een succesvolle run draaien zeven containers samen: \texttt{nginx} (ingress), \texttt{diode-auth}, \texttt{diode-ingester}, een Ory Hydra-instantie voor OAuth2, \texttt{diode-reconciler}, \texttt{postgres} (persistente state) en \texttt{redis} (queueing).
+
+\subsection{Diode-plugin in NetBox}
+
+De plugin-installatie in NetBox zelf werd, zoals toegelicht in \S\ref{sec:uitrol-diode}, niet door de auteur uitgevoerd maar door het Citymesh-platformteam. Volledigheidshalve worden de officiële stappen hier wel opgenomen, omdat ze nodig zijn om de procedure te kunnen reproduceren in een andere omgeving.
+
+\begin{listing}[H]
+  \caption[Installatie van de Diode-plugin in NetBox]{Installatie van de Diode-plugin in NetBox (uitgevoerd door het Citymesh-platformteam, \S\ref{sec:uitrol-diode})}
+  \label{lst:diode-plugin-install}
+  \begin{minted}[fontsize=\small]{bash}
+cd /opt/netbox
+source venv/bin/activate
+pip install netboxlabs-diode-netbox-plugin
+
+cat >> /opt/netbox/netbox/netbox/configuration.py << 'EOF'
+PLUGINS.append("netbox_diode_plugin")
+PLUGINS_CONFIG["netbox_diode_plugin"] = {
+    "diode_target_override": "grpc://localhost:8080/diode",
+    "diode_username": "diode",
+    "netbox_to_diode_client_secret": "<placeholder>"
+}
+EOF
+
+cd /opt/netbox/netbox
+./manage.py migrate netbox_diode_plugin
+
+sudo systemctl restart netbox netbox-rq
+  \end{minted}
+\end{listing}
+
+\subsection{Verificatie van de uitrol}
+
+Na het opstarten van de Diode-stack moeten zeven containers in status \texttt{Up} draaien. De verificatie verloopt met \texttt{docker compose ps}:
+
+\begin{listing}[H]
+  \caption[Verificatie van de Diode-stack via \texttt{docker compose ps}]{Verificatie van de Diode-stack via \texttt{docker compose ps}}
+  \label{lst:diode-verify}
+  \begin{minted}[fontsize=\footnotesize]{text}
+diode-ingress-nginx-1     Up   0.0.0.0:8080->80/tcp
+diode-diode-auth-1        Up
+diode-diode-ingester-1    Up
+diode-hydra-1             Up   4444-4445/tcp
+diode-diode-reconciler-1  Up
+diode-postgres-1          Up   5432/tcp (healthy)
+diode-redis-1             Up   6379/tcp
+  \end{minted}
+\end{listing}
+
+Na deze verificatie kan op elke site een Orb agent worden uitgerold die met de gegenereerde \texttt{diode-ingest}-credentials naar deze Diode-server schrijft, volgens de \texttt{start-agent.sh}-flow uit \S\ref{sec:issues-valkuilen}.
