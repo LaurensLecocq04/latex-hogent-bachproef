@@ -13,15 +13,15 @@ Uit de gesprekken met netwerkbeheerders bij Citymesh en uit observaties van best
 
 \paragraph{Verouderde documentatie na infrastructuurwijzigingen.} Wanneer een access point (AP) vervangen wordt na een defect of wanneer een hele site uitgebreid wordt, wordt de wijziging niet altijd (tijdig) doorgevoerd in NetBox. Daardoor ontstaat een discrepantie tussen de fysieke infrastructuur en de gedocumenteerde situatie. Een concreet voorbeeld is de site Ridefort, waar de NetBox-inhoud uit 2020 dateert maar de AP's in 2022 vervangen werden zonder dat de records consistent werden bijgewerkt (zie ook \S\ref{sec:ridefort}).
 
-\paragraph{Tijdrovende handmatige import.} Om NetBox initieel te vullen of bij te werken, stellen beheerders typisch een CSV-bestand samen met alle relevante devices en hun kenmerken (locatie, type, IP-adres, serienummer). Dat bestand wordt vervolgens geïmporteerd in NetBox. Vaak zijn meerdere importrondes nodig (correcties, ontbrekende velden, afwijkingen na validatie). Een exacte tijdsmeting per site is in dit onderzoek niet systematisch vastgelegd, maar voor een grotere reeks AP's met bijhorende interface- en IP-gegevens, inclusief herimporten, bedraagt de doorlooptijd al snel \emph{enkele uren tot een halve werkdag}, afhankelijk van de omvang van de site, het aantal correctierondes en parallelle taken.
+\paragraph{Tijdrovende handmatige import.} Om NetBox initieel te vullen of bij te werken, stellen beheerders typisch een CSV-bestand samen met alle relevante devices en hun kenmerken (locatie, type, IP-adres, serienummer). Dat bestand wordt vervolgens geïmporteerd in NetBox. Vaak zijn meerdere importrondes nodig (correcties, ontbrekende velden, afwijkingen na validatie). Een exacte tijdsmeting per site is in dit onderzoek niet systematisch vastgelegd, maar voor een grotere reeks AP's met bijhorende interface- en IP-gegevens, inclusief herimporten, bedraagt de doorlooptijd al snel enkele uren tot een halve werkdag, afhankelijk van de omvang van de site, het aantal correctierondes en parallelle taken.
 
 \paragraph{Handmatig opbouwen van topologie.} De netwerktopologie (relaties tussen routers, switches en access points) moet grotendeels handmatig opgebouwd en bijgewerkt worden in NetBox. Ook bij elke wijziging moet de topologie opnieuw nagekeken worden, waardoor de kans groot is dat de topologieweergave veroudert.
 
-Deze pijnpunten leiden er samen toe dat NetBox in de praktijk niet altijd als een betrouwbare \emph{single source of truth} wordt ervaren, terwijl dat net de bedoeling is van het platform.
+Deze pijnpunten leiden er samen toe dat NetBox in de praktijk niet altijd als een betrouwbare single source of truth wordt ervaren, terwijl dat net de bedoeling is van het platform.
 
 \section{De bestaande CSV-workflow en naamgevings\-conventies}
 
-Citymesh werkt traditioneel sterk met \emph{CSV-bestanden}: er bestaan vaste templates met de velden die ingevuld moeten worden. Die templates worden manueel aangevuld (typisch in Excel) en daarna geïmporteerd in NetBox. Voor access points wordt een \emph{naamgevingsconventie} gehanteerd die het invullen vergemakkelijkt: namen worden zo gekozen dat ze in Excel doorgesleept kunnen worden, bijvoorbeeld \texttt{CI\_OK\_AP13}, \texttt{CI\_OK\_AP14}, \texttt{CI\_OK\_AP15}, enzovoort. Ook IP-adressen worden typisch \emph{opeenvolgend} toegewezen vanaf het eerste AP in een reeks, wat het plannen in een spreadsheet ondersteunt. In NetBox worden bovendien \emph{interface-templates} gebruikt zodat IP-adressen aan de juiste interfaces kunnen gekoppeld worden.
+Citymesh werkt traditioneel sterk met CSV-bestanden: er bestaan vaste templates met de velden die ingevuld moeten worden. Die templates worden manueel aangevuld (typisch in Excel) en daarna geïmporteerd in NetBox. Voor access points wordt een naamgevingsconventie gehanteerd die het invullen vergemakkelijkt: namen worden zo gekozen dat ze in Excel doorgesleept kunnen worden, bijvoorbeeld \texttt{CI\_OK\_AP13}, \texttt{CI\_OK\_AP14}, \texttt{CI\_OK\_AP15}, enzovoort. Ook IP-adressen worden typisch opeenvolgend toegewezen vanaf het eerste AP in een reeks, wat het plannen in een spreadsheet ondersteunt. In NetBox worden bovendien interface-templates gebruikt zodat IP-adressen aan de juiste interfaces kunnen gekoppeld worden.
 
 Deze workflow is consistent en herhaalbaar zolang de initiële opbouw netjes verloopt en zolang er geen wijzigingen na verloop van tijd doorgevoerd worden zonder de CSV-stap opnieuw te uitvoeren. Net dat laatste is moeilijk te garanderen in een dynamische omgeving zoals die van Citymesh.
 
@@ -46,8 +46,8 @@ Op basis van bovenstaande pijnpunten en de gesprekken met netwerkbeheerders zijn
     R6 & Niet-functioneel & De oplossing moet schaalbaar zijn naar tientallen sites: per site een agent of equivalent inzetten zonder de centrale architectuur te overbelasten. \\
     R7 & Niet-functioneel & Credentials (SNMP-community, device-logins, NetBox-tokens, Diode OAuth2) mogen niet plain-text in configuratiebestanden staan. \\
     R8 & Niet-functioneel & De oplossing moet binnen het budget van een bachelorproef blijven en bij voorkeur open-source zijn. \\
-    R9 & Procesmatig & Een \emph{cleanup}-stap moet voorzien zijn vóór de eerste discovery, zodat oude/foutieve records geen duplicaten produceren. \\
-    R10 & Procesmatig & Discovery moet \emph{periodiek} herhaald kunnen worden om drift sneller te detecteren, ook op recent gedocumenteerde data. \\
+    R9 & Procesmatig & Een cleanup-stap moet voorzien zijn vóór de eerste discovery, zodat oude/foutieve records geen duplicaten produceren. \\
+    R10 & Procesmatig & Discovery moet periodiek herhaald kunnen worden om drift sneller te detecteren, ook op recent gedocumenteerde data. \\
     \bottomrule
   \end{tabular}
 \end{table}

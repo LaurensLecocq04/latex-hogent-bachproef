@@ -5,7 +5,7 @@
 \chapter{\IfLanguageName{dutch}{Implementatie}{Implementation}}%
 \label{ch:implementatie}
 
-Dit hoofdstuk bespreekt de concrete implementatie van de discoveryflow bij Citymesh. De nadruk ligt op de \emph{architectuur} van de oplossing, op de \emph{issues en valkuilen} die zich tijdens de implementatie voordeden, en op de manier waarop de oplossing \emph{schaalbaar} en \emph{herhaalbaar} werd gemaakt voor meerdere sites. Volledige codefragmenten (YAML-configuraties, shellscripts en NetworkTool-modules) zijn opgenomen in Bijlage~\ref{ch:bijlage-implementatie}; in dit hoofdstuk wordt enkel cherry-picked code getoond waar dit het verhaal verheldert.
+Dit hoofdstuk bespreekt de concrete implementatie van de discoveryflow bij Citymesh. De nadruk ligt op de architectuur van de oplossing, op de issues en valkuilen die zich tijdens de implementatie voordeden, en op de manier waarop de oplossing schaalbaar en herhaalbaar werd gemaakt voor meerdere sites. Volledige codefragmenten (YAML-configuraties, shellscripts en NetworkTool-modules) zijn opgenomen in Bijlage~\ref{ch:bijlage-implementatie}; in dit hoofdstuk wordt enkel cherry-picked code getoond waar dit het verhaal verheldert.
 
 \section{Architectuur van de oplossing}
 \label{sec:architectuur}
@@ -13,7 +13,7 @@ Dit hoofdstuk bespreekt de concrete implementatie van de discoveryflow bij Citym
 De oplossing bestaat uit twee complementaire componenten:
 
 \begin{enumerate}
-  \item \emph{De NetBox Discovery-stack} (Orb agent + Diode + NetBox), zoals beschreven in \S\ref{sec:netbox-discovery-stack}, voor de inventaris- en SNMP-discovery.
+  \item De NetBox Discovery-stack (Orb agent + Diode + NetBox), zoals beschreven in \S\ref{sec:netbox-discovery-stack}, voor de inventaris- en SNMP-discovery.
   \item \texttt{NetworkTool}: een eigen ontwikkeling, opgebouwd als Streamlit-applicatie\autocite{Streamlit}, die de NetBox-API aanstuurt en die de datatypes opvangt die de standaard discoveryflow niet automatisch in NetBox aanlevert. In de praktijk gaat het vooral om LLDP-gebaseerde kabelrelaties en om de RUCKUS vSZ-koppeling voor draadloze access points\autocite{RuckusVSZ}.
 \end{enumerate}
 
@@ -22,15 +22,15 @@ De oplossing bestaat uit twee complementaire componenten:
 Per site verloopt de dataflow als volgt:
 
 \begin{enumerate}
-  \item De \emph{Orb agent} draait als Docker-container in het netwerksegment van de site. De agent leest de YAML-configuratie en voert de geconfigureerde discovery-policies uit (\texttt{network\_discovery}, \texttt{device\_discovery} en \texttt{snmp\_discovery}). De agent gebruikt een NMAP-scan om live hosts te identificeren en daarna een SNMP- en device-driverbevraging om device-attributen op te halen\autocite{NetBoxDiscoveryDocs,NetBoxLabsOrbAgent}.
-  \item De Orb agent stuurt de resultaten via gRPC naar \emph{Diode}, dat de data valideert en in NetBox laadt\autocite{DiodeDocs}.
+  \item De Orb agent draait als Docker-container in het netwerksegment van de site. De agent leest de YAML-configuratie en voert de geconfigureerde discovery-policies uit (\texttt{network\_discovery}, \texttt{device\_discovery} en \texttt{snmp\_discovery}). De agent gebruikt een NMAP-scan om live hosts te identificeren en daarna een SNMP- en device-driverbevraging om device-attributen op te halen\autocite{NetBoxDiscoveryDocs,NetBoxLabsOrbAgent}.
+  \item De Orb agent stuurt de resultaten via gRPC naar Diode, dat de data valideert en in NetBox laadt\autocite{DiodeDocs}.
   \item Voor de datatypes die binnen deze keten niet automatisch in NetBox terechtkomen (vooral de LLDP-buren en de bijhorende kabelobjecten) wordt vervolgens \texttt{NetworkTool} gebruikt. Deze tool haalt via NAPALM\autocite{NAPALM} per device de live LLDP-tabel op, vergelijkt deze met de bestaande NetBox-state, en maakt of corrigeert de kabelobjecten via de NetBox-API.
-  \item Voor RUCKUS-AP's wordt aanvullend de \emph{vSZ-API}\autocite{RuckusVSZ} bevraagd, omdat dit de gestructureerde bron is voor naam, serienummer, MAC-adres, fabrikant en type per zone.
+  \item Voor RUCKUS-AP's wordt aanvullend de vSZ-API\autocite{RuckusVSZ} bevraagd, omdat dit de gestructureerde bron is voor naam, serienummer, MAC-adres, fabrikant en type per zone.
 \end{enumerate}
 
 \subsection{Logische opbouw van de NetworkTool-applicatie}
 
-De \texttt{NetworkTool}-applicatie is bewust modulair opgebouwd zodat de verschillende workflows (network scan, SNMP discovery, vendor-specifieke synchronisaties) onafhankelijk uitbreidbaar zijn. De vier kerntabs in de GUI zijn \emph{Agent Manager}, \emph{Network Scanner}, \emph{SNMP Discovery} en \emph{CVE Scanner}. Daarnaast werd een aparte tab toegevoegd voor de RUCKUS vSZ-synchronisatie. De volledige module-structuur en GUI-implementatie staan in Bijlage~\ref{sec:bijlage-networktool-gui}; figuur~\ref{lst:networktool-gui-tabs-cherry} toont enkel het kernidee.
+De \texttt{NetworkTool}-applicatie is bewust modulair opgebouwd zodat de verschillende workflows (network scan, SNMP discovery, vendor-specifieke synchronisaties) onafhankelijk uitbreidbaar zijn. De vier kerntabs in de GUI zijn Agent Manager, Network Scanner, SNMP Discovery en CVE Scanner. Daarnaast werd een aparte tab toegevoegd voor de RUCKUS vSZ-synchronisatie. De volledige module-structuur en GUI-implementatie staan in Bijlage~\ref{sec:bijlage-networktool-gui}; figuur~\ref{lst:networktool-gui-tabs-cherry} toont enkel het kernidee.
 
 \begin{listing}[H]
   \caption{NetworkTool: tab-architectuur (cherry-picked, volledige code in bijlage)}
@@ -53,20 +53,20 @@ Voor deze bachelorproef werd de Diode-server uitgerold op een afgeschermde virtu
 
 \paragraph{Koppeling met de Orb agent.} Het door \texttt{quickstart.sh} gegenereerde \texttt{client-credentials.json}-bestand vormt het scharnierpunt tussen de Diode-server en de Orb agent: de \texttt{start-agent.sh}-flow uit \S\ref{sec:issues-valkuilen} leest exact dit bestand om \texttt{DIODE\_CLIENT\_ID} en \texttt{DIODE\_CLIENT\_SECRET} via \texttt{envsubst} in de \texttt{agent.yaml} te injecteren. Daardoor blijft de credentialflow consistent tussen de twee componenten, zonder dat secrets ergens hardcoded staan.
 
-\paragraph{Diode-plugin in NetBox: scheiding van verantwoordelijkheden.} De installatie van de Diode-plugin in NetBox zelf (\texttt{pip install netbox\-labs-diode-netbox-plugin}, plugin-registratie in \texttt{configuration.py}, migrations en een herstart van de NetBox-services) werd in deze bachelorproef \emph{niet door de auteur uitgevoerd}, maar door het Citymesh-platformteam op de stagingomgeving. De security-policy laat namelijk niet toe dat externe medewerkers de NetBox-Python-omgeving aanpassen of \texttt{systemctl}-acties uitvoeren op de centrale NetBox-host. Deze splitsing is op zichzelf een bevinding van de implementatie: in een organisatorische context wordt de discoverystack typisch opgesplitst in een \emph{discovery-domein} (de Orb agent en de Diode-server, die een stagiair of consultant kan opzetten) en een \emph{platform-domein} (NetBox zelf en de plugin-installatie, die binnen het platformteam blijft). De aanbeveling om dit ook bij verdere uitrol formeel zo te organiseren wordt opgepakt in \S\ref{sec:aanbevelingen}.
+\paragraph{Diode-plugin in NetBox: scheiding van verantwoordelijkheden.} De installatie van de Diode-plugin in NetBox zelf (\texttt{pip install netbox\-labs-diode-netbox-plugin}, plugin-registratie in \texttt{configuration.py}, migrations en een herstart van de NetBox-services) werd in deze bachelorproef niet door de auteur uitgevoerd, maar door het Citymesh-platformteam op de stagingomgeving. De security-policy laat namelijk niet toe dat externe medewerkers de NetBox-Python-omgeving aanpassen of \texttt{systemctl}-acties uitvoeren op de centrale NetBox-host. Deze splitsing is op zichzelf een bevinding van de implementatie: in een organisatorische context wordt de discoverystack typisch opgesplitst in een discovery-domein (de Orb agent en de Diode-server, die een stagiair of consultant kan opzetten) en een platform-domein (NetBox zelf en de plugin-installatie, die binnen het platformteam blijft). De aanbeveling om dit ook bij verdere uitrol formeel zo te organiseren wordt opgepakt in \S\ref{sec:aanbevelingen}.
 
 \section{Wat de standaard discoveryflow oplevert (en wat niet)}
 \label{sec:wat-orb-oplevert}
 
 De Orb-keten (Orb agent + Diode + NetBox) functioneerde naar verwachting voor de inventarislaag: routers, switches en access points worden ontdekt en via Diode in NetBox aangemaakt of bijgewerkt met onder meer hun device type, status en interfaces.
 
-Tijdens de implementatie kwam echter \'e\'en duidelijk tekort naar voren: \emph{LLDP-buren worden via deze keten niet automatisch als kabelobjecten in NetBox aangemaakt}. Deze beperking heeft twee samenhangende oorzaken die in de evaluatie zichtbaar werden.
+Tijdens de implementatie kwam echter \'e\'en duidelijk tekort naar voren: LLDP-buren worden via deze keten niet automatisch als kabelobjecten in NetBox aangemaakt. Deze beperking heeft twee samenhangende oorzaken die in de evaluatie zichtbaar werden.
 
-Ten eerste \emph{stuurt de Orb agent de LLDP-buren wel mee in zijn discovery-output} (de agent kent capabilities voor topologie en buren), maar Diode mapt deze data \emph{enkel naar \texttt{dcim.devices} en \texttt{dcim.interfaces}, niet naar \texttt{dcim.cables}}. Een kabelobject in NetBox vereist namelijk twee terminations (lokale en remote interface), terwijl de Orb-output per LLDP-record \emph{slechts} de remote system name en remote port als \emph{strings} aanlevert. Diode beschikt niet over een ingebouwde lookup-stap die deze strings omzet naar interface-ID's in NetBox.
+Ten eerste stuurt de Orb agent de LLDP-buren wel mee in zijn discovery-output (de agent kent capabilities voor topologie en buren), maar Diode mapt deze data enkel naar \texttt{dcim.devices} en \texttt{dcim.interfaces}, niet naar \texttt{dcim.cables}. Een kabelobject in NetBox vereist namelijk twee terminations (lokale en remote interface), terwijl de Orb-output per LLDP-record slechts de remote system name en remote port als strings aanlevert. Diode beschikt niet over een ingebouwde lookup-stap die deze strings omzet naar interface-ID's in NetBox.
 
-Ten tweede vereist het correct aanmaken van een kabelobject \emph{drift-bewustzijn}: als hetzelfde apparatenpaar al via een ander interface verbonden was, mag het oude kabelobject niet blijven bestaan. Diode is in zijn huidige vorm bewust idempotent op \texttt{create-or-update}, maar niet op \texttt{detect-and-rewire}, omdat dat soort logica vendor- en site-specifieke heuristieken vergt (bijvoorbeeld: hoe ga ik om met een remote port die als MAC-adres binnenkomt?).
+Ten tweede vereist het correct aanmaken van een kabelobject drift-bewustzijn: als hetzelfde apparatenpaar al via een ander interface verbonden was, mag het oude kabelobject niet blijven bestaan. Diode is in zijn huidige vorm bewust idempotent op \texttt{create-or-update}, maar niet op \texttt{detect-and-rewire}, omdat dat soort logica vendor- en site-specifieke heuristieken vergt (bijvoorbeeld: hoe ga ik om met een remote port die als MAC-adres binnenkomt?).
 
-Het gevolg is dat de Orb-keten als \emph{inventarislaag} compleet is, maar dat de kabel-/topologielaag een aanvullende verwerking vereist. Concreet wordt die verwerking in deze bachelorproef geleverd door \texttt{NetworkTool}: de tool haalt per device de live LLDP-tabel op via NAPALM\autocite{NAPALM}, lookupt zelf de overeenkomstige NetBox-interfaces, en maakt of corrigeert de \texttt{dcim.cables}-objecten via de NetBox-API met de drift-detectie uit \S\ref{sec:issues-valkuilen}. Mocht NetBox Labs in een toekomstige Diode-versie wel een lookup-en-rewire-stap voor \texttt{dcim.cables} aanbieden, dan kan deze \texttt{NetworkTool}-stap herleid worden tot enkel de niet-LLDP-onderdelen (zie \S\ref{sec:aanbevelingen}).
+Het gevolg is dat de Orb-keten als inventarislaag compleet is, maar dat de kabel-/topologielaag een aanvullende verwerking vereist. Concreet wordt die verwerking in deze bachelorproef geleverd door \texttt{NetworkTool}: de tool haalt per device de live LLDP-tabel op via NAPALM\autocite{NAPALM}, lookupt zelf de overeenkomstige NetBox-interfaces, en maakt of corrigeert de \texttt{dcim.cables}-objecten via de NetBox-API met de drift-detectie uit \S\ref{sec:issues-valkuilen}. Mocht NetBox Labs in een toekomstige Diode-versie wel een lookup-en-rewire-stap voor \texttt{dcim.cables} aanbieden, dan kan deze \texttt{NetworkTool}-stap herleid worden tot enkel de niet-LLDP-onderdelen (zie \S\ref{sec:aanbevelingen}).
 
 \section{Issues en valkuilen}
 \label{sec:issues-valkuilen}
@@ -127,7 +127,7 @@ Ook deze normalisatielaag is essentieel voor de robuustheid van de oplossing en 
 
 \subsection{Cleanup vóór herdiscovery}
 
-Bij sites waar oude AP-records nog in NetBox stonden (bijvoorbeeld na een AP-vervanging zonder cleanup), bleek dat een nieuwe discovery snel kan resulteren in \emph{duplicate} devices. De gekozen werkwijze is om vóór de eerste discovery van een site een gerichte cleanup uit te voeren (verwijder oude AP-records waarvan de namen of types niet meer overeenkomen met de fysieke realiteit). Pas daarna wordt de Orb agent gestart. Deze procedurele stap is vertaald naar requirement R9 in Hoofdstuk~\ref{ch:context}.
+Bij sites waar oude AP-records nog in NetBox stonden (bijvoorbeeld na een AP-vervanging zonder cleanup), bleek dat een nieuwe discovery snel kan resulteren in duplicate devices. De gekozen werkwijze is om vóór de eerste discovery van een site een gerichte cleanup uit te voeren (verwijder oude AP-records waarvan de namen of types niet meer overeenkomen met de fysieke realiteit). Pas daarna wordt de Orb agent gestart. Deze procedurele stap is vertaald naar requirement R9 in Hoofdstuk~\ref{ch:context}.
 
 \subsection{RUCKUS vSZ via aparte API-koppeling}
 
@@ -159,7 +159,7 @@ De individuele site-implementatie is binnen \'e\'en run af, maar bij Citymesh mo
 
 \paragraph{Periodieke discovery via cron.} De Orb agent ondersteunt een \texttt{schedule}-veld per policy. In de configuratie wordt dit ingesteld op \texttt{*/30 * * * *}, wat elke 30 minuten een discovery-run triggert. Dit is voldoende om drift snel te detecteren zonder netwerkbelasting te veroorzaken op de monitoring-infrastructuur. De waarde kan per site bijgesteld worden.
 
-\paragraph{Dry-run vóór live-write.} \texttt{NetworkTool} ondersteunt een \emph{dry-run}-modus waarin alle wijzigingen die naar NetBox gepusht zouden worden, eerst geanalyseerd en getoond worden zonder effectief te schrijven. Dit verlaagt het risico op foutieve mass-updates aanzienlijk. Pas wanneer de dry-run-uitkomst correct is, wordt dezelfde aanroep met \texttt{dry\_run=False} uitgevoerd. Het patroon staat in figuur~\ref{lst:dryrun-cherry}; de volledige flow in Bijlage~\ref{sec:bijlage-networktool-sync}.
+\paragraph{Dry-run vóór live-write.} \texttt{NetworkTool} ondersteunt een dry-run-modus waarin alle wijzigingen die naar NetBox gepusht zouden worden, eerst geanalyseerd en getoond worden zonder effectief te schrijven. Dit verlaagt het risico op foutieve mass-updates aanzienlijk. Pas wanneer de dry-run-uitkomst correct is, wordt dezelfde aanroep met \texttt{dry\_run=False} uitgevoerd. Het patroon staat in figuur~\ref{lst:dryrun-cherry}; de volledige flow in Bijlage~\ref{sec:bijlage-networktool-sync}.
 
 \begin{listing}[H]
   \caption{Dry-run gevolgd door live push in NetworkTool (cherry-picked)}
@@ -179,4 +179,4 @@ success, messages = evaluate_and_sync_netbox(
 
 \section{Overzicht van de inzetbare vendoren}
 
-De \texttt{NetworkTool}-laag ondersteunt momenteel operationeel \emph{MikroTik} en \emph{Huawei} via NAPALM-drivers, en \emph{RUCKUS} via de vSZ-API. Dat zijn de drie vendorfamilies die in requirement R4 in scope staan. Op een concrete site kunnen naast die scope nog andere merken voorkomen (bijvoorbeeld een Fortinet-firewall, zoals op Deleers Go4tech in Hoofdstuk~\ref{ch:casestudy}); die vallen buiten de expliciete R4-scope, maar kunnen desgewenst via een bijkomende NAPALM-driver of API-koppeling worden toegevoegd. Voor andere toekomstige vendoren (bijvoorbeeld Cisco of Aruba) geldt hetzelfde patroon: een nieuwe handler kan worden toegevoegd zonder dat de overige flow opnieuw geschreven moet worden, omdat de NAPALM-abstractie de meeste device-specifieke logica afschermt\autocite{NAPALM}.
+De \texttt{NetworkTool}-laag ondersteunt momenteel operationeel MikroTik en Huawei via NAPALM-drivers, en RUCKUS via de vSZ-API. Dat zijn de drie vendorfamilies die in requirement R4 in scope staan. Op een concrete site kunnen naast die scope nog andere merken voorkomen (bijvoorbeeld een Fortinet-firewall, zoals op Deleers Go4tech in Hoofdstuk~\ref{ch:casestudy}); die vallen buiten de expliciete R4-scope, maar kunnen desgewenst via een bijkomende NAPALM-driver of API-koppeling worden toegevoegd. Voor andere toekomstige vendoren (bijvoorbeeld Cisco of Aruba) geldt hetzelfde patroon: een nieuwe handler kan worden toegevoegd zonder dat de overige flow opnieuw geschreven moet worden, omdat de NAPALM-abstractie de meeste device-specifieke logica afschermt\autocite{NAPALM}.
