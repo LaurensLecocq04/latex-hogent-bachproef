@@ -153,9 +153,9 @@ NetBox Discovery werkt op basis van policies: configuratie-objecten die per devi
 
 \subsection{Diode als ingest-laag}
 
-Diode is de ingest-laag tussen de discovery-agents en NetBox\autocite{DiodeDocs,NetBoxDiodeAgent}. Het is een open-source service die discoverydata via een gRPC-API ontvangt, valideert tegen het NetBox-datamodel en in NetBox laadt. Diode lost een aantal concrete problemen op die ontstaan wanneer agents rechtstreeks naar de NetBox-API zouden schrijven: (1) discovery-output is vaak partial en vereist diff-/merge-logica, (2) gelijktijdige writes door meerdere agents kunnen race conditions veroorzaken, en (3) credentials voor NetBox moeten anders centraal beschikbaar zijn op elke agent. Door Diode tussen agents en NetBox te plaatsen, wordt de schrijflaag gecentraliseerd en gemonitored.
+Diode is de ingest-laag tussen de discovery-agents en NetBox \autocite{DiodeDocs,NetBoxDiodeAgent}. Het is een open-source service die discoverydata via een gRPC-API ontvangt, valideert tegen het NetBox-datamodel en in NetBox laadt. Diode lost een aantal concrete problemen op die ontstaan wanneer agents rechtstreeks naar de NetBox-API zouden schrijven: (1) discovery-output is vaak partial en vereist diff-/merge-logica, (2) gelijktijdige writes door meerdere agents kunnen race conditions veroorzaken, en (3) credentials voor NetBox moeten anders centraal beschikbaar zijn op elke agent. Door Diode tussen agents en NetBox te plaatsen, wordt de schrijflaag gecentraliseerd en gemonitored.
 
-Diode werkt met OAuth2-credentials (een \texttt{client\_id} en \texttt{client\_secret} per agent) en biedt een audit-trail van wat wanneer in NetBox geschreven werd. Dat maakt het mogelijk om bij problemen terug te traceren welke agent welke wijzigingen aanleverde.
+Diode werkt met OAuth2-credentials (een \texttt{client\_id} en \texttt{client\_secret} per agent) en biedt een audit-trail van wat wanneer in NetBox geschreven werd. Dat maakt het mogelijk om bij problemen te traceren welke agent welke wijzigingen aanleverde.
 
 \subsection{Orb agent}
 
@@ -166,7 +166,7 @@ De Orb agent is de lichtgewicht discovery-agent van NetBox Labs\autocite{NetBoxL
 Mogelijkheden:
 \begin{itemize}
   \item Volledig open-source (NetBox, Diode en Orb)\autocite{NetBoxOSS,DiodeDocs,NetBoxLabsOrbAgent}.
-  \item Native integratie met NetBox als SSOT, zonder tussenliggende ETL-laag.
+  \item Native integratie met NetBox als SSOT.
   \item Schaalbaar door meerdere Orb agents naast elkaar te draaien (\'e\'en per site/segment).
   \item Audit en validatie via Diode in plaats van rechtstreekse REST-writes.
 \end{itemize}
@@ -174,7 +174,7 @@ Mogelijkheden:
 Limitaties die in de praktijk relevant bleken:
 \begin{itemize}
   \item De LLDP-buren die de Orb agent verzamelt, worden binnen de standaard discoveryflow met Orb en Diode niet automatisch als kabelobjecten in NetBox aangemaakt. Voor volledige topologie-discovery is een aanvullende stap nodig (bijvoorbeeld via een eigen tool die de NetBox API aanstuurt). Dit was een belangrijke vaststelling tijdens de evaluatie van deze bachelorproef.
-  \item Vendor-dekking is afhankelijk van de beschikbare device-drivers in de Orb agent. Voor minder courante vendors of voor devices die alleen via een eigen API toegankelijk zijn (bijvoorbeeld draadloze controllers zoals RUCKUS vSZ\autocite{RuckusVSZ}), zijn aanvullende koppelingen nodig.
+  \item Vendor-dekking is afhankelijk van de beschikbare device-drivers in de Orb agent. Voor minder courante vendors of voor devices die alleen via een eigen API toegankelijk zijn (bijvoorbeeld draadloze controllers zoals RUCKUS Virtual Smartzone\autocite{RuckusVSZ}), zijn aanvullende koppelingen nodig.
   \item De configuratie via YAML schaalt goed voor enkele sites, maar wordt voor tientallen of honderden sites pas beheersbaar in combinatie met versiebeheer en sjabloongeneratie.
 \end{itemize}
 
@@ -201,9 +201,9 @@ Klassieke NMS-platformen zoals LibreNMS\autocite{LibreNMS} en OpenNMS\autocite{O
 
 \subsection{Commerciële NMS- en ITSM-platformen}
 
-Onder de commerci\"ele tools zijn SolarWinds Network Performance Monitor\autocite{SolarWindsNPM} en ManageEngine OpManager\autocite{ManageEngineOpManager} bekende NMS-platformen die naast monitoring ook (Layer-2) topology mapping op basis van SNMP/LLDP/CDP aanbieden. Hun discoverydata blijft typisch binnen het eigen platform; integratie met een externe SSOT vergt API-koppelingen of exports.
+Onder de commerci\"ele tools zijn SolarWinds Network Performance Monitor \autocite{SolarWindsNPM} en ManageEngine OpManager \autocite{ManageEngineOpManager} bekende NMS-platformen die naast monitoring ook (Layer-2) topology mapping op basis van SNMP/LLDP/CDP aanbieden. Hun discoverydata blijft typisch binnen het eigen platform; integratie met een externe SSOT vergt API-koppelingen of exports.
 
-ServiceNow Discovery is een ITSM-georiënteerde discoveryflow die hoofdzakelijk een CMDB voedt, eerder dan een IPAM/DCIM\autocite{ServiceNowDiscovery}. ServiceNow Discovery dekt ook servers, applicaties en services en biedt diepe agentless probes, maar wordt typisch ingezet binnen organisaties die hun IT-operationsbeheer al op het ServiceNow-platform hebben gestandaardiseerd. Het licentiemodel en de tijdsinvestering om discovery in te richten plaatsen het buiten de scope van een bachelorproefcasestudy.
+ServiceNow Discovery is een ITSM-georiënteerde discoveryflow die hoofdzakelijk een CMDB voedt, eerder dan een IPAM/DCIM \autocite{ServiceNowDiscovery}. ServiceNow Discovery dekt ook servers, applicaties en services en biedt diepe agentless probes, maar wordt typisch ingezet binnen organisaties die hun IT-operationsbeheer al op het ServiceNow-platform hebben gestandaardiseerd. Het licentiemodel en de tijdsinvestering om discovery in te richten plaatsen het buiten de scope van een bachelorproefcasestudy.
 
 \subsection{Vergelijkende samenvatting}
 
@@ -232,6 +232,6 @@ Uit deze vergelijking volgt dat de NetBox Discovery-stack \'e\'en van de weinige
 
 \section{Bestaand onderzoek naar automatische netwerkdocumentatie}
 
-Eerdere onderzoeksprojecten beschrijven frameworks om het proces van netwerkdocumentatie grotendeels te automatiseren, onder meer door netwerkapparaten via standaardprotocollen te bevragen en de resultaten in een gestructureerd datamodel op te slaan. Binnen dit domein wordt LLDP vaak aangehaald als sleutelprotocol voor vendor-neutrale buurdetectie, terwijl SNMP gebruikt wordt om discoverydata toegankelijk te maken voor beheertools\autocite{SnmpTopologyDiscoveryIEEE2013,LLDP_IJCA}.
+Eerdere onderzoeksprojecten beschrijven frameworks om het proces van netwerkdocumentatie grotendeels te automatiseren, onder meer door netwerkapparaten via standaardprotocollen te bevragen en de resultaten in een gestructureerd datamodel op te slaan. Binnen dit domein wordt LLDP vaak aangehaald als sleutelprotocol voor vendor-neutrale buurdetectie, terwijl SNMP gebruikt wordt om discoverydata toegankelijk te maken voor beheertools \autocite{SnmpTopologyDiscoveryIEEE2013,LLDP_IJCA}.
 
 Deze studies tonen aan dat automatische netwerkdetectie niet alleen kan helpen bij de initi\"ele opbouw van netwerkdocumentatie, maar ook bij het continu bijwerken en valideren van bestaande documentatie. Er is echter relatief weinig gepubliceerd over praktische evaluaties met concrete voor/na-observaties en toetsbare kwaliteitsindicatoren binnen concrete organisatiecontexten, en over de specifieke uitdagingen van gedistribueerde WiFi-/AP-omgevingen. Dit onderzoek positioneert zich in dat gat door een casestudy uit te voeren op geselecteerde WiFi-/AP-sites van een telecomoperator (Citymesh), met focus op de documentatiekwaliteit van inventaris- en topologiedata die in NetBox effectief geëvalueerd konden worden.
