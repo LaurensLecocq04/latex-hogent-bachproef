@@ -57,7 +57,7 @@ Voorafgaand aan de discovery werden de oude AP-records verwijderd (cleanup, requ
   \end{tabular}
 \end{table}
 
-De RUCKUS vSZ-uitbreiding werd op deze site afzonderlijk getest als vendor-specifieke aanvulling op de basisflow en maakt geen deel uit van de Ridefort-voor/na-tabel. Voor RUCKUS-AP's geldt dat naam, serienummer, MAC-adres, fabrikant, type en IP-adres automatisch worden overgenomen.
+De RUCKUS vSZ-uitbreiding van \texttt{NetworkTool} (zie \S\ref{sec:vsz-via-api}) werd op Ridefort afzonderlijk getest. Omdat het om een vendor-specifieke aanvulling op de basisflow gaat en niet om de standaard discovery die in tabel~\ref{tab:ridefort-voor-na} hierboven gerapporteerd wordt, zijn de resultaten van die test niet in de voor/na-tabel opgenomen. Wel bevestigde de test dat \texttt{NetworkTool} via de vSZ-API per RUCKUS-AP zes velden geautomatiseerd in NetBox kan plaatsen: naam, serienummer, MAC-adres, fabrikant, type en IP-adres.
 
 \section{Site Deleers Go4tech}
 \label{sec:deleers}
@@ -86,7 +86,7 @@ Na uitvoering van NetBox Discovery werden de 3 betrokken switches automatisch bi
     \midrule
     Correcte switch-types in NetBox & 8/11 & 11/11 \\
     Correcte device-naamgeving (router, firewall, switches, AP's) & 61/61 & 61/61 \\
-    Drift op gedocumenteerde kabelrelaties (LLDP-vergelijking) & 0 (geen drift) & 0 (geen drift) \\
+    Drift op gedocumenteerde kabelrelaties & geen drift & geen drift \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -98,7 +98,7 @@ Deze case toont dat ook recent opgebouwde documentatie nog menselijke fouten kan
 
 \subsection{Site\-samen\-stelling}
 
-Koninklijke Stallingen is een kleinere site met 1 MikroTik-router, 2 Huawei-switches en 5 RUCKUS access points. De 5 AP's bestaan uit twee verschillende RUCKUS-types; dit is geen documentatiefout maar de feitelijke samenstelling van de site.
+Koninklijke Stallingen is een kleinere site met 1 MikroTik-router, 2 Huawei-switches en 5 RUCKUS access points. De 5 AP's bestaan uit twee verschillende RUCKUS-types; dit is geen documentatiefout, maar de feitelijke samenstelling van de site.
 
 \subsection{Baseline}
 
@@ -203,29 +203,28 @@ De synthese-tabel laat toe om enkele uitspraken te doen die niet beperkt blijven
 \subsection{Actualiteit en consistentie van inventarisdata}
 \label{sec:analyse-inventaris}
 
-Op sites waar de NetBox-data verouderd was (Ridefort) of waar er menselijke fouten in de initiële invoer zaten (Deleers Go4tech), bracht NetBox Discovery met Diode de inventaris snel terug op orde: 5/6 $\rightarrow$ 6/6 voor AP-types op Ridefort en 8/11 $\rightarrow$ 11/11 voor switch-types op Deleers Go4tech. Op sites waar de inventaris al consistent was (Koninklijke Stallingen, WZC Riethove) had de discovery hierop geen negatief effect: de bestaande correcte data bleef gewoon correct.
+De inventarislaag (devices, types, interfaces) wordt door NetBox Discovery met Diode op alle vier de sites teruggebracht naar een consistente toestand: op sites met verouderde of foutief ingevoerde data (Ridefort, Deleers Go4tech) worden de fouten gecorrigeerd, op sites met al correcte data treedt geen regressie op. De concrete cijfers per indicator staan in tabel~\ref{tab:synthese}.
 
-De observatie op Deleers Go4tech is bijzonder relevant omdat ze aantoont dat het probleem niet beperkt blijft tot ``oude'' documentatie: ook na slechts twee maanden manuele input bevatte NetBox 3 switches met een foutief device type. Dit motiveert de keuze voor periodieke discovery (requirement R10) als kwaliteitscontrole, niet alleen als eenmalige correctieslag.
+Een bredere observatie volgt uit Deleers Go4tech: ook na slechts twee maanden manuele input bevatte NetBox al drie switches met een foutief device type. Het probleem beperkt zich dus niet tot ``oude'' documentatie. Dit motiveert de keuze voor periodieke discovery (requirement R10) als doorlopende kwaliteitscontrole, niet enkel als eenmalige correctieslag.
 
 \subsection{Kabelrelaties en topologie}
 \label{sec:analyse-kabels}
 
-De grootste meerwaarde van de geïmplementeerde oplossing zit in de kabel- en topologielaag. Tabel~\ref{tab:synthese} toont dat zowel Ridefort (3/6 $\rightarrow$ 6/6) als Koninklijke Stallingen (0/7 $\rightarrow$ 7/7) als WZC Riethove (0/74 $\rightarrow$ 57/74) op deze indicator de duidelijkste vooruitgang tonen. Bij WZC Riethove werd ook concreet zichtbaar dat één externe oorzaak (een fysiek offline switch) eenduidig vertaalt naar één afgebakende lacune (17 AP--switch-relaties die wachten tot de switch terug online is). Deze traceerbaarheid is op zich een vooruitgang ten opzichte van een handmatig opgebouwde topologie, waar de oorzaak van een ontbrekende relatie vaak niet meer te achterhalen is.
+De grootste meerwaarde van de gecombineerde oplossing (NetBox Discovery + \texttt{NetworkTool}) zit in de kabel- en topologielaag: op de drie sites waar kabelrelaties als kerntaak in scope zaten, bedraagt de verbetering telkens een veelvoud van de baseline (zie tabel~\ref{tab:synthese}). Een waardevol neveneffect is traceerbaarheid: bij WZC Riethove vertaalde één externe oorzaak (een fysiek offline switch) zich in één afgebakende lacune (17 ontbrekende AP-relaties), terwijl in een handmatig opgebouwde topologie de oorzaak van een ontbrekende relatie vaak niet meer te achterhalen is.
 
-Tegelijk illustreert deze laag ook de limiet van de standaard NetBox Discovery-stack: zonder de aanvullende \texttt{NetworkTool}-stap zouden de LLDP-buren niet automatisch in NetBox als kabelobjecten landen. Dit is geen tekortkoming van NetBox Discovery zelf, maar een keten-issue dat in \S\ref{sec:wat-orb-oplevert} concreet wordt toegelicht.
+Tegelijk illustreert deze laag de limiet van de standaard NetBox Discovery-stack: zonder de aanvullende \texttt{NetworkTool}-stap landen LLDP-buren niet automatisch als kabelobjecten in NetBox (zie \S\ref{sec:wat-orb-oplevert}).
 
 \subsection{Vendor-specifieke datatypes}
 \label{sec:analyse-vendor}
 
-Voor RUCKUS-AP's is de vSZ-API\autocite{RuckusVSZ} een essentiële aanvulling: zonder die API zouden naam, serienummer, MAC-adres en fabrikant per AP niet betrouwbaar in NetBox terechtkomen. Deze case bevestigt het bredere principe dat een SSOT-implementatie maar zo goed is als de bronkwaliteit per vendor en dat het verstandig is om per vendor te evalueren of de standaard discoveryflow (SNMP + LLDP) volstaat of dat een vendor-API nodig is.
+De casestudy bevestigt het bredere principe dat een SSOT-implementatie maar zo goed is als de bronkwaliteit per vendor. Voor RUCKUS-AP's was een vendor-specifieke aanvulling via de vSZ-API\autocite{RuckusVSZ} noodzakelijk om naam, serienummer, MAC-adres, fabrikant en type betrouwbaar in NetBox te krijgen; de technische motivering staat in \S\ref{sec:vsz-via-api}. Het is daarom verstandig om per vendor vooraf te evalueren of de standaard discoveryflow (SNMP + LLDP) volstaat of dat een vendor-API nodig is.
 
 \subsection{Operationele waarnemingen}
 \label{sec:analyse-operationeel}
 
-Een tweede categorie waarnemingen heeft betrekking op de operationele kant van de implementatie. Drie zaken kwamen consistent terug over de vier sites:
-
+Drie operationele waarnemingen kwamen consistent terug over de vier sites en worden in Hoofdstuk~\ref{ch:analyse} verder uitgewerkt als concrete aanbevelingen voor Citymesh:
 \begin{itemize}
-  \item Cleanup vóór herdiscovery is essentieel: zonder de cleanup-stap voor de Ridefort-AP's zouden de oude AP-records duplicaten hebben gegenereerd (zie \S\ref{sec:issues-valkuilen}).
-  \item Dry-run vóór live-write: de tweetraps-aanpak (eerst dry-run, dan live) van \texttt{NetworkTool} (zie \S\ref{sec:schaalbaarheid}) heeft op meerdere sites foutieve mass-updates voorkomen.
-  \item Credential-/secret-management is geen detail: in een omgeving met 25.000+ devices is het onhoudbaar om credentials in YAML-bestanden te zetten. De template-met-envsubst-aanpak (\S\ref{sec:issues-valkuilen}) is een werkbare overgangsoplossing, maar moet in productie aangevuld worden met een centrale secret manager.
+  \item de noodzaak van een cleanup-stap vóór elke herdiscovery (zie \S\ref{sec:issues-valkuilen});
+  \item de waarde van de dry-run-modus van \texttt{NetworkTool} vóór een live mass-update (zie \S\ref{sec:schaalbaarheid});
+  \item het belang van een centrale secret manager bij grote aantallen sites (zie \S\ref{sec:issues-valkuilen}).
 \end{itemize}

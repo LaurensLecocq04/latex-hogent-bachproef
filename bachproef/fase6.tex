@@ -14,7 +14,7 @@ De aanbevelingen zijn afgestemd op de operationele context van Citymesh (Hoofdst
 
 \subsection{Aanbeveling 1: adopteer NetBox Discovery met Diode als inventarisbasis}
 
-NetBox Discovery met Diode bleek in alle vier sites effectief om de inventarislaag (devices, types, interfaces) actueel te houden (zie \S\ref{sec:analyse-inventaris}). De aanbeveling is om deze stack als standaard inventarispipeline te gebruiken voor alle nieuwe en bestaande sites, met één Orb agent per site (\S\ref{sec:schaalbaarheid}).
+NetBox Discovery met Diode bleek in alle vier sites effectief om de inventarislaag (devices, types, interfaces) actueel te houden (zie \S\ref{sec:analyse-inventaris}). De aanbeveling is om deze keten (Orb agent, Diode en NetBox) standaard in te zetten voor het bijhouden van inventarisdata op alle nieuwe en bestaande sites, met \'e\'en Orb agent per site (\S\ref{sec:schaalbaarheid}).
 
 \subsection{Aanbeveling 2: gebruik \texttt{NetworkTool} als topologie-aanvulling}
 
@@ -24,9 +24,9 @@ Zolang de standaard NetBox Discovery-stack LLDP-buren niet automatisch als kabel
 
 Bij elke infrastructurele wijziging (AP-vervanging, switch-vervanging, decommissioning) moet de cleanup-stap (requirement R9) een standaard onderdeel zijn van de change-procedure. Idealiter wordt deze stap geautomatiseerd door bij het aanmaken van een vervangingsticket meteen een NetBox-cleanup-actie te triggeren. Daarnaast moet de bestaande naamgevingsconventie (Hoofdstuk~\ref{ch:context}) per vendor expliciet vastgelegd worden, zodat de discoveryflow eenduidig kan toetsen.
 
-\subsection{Aanbeveling 4: borg de RUCKUS vSZ-synchronisatie operationeel}
+\subsection{Aanbeveling 4: neem de RUCKUS vSZ-synchronisatie structureel op in de operationele flow}
 
-De vSZ-koppeling levert nu een bruikbare datastroom voor naam, serienummer, MAC-adres, fabrikant, type en IP-adres voor RUCKUS-AP's (\S\ref{sec:issues-valkuilen}). Het is aangewezen om deze synchronisatie niet als ad-hoc tool te beschouwen maar structureel op te nemen in de operationele documentatieflow, inclusief periodieke validatie en monitoring van de vSZ-API-beschikbaarheid.
+De vSZ-koppeling levert nu een bruikbare datastroom voor naam, serienummer, MAC-adres, fabrikant, type en IP-adres voor RUCKUS-AP's (\S\ref{sec:issues-valkuilen}). Het is aangewezen om deze synchronisatie niet als ad-hoc tool te beschouwen, maar structureel op te nemen in de operationele documentatieflow, inclusief periodieke validatie en monitoring van de vSZ-API-beschikbaarheid.
 
 \subsection{Aanbeveling 5: monitor offline devices als afgebakende ``known gaps''}
 
