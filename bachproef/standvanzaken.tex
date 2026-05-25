@@ -1,7 +1,7 @@
 \chapter{\IfLanguageName{dutch}{Stand van zaken}{State of the art}}%
 \label{ch:stand-van-zaken}
 
-Dit hoofdstuk vormt de literatuurstudie van deze bachelorproef. De bedoeling is dat de lezer na het lezen van dit hoofdstuk een volledig beeld heeft van het onderzoeksdomein van automatische netwerkdetectie, de huidige stand van zaken rond single source of truth (SSOT) in netwerkbeheer, en de tools die in de praktijk beschikbaar zijn om die SSOT op te bouwen en bij te houden. Daarnaast worden de geselecteerde tools (NetBox, NetBox Discovery, Diode en de Orb agent) inhoudelijk vergeleken met enkele bekende alternatieven, zodat de keuzes in deze bachelorproef begrijpelijk zijn voor lezers die niet vooraf met dit ecosysteem vertrouwd zijn.
+Dit hoofdstuk vormt de literatuurstudie van deze bachelorproef. De bedoeling is dat de lezer na het lezen van dit hoofdstuk een goed beeld heeft van het onderzoeksdomein van automatische netwerkdetectie, de huidige stand van zaken rond single source of truth (SSOT) in netwerkbeheer, en de tools die in de praktijk beschikbaar zijn om die SSOT op te bouwen en bij te houden. Daarnaast worden de geselecteerde tools (NetBox, NetBox Discovery, Diode en de Orb agent) inhoudelijk vergeleken met enkele bekende alternatieven, zodat de keuzes in deze bachelorproef begrijpelijk zijn voor lezers die niet vooraf met dit ecosysteem vertrouwd zijn.
 
 \section{Single source of truth in netwerkbeheer}
 
@@ -30,7 +30,7 @@ Automatische netwerkdetectie omvat technieken en systemen waarmee netwerkapparat
   \item LLDP (Link Layer Discovery Protocol): een Layer-2-broadcastprotocol waarbij elk apparaat zijn identiteit en interface-info bekendmaakt aan zijn directe buren. LLDP is vendor-neutraal en is in de praktijk het meest betrouwbare uitgangspunt voor automatische kabel-/topologiediscovery\autocite{LLDP_IJCA}.
 \end{itemize}
 
-In sommige discoveryarchitecturen worden deze protocollen aangevuld met vendor-specifieke API's (bijvoorbeeld voor draadloze controllers of firewalls) of met SSH/CLI-parsing (al dan niet via TextFSM-templates) om gestructureerde data uit CLI-uitvoer te extraheren. Een veelgebruikte abstractielaag hiervoor is NAPALM (Network Automation and Programmability Abstraction Layer with Multivendor support), die per ondersteunde driver methoden aanbiedt zoals \texttt{get\_lldp\_neighbors()} en \texttt{get\_facts()}\autocite{NAPALM}. Deze abstracties zijn essentieel om vendor-onafhankelijk te kunnen automatiseren.
+In sommige discoveryarchitecturen worden deze protocollen aangevuld met vendor-specifieke API's (bijvoorbeeld voor draadloze controllers of firewalls) of met SSH/CLI-parsing om gestructureerde data uit CLI-uitvoer te extraheren. Een veelgebruikte abstractielaag hiervoor is NAPALM (Network Automation and Programmability Abstraction Layer with Multivendor support), die per ondersteunde driver methoden aanbiedt zoals \texttt{get\_lldp\_neighbors()} en \texttt{get\_facts()}\autocite{NAPALM}. Deze abstracties zijn essentieel om vendor-onafhankelijk te kunnen automatiseren.
 
 \section{NetBox als IPAM/DCIM-platform}
 \label{sec:netbox-platform}
@@ -50,7 +50,89 @@ Limitaties: NetBox zelf voert g\'e\'en discovery uit. Het is een passief systeem
 \section{NetBox Discovery, Diode en de Orb agent}
 \label{sec:netbox-discovery-stack}
 
-Om bovenstaande limitatie weg te werken, biedt NetBox Labs een combinatie van drie tools die samen de NetBox Discovery-stack vormen: NetBox Discovery, Diode en de Orb agent.
+Om bovenstaande limitatie weg te werken, biedt NetBox Labs een combinatie van drie tools die samen de NetBox Discovery-stack vormen: NetBox Discovery, Diode en de Orb agent. Figuur~\ref{fig:netbox-discovery-stack} toont op hoog niveau hoe deze drie componenten samenwerken: de discovery-agents draaien dicht bij de te ontdekken netwerken en sturen hun observed state via Diode naar NetBox, waar de data als gereconcilieerde wijzigingen wordt opgenomen in de SSOT.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    node distance=10mm and 16mm,
+    every node/.style={font=\small},
+    site/.style={
+      draw=hogent-lightgreen!60!black,
+      rounded corners=3pt,
+      fill=hogent-lightgreen!40,
+      minimum width=2.8cm,
+      minimum height=1.5cm,
+      align=center,
+      thick
+    },
+    agent/.style={
+      draw=hogent-orange!70!black,
+      rounded corners=2pt,
+      fill=hogent-orange!85,
+      minimum width=1.8cm,
+      minimum height=0.6cm,
+      align=center,
+      font=\scriptsize\bfseries,
+      text=white,
+      thick
+    },
+    diode/.style={
+      draw=hogent-blue!70!black,
+      rounded corners=3pt,
+      fill=hogent-blue!85,
+      minimum width=3.2cm,
+      minimum height=1.8cm,
+      align=center,
+      font=\small\bfseries,
+      text=white,
+      thick
+    },
+    netbox/.style={
+      draw=hogent-darkgreen!70!black,
+      rounded corners=3pt,
+      fill=hogent-darkgreen!90,
+      minimum width=3.2cm,
+      minimum height=2cm,
+      align=center,
+      font=\small\bfseries,
+      text=white,
+      thick
+    },
+    flow/.style={
+      ->,
+      line width=1.1pt,
+      shorten >=1pt,
+      shorten <=1pt
+    },
+    flowlabel/.style={
+      font=\scriptsize,
+      fill=white,
+      inner sep=1pt
+    }
+  ]
+    \node[site] (s1) {Site~1};
+    \node[site, below=of s1] (s2) {Site~2};
+    \node[site, below=of s2] (s3) {Site~$n$};
+
+    \node[agent, anchor=south west, xshift=4mm, yshift=4mm] at (s1.north west) {Orb};
+    \node[agent, anchor=south west, xshift=4mm, yshift=4mm] at (s2.north west) {Orb};
+    \node[agent, anchor=south west, xshift=4mm, yshift=4mm] at (s3.north west) {Orb};
+
+    \node[below=3mm of s3, font=\footnotesize, text=black!70] {Netwerken met discovery-agents};
+
+    \node[diode, right=24mm of s2] (diode) {Diode\\\scriptsize\mdseries ingestion service};
+    \node[netbox, right=of diode] (netbox) {NetBox\\\scriptsize\mdseries (SSOT)};
+
+    \draw[flow] (s1.east) -- (diode.west);
+    \draw[flow] (s2.east) -- node[flowlabel] {observed state} (diode.west);
+    \draw[flow] (s3.east) -- (diode.west);
+
+    \draw[flow] (diode.east) -- node[flowlabel] {gereconcilieerde wijzigingen} (netbox.west);
+  \end{tikzpicture}
+  \caption[Architectuur van de NetBox Discovery-stack.]{Architectuur van de NetBox Discovery-stack: Orb-agents draaien per netwerksegment en sturen hun observed state via Diode door naar NetBox, waar de wijzigingen gereconcilieerd worden met de bestaande SSOT. Eigen schema, gebaseerd op de architectuurfiguur in\autocite{NetBoxDiscoveryAgentPreview}.}
+  \label{fig:netbox-discovery-stack}
+\end{figure}
 
 \subsection{NetBox Discovery}
 
