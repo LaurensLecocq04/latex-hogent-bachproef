@@ -5,7 +5,7 @@
 \chapter{\IfLanguageName{dutch}{Implementatie}{Implementation}}%
 \label{ch:implementatie}
 
-Dit hoofdstuk bespreekt de concrete implementatie van de discoveryflow bij Citymesh. De nadruk ligt op de architectuur van de oplossing, op de issues en valkuilen die zich tijdens de implementatie voordeden, en op de manier waarop de oplossing schaalbaar en herhaalbaar werd gemaakt voor meerdere sites. Volledige codefragmenten (YAML-configuraties, shellscripts en NetworkTool-modules) zijn opgenomen in Bijlage~\ref{ch:bijlage-implementatie}; in dit hoofdstuk wordt enkel cherry-picked code getoond waar dit het verhaal verheldert.
+Dit hoofdstuk bespreekt de concrete implementatie van de discoveryflow bij Citymesh. De nadruk ligt op de architectuur van de oplossing, op de issues en valkuilen die zich tijdens de implementatie voordeden, en op de manier waarop de oplossing schaalbaar en herhaalbaar werd gemaakt voor meerdere sites. Volledige codefragmenten (YAML-configuraties, shellscripts en NetworkTool-modules) zijn opgenomen in Bijlage~\ref{ch:bijlage-implementatie}; in dit hoofdstuk worden enkel geselecteerde codefragmenten getoond waar dit het verhaal verheldert.
 
 \section{Architectuur van de oplossing}
 \label{sec:architectuur}
@@ -33,7 +33,7 @@ Per site verloopt de dataflow als volgt:
 De \texttt{NetworkTool}-applicatie is bewust modulair opgebouwd zodat de verschillende workflows (network scan, SNMP discovery, vendor-specifieke synchronisaties) onafhankelijk uitbreidbaar zijn. De vier kerntabs in de GUI zijn Agent Manager, Network Scanner, SNMP Discovery en CVE Scanner. Daarnaast werd een aparte tab toegevoegd voor de RUCKUS vSZ-synchronisatie. De volledige module-structuur en GUI-implementatie staan in Bijlage~\ref{sec:bijlage-networktool-gui}; figuur~\ref{lst:networktool-gui-tabs-cherry} toont enkel het kernidee.
 
 \begin{listing}[H]
-  \caption{NetworkTool: tab-architectuur (cherry-picked, volledige code in bijlage)}
+  \caption{NetworkTool: tab-architectuur}
   \label{lst:networktool-gui-tabs-cherry}
   \begin{minted}[fontsize=\small]{python}
 tab_agent, tab_scanner, tab_discovery, tab_cve = st.tabs(
@@ -78,7 +78,7 @@ Tijdens de implementatie zijn er meerdere niet-triviale issues opgedoken die elk
 De Orb agent verwacht in zijn YAML-configuratie zowel device-credentials (SSH-username/password, SNMP-community) als Diode OAuth2-credentials (\texttt{client\_id} en \texttt{client\_secret}). Plain-text credentials in YAML zetten was geen optie, gezien requirement R7 (Hoofdstuk~\ref{ch:context}). De gekozen oplossing is om de YAML als template te behandelen en de credentials op runtime in te voegen via \texttt{envsubst} op basis van een \texttt{client-credentials.json}-bestand dat door Diode beheerd wordt. Het idee staat in figuur~\ref{lst:envsubst-cherry}; de volledige scripts staan in Bijlage~\ref{sec:bijlage-orb-scripts}.
 
 \begin{listing}[H]
-  \caption{Credentials op runtime injecteren (cherry-picked, volledige scripts in bijlage)}
+  \caption{Credentials op runtime injecteren (volledige scripts in bijlage)}
   \label{lst:envsubst-cherry}
   \begin{minted}[fontsize=\small]{bash}
 export DIODE_CLIENT_SECRET=$(sudo jq -r \
@@ -98,7 +98,7 @@ In productie hoort hier nog een externe secret manager bij (HashiCorp Vault, AWS
 Wanneer dezelfde site herhaaldelijk wordt gediscovered, kan een kabelobject in NetBox bestaan dat fout gekoppeld is (bijvoorbeeld omdat een patchkabel verlegd werd zonder dat dit in NetBox werd doorgevoerd). \texttt{NetworkTool} detecteert deze drift door per interface te vergelijken of de \texttt{connected\_endpoints} in NetBox overeenkomen met de actuele LLDP-observatie. Als dat niet zo is, wordt de bestaande kabel verwijderd en opnieuw aangemaakt. Het kernidee staat in figuur~\ref{lst:cable-drift-cherry}; de volledige logica staat in Bijlage~\ref{sec:bijlage-networktool-lldp}.
 
 \begin{listing}[H]
-  \caption{Kabel-drift detecteren in NetworkTool (cherry-picked, volledige logica in bijlage)}
+  \caption{Kabel-drift detecteren in NetworkTool (volledige logica in bijlage)}
   \label{lst:cable-drift-cherry}
   \begin{minted}[fontsize=\small]{python}
 if cable_a:
@@ -134,7 +134,7 @@ Bij sites waar oude AP-records nog in NetBox stonden (bijvoorbeeld na een AP-ver
 Voor RUCKUS-AP's biedt SNMP onvoldoende structuur om naam, serienummer, MAC-adres en fabrikant betrouwbaar af te leiden. De RUCKUS Virtual SmartZone (vSZ)\autocite{RuckusVSZ} biedt daarentegen een gestructureerde API waar deze data per zone uit te halen is. Daardoor werd voor RUCKUS-vendoren een aparte \texttt{NetworkTool}-tab gebouwd die per zone de AP-gegevens uit vSZ haalt en in NetBox synchroniseert. Het kernpatroon staat in figuur~\ref{lst:vsz-cherry}; de volledige inventory-pipeline staat in Bijlage~\ref{sec:bijlage-vsz}.
 
 \begin{listing}[H]
-  \caption{RUCKUS vSZ: inventarisdict richting NetBox (cherry-picked)}
+  \caption{RUCKUS vSZ: inventarisdict richting NetBox}
   \label{lst:vsz-cherry}
   \begin{minted}[fontsize=\small]{python}
 data = {
@@ -162,7 +162,7 @@ De individuele site-implementatie is binnen \'e\'en run af, maar bij Citymesh mo
 \paragraph{Dry-run vóór live-write.} \texttt{NetworkTool} ondersteunt een dry-run-modus waarin alle wijzigingen die naar NetBox gepusht zouden worden, eerst geanalyseerd en getoond worden zonder effectief te schrijven. Dit verlaagt het risico op foutieve mass-updates aanzienlijk. Pas wanneer de dry-run-uitkomst correct is, wordt dezelfde aanroep met \texttt{dry\_run=False} uitgevoerd. Het patroon staat in figuur~\ref{lst:dryrun-cherry}; de volledige flow in Bijlage~\ref{sec:bijlage-networktool-sync}.
 
 \begin{listing}[H]
-  \caption{Dry-run gevolgd door live push in NetworkTool (cherry-picked)}
+  \caption{Dry-run gevolgd door live push in NetworkTool}
   \label{lst:dryrun-cherry}
   \begin{minted}[fontsize=\small]{python}
 success, changes = evaluate_and_sync_netbox(
