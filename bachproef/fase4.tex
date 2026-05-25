@@ -75,7 +75,9 @@ Tijdens de implementatie zijn er meerdere niet-triviale issues opgedoken die elk
 
 \subsection{Credential management}
 
-De Orb agent verwacht in zijn YAML-configuratie zowel device-credentials (SSH-username/password, SNMP-community) als Diode OAuth2-credentials (\texttt{client\_id} en \texttt{client\_secret}). Plain-text credentials in YAML zetten was geen optie, gezien requirement R7 (Hoofdstuk~\ref{ch:context}). De gekozen oplossing is om de YAML als template te behandelen en de credentials op runtime in te voegen via \texttt{envsubst} op basis van een \texttt{client-credentials.json}-bestand dat door Diode beheerd wordt. Het idee staat in figuur~\ref{lst:envsubst-cherry}; de volledige scripts staan in Bijlage~\ref{sec:bijlage-orb-scripts}.
+De Orb agent verwacht in zijn YAML-configuratie zowel device-credentials (SSH-username/password, SNMP-community) als Diode OAuth2-credentials (\texttt{client\_id} en \texttt{client\_secret}). Plain-text credentials in YAML zetten was geen optie, gezien requirement R7 (Hoofdstuk~\ref{ch:context}). De gekozen oplossing is om de YAML als template te behandelen en de credentials op runtime in te voegen via \texttt{envsubst} op basis van een \texttt{client-credentials.json}-bestand dat door Diode beheerd wordt.
+
+Deze envsubst-aanpak is binnen de scope van deze bachelorproef toereikend, maar het \texttt{client-credentials.json}-bestand zelf wordt nog onversleuteld op de host bewaard. Voor een productie-uitrol hoort daarom een bijkomende laag bij de flow. Twee complementaire categorieën zijn daarvoor geschikt: ofwel een runtime secret store waaruit de credentials op het moment van opstarten worden opgehaald (bijvoorbeeld HashiCorp Vault, AWS Secrets Manager of een Kubernetes-secret), ofwel een tool die het credentials-bestand zelf versleuteld op de host of in versiebeheer bewaart, zoals SOPS\autocite{SOPS}. In beide gevallen blijft het envsubst-patroon hieronder ongewijzigd: enkel de stap die \texttt{client\_secret} in een omgevingsvariabele plaatst, wordt vervangen door een aanroep naar de gekozen oplossing. Het idee staat in figuur~\ref{lst:envsubst-cherry}; de volledige scripts staan in Bijlage~\ref{sec:bijlage-orb-scripts}.
 
 \begin{listing}[H]
   \caption{Credentials op runtime injecteren (volledige scripts in bijlage)}
@@ -90,8 +92,6 @@ envsubst '${DIODE_CLIENT_ID} ${DIODE_CLIENT_SECRET} \
   < agent.yaml.snmp > agent.yaml
   \end{minted}
 \end{listing}
-
-In productie hoort hier nog een externe secret manager bij (HashiCorp Vault, AWS Secrets Manager of een Kubernetes-secret), maar het sjabloon-met-envsubst-patroon blijft dan identiek.
 
 \subsection{Drift-detectie op kabelobjecten}
 
