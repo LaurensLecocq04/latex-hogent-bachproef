@@ -155,11 +155,11 @@ NetBox Discovery werkt op basis van policies: configuratie-objecten die per devi
 
 Diode is de ingest-laag tussen de discovery-agents en NetBox \autocite{DiodeDocs,NetBoxDiodeAgent}. Het is een open-source service die discoverydata via een gRPC-API ontvangt, valideert tegen het NetBox-datamodel en in NetBox laadt. Diode lost een aantal concrete problemen op die ontstaan wanneer agents rechtstreeks naar de NetBox-API zouden schrijven: (1) discovery-output is vaak partial en vereist diff-/merge-logica, (2) gelijktijdige writes door meerdere agents kunnen race conditions veroorzaken, en (3) credentials voor NetBox moeten anders centraal beschikbaar zijn op elke agent. Door Diode tussen agents en NetBox te plaatsen, wordt de schrijflaag gecentraliseerd en gemonitored.
 
-Diode werkt met OAuth2-credentials (een \texttt{client\_id} en \texttt{client\_secret} per agent) en biedt een audit-trail van wat wanneer in NetBox geschreven werd. Dat maakt het mogelijk om bij problemen te traceren welke agent welke wijzigingen aanleverde.
+Diode werkt met OAuth2-credentials (een \texttt{client\_id} en \texttt{client\_secret} per agent) en houdt voor elke wijziging die naar NetBox wordt geschreven bij welke agent die heeft aangeleverd en op welk moment dat gebeurde. Daardoor kan bij problemen achteraf worden nagegaan welke agent welke wijzigingen heeft veroorzaakt.
 
 \subsection{Orb agent}
 
-De Orb agent is de lichtgewicht discovery-agent van NetBox Labs\autocite{NetBoxLabsOrbAgent}. Het wordt typisch als Docker-container uitgerold, leest een YAML-configuratie en voert daarop de geconfigureerde policies (zoals \texttt{network\_discovery}, \texttt{device\_discovery} en \texttt{snmp\_discovery}) uit. De resultaten worden via Diode naar NetBox gepusht. Doordat de Orb agent zich in het netwerksegment van de te ontdekken devices bevindt, kunnen ook devices ontdekt worden die niet rechtstreeks vanuit het centrale NetBox-platform bereikbaar zijn, wat belangrijk is voor gedistribueerde, draadloze omgevingen zoals die van Citymesh.
+De Orb agent is het programma dat de eigenlijke netwerkscans uitvoert\autocite{NetBoxLabsOrbAgent}. NetBox Labs levert hem als één Docker-container, die per site of per netwerksegment wordt geïnstalleerd op een gewone server in dat netwerk. Bij het opstarten leest de agent een YAML-configuratiebestand waarin staat welke IP-ranges hij mag scannen en welke SSH- en SNMP-credentials hij mag gebruiken om apparaten te bevragen. Op basis daarvan voert de agent achtereenvolgens drie soorten scans uit: hij zoekt eerst naar bereikbare hosts in een IP-range (\texttt{network\_discovery}), bevraagt elke gevonden host vervolgens naar zijn naam, type en interfaces (\texttt{device\_discovery}), en haalt ten slotte via SNMP aanvullende informatie op, waaronder de LLDP-buren (\texttt{snmp\_discovery}). De resultaten worden niet rechtstreeks naar NetBox geschreven, maar via Diode aangeleverd. Omdat de agent in hetzelfde netwerk draait als de apparaten die hij moet ontdekken, kan hij ook apparaten bereiken die vanuit het centrale NetBox-platform niet rechtstreeks aanspreekbaar zijn. Dat is essentieel voor de gedistribueerde, draadloze sites van Citymesh.
 
 \subsection{Mogelijkheden en limitaties van de NetBox Discovery-stack}
 
@@ -189,7 +189,7 @@ Slurp'it is een gespecialiseerde discovery- en inventarisatietool die netwerkapp
 
 Mogelijkheden: brede vendor-dekking via templates, NetBox-plugin voor synchronisatie, ondersteuning voor SSH, SNMP en op termijn API-bronnen, en een bestuurbaar dashboard voor discovery-resultaten\autocite{SlurpitProduct}.
 
-Limitaties in deze context: Slurp'it hanteert een commercieel licentiemodel dat grotendeels gebaseerd is op het aantal beheerde devices. De gratis variant ondersteunt slechts een tiental devices, terwijl Citymesh in de praktijk werkt met een orde van grootte van \textasciitilde 25.000 devices. Volgens de publiek beschikbare prijsinformatie kost een licentie ongeveer 15.000 USD per jaar voor minder dan 1000 devices; voor grotere aantallen geldt een offerteformule. Voor een bachelorproefcasus en voor de schaal van Citymesh was Slurp'it daardoor financieel niet haalbaar.
+Limitaties in deze context: Slurp'it hanteert een commercieel licentiemodel dat grotendeels gebaseerd is op het aantal beheerde devices. De gratis variant ondersteunt slechts een tiental devices, terwijl Citymesh in de praktijk werkt met ongeveer 25.000 devices. Volgens de publiek beschikbare prijsinformatie kost een licentie ongeveer 15.000 USD per jaar voor minder dan 1000 devices; voor grotere aantallen geldt een offerteformule. Voor een bachelorproefcasus en voor de schaal van Citymesh was Slurp'it daardoor financieel niet haalbaar.
 
 \subsection{Nautobot}
 
@@ -228,7 +228,7 @@ Tabel~\ref{tab:tools-vergelijking} vat de belangrijkste eigenschappen van de bes
   \end{tabular}
 \end{table}
 
-Uit deze vergelijking volgt dat de NetBox Discovery-stack \'e\'en van de weinige open-source opties is die discovery, ingest en SSOT volledig op \'e\'en datamodel ent, en die ook gedistribueerd kan ingezet worden via Orb agents. Voor de specifieke context van Citymesh, waar NetBox al de gebruikte SSOT is en waar gedistribueerde, draadloze sites typisch zijn, vormt deze stack de logische keuze.
+De vergelijking toont vooral dat de besproken alternatieven elk een eigen zwaartepunt hebben --- vendor-templates bij Slurp'it, een eigen IPAM/DCIM-platform bij Nautobot, monitoring bij LibreNMS, OpenNMS en SolarWinds NPM, en ITSM-gerichte discovery bij ServiceNow Discovery --- en inhoudelijk dus niet \'e\'en-op-\'e\'en overlappen met de NetBox Discovery-stack. Dit overzicht dient hier om de bredere markt te kaderen; in het verdere onderzoek wordt de NetBox Discovery-stack zelf gebruikt, omdat NetBox bij Citymesh reeds als SSOT in gebruik is.
 
 \section{Bestaand onderzoek naar automatische netwerkdocumentatie}
 
