@@ -55,23 +55,23 @@ Om bovenstaande limitatie weg te werken, biedt NetBox Labs een combinatie van dr
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}[
-    node distance=10mm and 16mm,
     every node/.style={font=\small},
     site/.style={
       draw=hogent-lightgreen!60!black,
       rounded corners=3pt,
       fill=hogent-lightgreen!40,
-      minimum width=2.8cm,
-      minimum height=1.5cm,
+      minimum width=2.6cm,
+      minimum height=1.3cm,
       align=center,
       thick
     },
     agent/.style={
       draw=hogent-orange!70!black,
       rounded corners=2pt,
-      fill=hogent-orange!85,
-      minimum width=1.8cm,
-      minimum height=0.6cm,
+      fill=hogent-orange!90,
+      minimum width=1.4cm,
+      minimum height=0.5cm,
+      inner sep=2pt,
       align=center,
       font=\scriptsize\bfseries,
       text=white,
@@ -81,8 +81,8 @@ Om bovenstaande limitatie weg te werken, biedt NetBox Labs een combinatie van dr
       draw=hogent-blue!70!black,
       rounded corners=3pt,
       fill=hogent-blue!85,
-      minimum width=3.2cm,
-      minimum height=1.8cm,
+      minimum width=2.8cm,
+      minimum height=1.6cm,
       align=center,
       font=\small\bfseries,
       text=white,
@@ -92,8 +92,8 @@ Om bovenstaande limitatie weg te werken, biedt NetBox Labs een combinatie van dr
       draw=hogent-darkgreen!70!black,
       rounded corners=3pt,
       fill=hogent-darkgreen!90,
-      minimum width=3.2cm,
-      minimum height=2cm,
+      minimum width=2.8cm,
+      minimum height=1.6cm,
       align=center,
       font=\small\bfseries,
       text=white,
@@ -101,34 +101,40 @@ Om bovenstaande limitatie weg te werken, biedt NetBox Labs een combinatie van dr
     },
     flow/.style={
       ->,
-      line width=1.1pt,
-      shorten >=1pt,
-      shorten <=1pt
+      line width=1.3pt,
+      shorten >=4pt,
+      shorten <=2pt
     },
     flowlabel/.style={
       font=\scriptsize,
+      text=black!80,
       fill=white,
-      inner sep=1pt
+      inner sep=2pt,
+      align=center
     }
   ]
     \node[site] (s1) {Site~1};
-    \node[site, below=of s1] (s2) {Site~2};
-    \node[site, below=of s2] (s3) {Site~$n$};
+    \node[site, below=16mm of s1] (s2) {Site~2};
+    \node[site, below=16mm of s2] (s3) {Site~$n$};
 
-    \node[agent, anchor=south west, xshift=4mm, yshift=4mm] at (s1.north west) {Orb};
-    \node[agent, anchor=south west, xshift=4mm, yshift=4mm] at (s2.north west) {Orb};
-    \node[agent, anchor=south west, xshift=4mm, yshift=4mm] at (s3.north west) {Orb};
+    \node[agent] at (s1.north) {Orb};
+    \node[agent] at (s2.north) {Orb};
+    \node[agent] at (s3.north) {Orb};
 
-    \node[below=3mm of s3, font=\footnotesize, text=black!70] {Netwerken met discovery-agents};
+    \node[below=8mm of s3, font=\footnotesize, text=black!70, align=center]
+      {Netwerken met discovery-agents};
 
-    \node[diode, right=24mm of s2] (diode) {Diode\\\scriptsize\mdseries ingestion service};
-    \node[netbox, right=of diode] (netbox) {NetBox\\\scriptsize\mdseries (SSOT)};
+    \node[diode, right=40mm of s2] (diode)
+      {Diode\\[1pt]\scriptsize\mdseries ingestion service};
+    \node[netbox, right=40mm of diode] (netbox)
+      {NetBox\\[1pt]\scriptsize\mdseries (SSOT)};
 
     \draw[flow] (s1.east) -- (diode.west);
-    \draw[flow] (s2.east) -- node[flowlabel] {observed state} (diode.west);
+    \draw[flow] (s2.east) -- node[flowlabel] {observed\\state} (diode.west);
     \draw[flow] (s3.east) -- (diode.west);
 
-    \draw[flow] (diode.east) -- node[flowlabel] {gereconcilieerde wijzigingen} (netbox.west);
+    \draw[flow] (diode.east)
+      -- node[flowlabel] {gereconcilieerde\\wijzigingen} (netbox.west);
   \end{tikzpicture}
   \caption[Architectuur van de NetBox Discovery-stack.]{Architectuur van de NetBox Discovery-stack: Orb-agents draaien per netwerksegment en sturen hun observed state via Diode door naar NetBox, waar de wijzigingen gereconcilieerd worden met de bestaande SSOT. Eigen schema, gebaseerd op de architectuurfiguur in\autocite{NetBoxDiscoveryAgentPreview}.}
   \label{fig:netbox-discovery-stack}
