@@ -30,7 +30,7 @@ Per site verloopt de dataflow als volgt:
 
 \subsection{Logische opbouw van de NetworkTool-applicatie}
 
-De \texttt{NetworkTool}-applicatie is bewust modulair opgebouwd zodat de verschillende workflows (network scan, SNMP discovery, vendor-specifieke synchronisaties) onafhankelijk uitbreidbaar zijn. De vier kerntabs in de GUI zijn Agent Manager, Network Scanner, SNMP Discovery en CVE Scanner. Daarnaast werd een aparte tab toegevoegd voor de RUCKUS vSZ-synchronisatie. De volledige module-structuur en GUI-implementatie staan in Bijlage~\ref{sec:bijlage-networktool-gui}; figuur~\ref{lst:networktool-gui-tabs-cherry} toont enkel het kernidee.
+De \texttt{NetworkTool}-applicatie is bewust modulair opgebouwd zodat de verschillende workflows (network scan, SNMP discovery, vendor-specifieke synchronisaties) onafhankelijk uitbreidbaar zijn. De vier kerntabs in de GUI zijn Agent Manager, Network Scanner, SNMP Discovery en CVE Scanner. Daarnaast werd een aparte tab toegevoegd voor de RUCKUS vSZ-synchronisatie. De volledige module-structuur en GUI-implementatie staan in Bijlage~\ref{sec:bijlage-networktool-gui}; codefragment~\ref{lst:networktool-gui-tabs-cherry} toont enkel het kernidee, en figuur~\ref{fig:networktool-network-scanner} toont de Network Scanner-tab in actie, met de keuze tussen een NetBox-gestuurde selectie en handmatige bulkinvoer en de vendor-selectie die de juiste NAPALM-driver activeert.
 
 \begin{listing}[H]
   \caption{NetworkTool: tab-architectuur}
@@ -41,6 +41,14 @@ tab_agent, tab_scanner, tab_discovery, tab_cve = st.tabs(
 )
   \end{minted}
 \end{listing}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{networktool-network-scanner.png}
+  \caption[Network Scanner-tab van \texttt{NetworkTool}]%
+    {Network Scanner-tab van \texttt{NetworkTool} (Streamlit-applicatie, in het kader van deze bachelorproef ontwikkeld door de auteur). De gebruiker kiest een device uit NetBox of voert het handmatig in, selecteert de vendor (waardoor de juiste NAPALM-driver geactiveerd wordt) en start de scan die per device de data uitleest.}
+  \label{fig:networktool-network-scanner}
+\end{figure}
 
 \section{Uitrol van de Diode-server bij Citymesh}
 \label{sec:uitrol-diode}
@@ -132,7 +140,7 @@ Bij sites waar oude AP-records nog in NetBox stonden (bijvoorbeeld na een AP-ver
 \subsection{RUCKUS vSZ via aparte API-koppeling}
 \label{sec:vsz-via-api}
 
-Voor RUCKUS-AP's biedt SNMP onvoldoende structuur om naam, serienummer, MAC-adres en fabrikant betrouwbaar af te leiden. De RUCKUS Virtual SmartZone (vSZ)\autocite{RuckusVSZ} biedt daarentegen een gestructureerde API waar deze data per zone uit te halen is. Daardoor werd voor de RUCKUS toestellenen een nieuwe tab in de \texttt{NetworkTool} gebouwd die per zone de AP-gegevens uit vSZ haalt en in NetBox synchroniseert. Het kernpatroon staat in figuur~\ref{lst:vsz-cherry}; de volledige inventory-pipeline staat in Bijlage~\ref{sec:bijlage-vsz}.
+Voor RUCKUS-AP's biedt SNMP onvoldoende structuur om naam, serienummer, MAC-adres en fabrikant betrouwbaar af te leiden. De RUCKUS Virtual SmartZone (vSZ)\autocite{RuckusVSZ} biedt daarentegen een gestructureerde API waar deze data per zone uit te halen is. Daardoor werd voor de RUCKUS-toestellen een aparte tab in \texttt{NetworkTool} gebouwd (zie figuur~\ref{fig:networktool-ruckus-vsz}) die per zone de AP-gegevens uit vSZ haalt en in NetBox synchroniseert. Het kernpatroon van de inventarisdict staat in codefragment~\ref{lst:vsz-cherry}; de volledige inventory-pipeline staat in Bijlage~\ref{sec:bijlage-vsz}.
 
 \begin{listing}[H]
   \caption{RUCKUS vSZ: inventarisdict richting NetBox}
@@ -151,12 +159,28 @@ data = {
   \end{minted}
 \end{listing}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{networktool-ruckus-vsz.png}
+  \caption[RUCKUS vSZ-tab van \texttt{NetworkTool}]%
+    {De RUCKUS vSZ-tab in \texttt{NetworkTool} (door de auteur ontwikkeld als vendor-specifieke aanvulling op de standaard discoveryflow). Vanuit deze tab wordt verbinding gemaakt met een vSZ-H-controller en worden per zone de AP-gegevens (naam, serienummer, MAC-adres, fabrikant, type en IP-adres) opgehaald en voor synchronisatie met NetBox voorbereid.}
+  \label{fig:networktool-ruckus-vsz}
+\end{figure}
+
 \section{Schaalbaarheid en automatisering}
 \label{sec:schaalbaarheid}
 
 De individuele site-implementatie is binnen \'e\'en run af, maar bij Citymesh moet dit op tientallen sites herhaald kunnen worden. Daarvoor zijn enkele structurele keuzes gemaakt.
 
-\paragraph{\'E\'en agent per site, identieke template.} De Orb agent draait per site als Docker-container, met dezelfde structuur YAML-bestanden (\texttt{agent.yaml.snmp} en \texttt{agent.yaml.router}). Per site wijzigen alleen de variabelen (sitenaam, IP-ranges, eventueel de SNMP-community). Daardoor blijft de operationele kennis per site triviaal: hetzelfde script kan op elke site draaien zolang de variabelen correct ingevuld zijn.
+\paragraph{\'E\'en agent per site, identieke template.} De Orb agent draait per site als Docker-container, met dezelfde structuur YAML-bestanden (\texttt{agent.yaml.snmp} en \texttt{agent.yaml.router}). Per site wijzigen alleen de variabelen (sitenaam, IP-ranges, eventueel de SNMP-community). Daardoor blijft de operationele kennis per site triviaal: hetzelfde script kan op elke site draaien zolang de variabelen correct ingevuld zijn. Figuur~\ref{fig:networktool-agent-manager} toont de Agent Manager-tab van waaruit de Orb-agents per type (SNMP, router, switch) vanuit een centraal punt beheerd worden.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{networktool-agent-manager.png}
+  \caption[Agent Manager-tab van \texttt{NetworkTool}]%
+    {Agent Manager-tab van \texttt{NetworkTool} (door de auteur ontwikkeld). Vanuit deze tab worden de Orb-agents per type (SNMP, router, switch) beheerd: de bijhorende YAML-configuratie wordt zichtbaar gemaakt en het opstartscript kan rechtstreeks vanuit de GUI getriggerd worden, met dezelfde template-aanpak die per site enkel de variabelen aanpast.}
+  \label{fig:networktool-agent-manager}
+\end{figure}
 
 \paragraph{Periodieke discovery via cron.} De Orb agent ondersteunt een \texttt{schedule}-veld per policy. In de configuratie wordt dit ingesteld op \texttt{*/30 * * * *}, wat elke 30 minuten een discovery-run triggert. Dit is voldoende om drift snel te detecteren zonder netwerkbelasting te veroorzaken op de monitoring-infrastructuur. De waarde kan per site bijgesteld worden.
 
