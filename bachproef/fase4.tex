@@ -182,7 +182,7 @@ De individuele site-implementatie is binnen \'e\'en run af, maar bij Citymesh mo
   \label{fig:networktool-agent-manager}
 \end{figure}
 
-\paragraph{Periodieke discovery via cron.} De Orb agent ondersteunt een \texttt{schedule}-veld per policy. In de configuratie wordt dit ingesteld op \texttt{*/30 * * * *}, wat elke 30 minuten een discovery-run triggert. Dit is voldoende om drift snel te detecteren zonder netwerkbelasting te veroorzaken op de monitoring-infrastructuur. De waarde kan per site bijgesteld worden.
+\paragraph{Periodieke discovery via cron.} De Orb agent ondersteunt een \texttt{schedule}-veld per policy. In de configuratie wordt dit ingesteld op \texttt{0 3 * * *}, wat dagelijks om 03:00 een discovery-run triggert. Dit biedt een goede balans tussen tijdige drift-detectie en beperkte netwerkbelasting op de monitoring-infrastructuur. De waarde kan per site bijgesteld worden.
 
 \paragraph{Dry-run vóór live-write.} \texttt{NetworkTool} ondersteunt een dry-run-modus waarin alle wijzigingen die naar NetBox gepusht zouden worden, eerst geanalyseerd en getoond worden zonder effectief te schrijven. Dit verlaagt het risico op foutieve mass-updates aanzienlijk. Pas wanneer de dry-run-uitkomst correct is, wordt dezelfde aanroep met \texttt{dry\_run=False} uitgevoerd. Het patroon staat in figuur~\ref{lst:dryrun-cherry}; de volledige flow in Bijlage~\ref{sec:bijlage-networktool-sync}.
 

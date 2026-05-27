@@ -40,7 +40,7 @@ orb:
     device_discovery:
       oostkamp_router:
         config:
-          schedule: "*/30 * * * *"
+          schedule: "0 3 * * *"
           options:
             port_scan_ports: [8722]
             port_scan_timeout: 1.0
@@ -83,7 +83,7 @@ orb:
     snmp_discovery:
       oostkamp_ridefort:
         config:
-          schedule: "*/30 * * * *"
+          schedule: "0 3 * * *"
           timeout: 300
           snmp_timeout: 5
           retries: 3
