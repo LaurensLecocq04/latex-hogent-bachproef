@@ -37,7 +37,7 @@ In dynamische netwerkomgevingen veroudert documentatie snel, waardoor een betrou
 %------------------------------------------------------------------------------
 \section{Context en probleem}
 
-Citymesh beheert sterk gedistribueerde, snel veranderende netwerkinfrastructuur (WiFi/WLAN, private 4G/5G, IoT). In zo'n omgeving raakt NetBox-documentatie snel verouderd wanneer wijzigingen niet consequent worden bijgehouden.
+Citymesh beheert sterk gedistribueerde, snel veranderende netwerkinfrastructuur. In zo'n omgeving raakt NetBox-documentatie snel verouderd wanneer wijzigingen niet consequent worden bijgehouden.
 
 Vastgestelde knelpunten:
 \begin{itemize}
@@ -58,7 +58,7 @@ De oplossing combineert twee complementaire lagen:
 
 \textbf{1. Inventarislaag --- NetBox Discovery met Diode}
 \begin{itemize}
-  \item Orb agent (Docker, per site) voert NMAP- en SNMP-/device-discovery uit;
+  \item Orb agent voert NMAP- en SNMP-/device-discovery uit;
   \item resultaten gaan via gRPC naar Diode, dat ze valideert en in NetBox laadt;
   \item levert betrouwbaar devices, types en interfaces op.
 \end{itemize}
@@ -68,7 +68,7 @@ De standaard keten zet LLDP-buren niet automatisch om in kabelobjecten. \texttt{
 \begin{itemize}
   \item haalt via NAPALM de live LLDP-tabel op en maakt/corrigeert kabelrelaties via de NetBox-API;
   \item drift-detectie herstelt fout gekoppelde kabels;
-  \item dry-run (\emph{diff}) vóór elke live synchronisatie;
+  \item dry-run vóór elke live synchronisatie;
   \item RUCKUS vSZ-API koppeling voor draadloze access points.
 \end{itemize}
 
