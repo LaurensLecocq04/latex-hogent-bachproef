@@ -86,17 +86,17 @@ De casestudy omvat vier sites. Per site werd een baseline opgesteld en vergeleke
 \begin{center}
   \captionsetup{type=table}
   \small
-  \begin{tabular}{@{}p{0.27\linewidth} c p{0.16\linewidth} p{0.16\linewidth} p{0.20\linewidth}@{}}
+  \begin{tabular}{@{}p{0.26\linewidth} c c c c@{}}
     \toprule
-    \textbf{Site} & \textbf{Schaal} & \textbf{Naam\-geving} & \textbf{Type / inventaris} & \textbf{Kabel\-relaties} \\
+    \textbf{Site} & \textbf{Devices} & \textbf{Namen} & \textbf{Device-type} & \textbf{Kabelrelaties} \\
     \midrule
-    Ridefort & 8 & 3/6 $\rightarrow$ 6/6 & 5/6 $\rightarrow$ 6/6 & 3/6 $\rightarrow$ 6/6 \\
-    Deleers Go4tech & 61 & 61/61 & 8/11 $\rightarrow$ 11/11 & geen drift \\
-    Koninklijke Stallingen & 8 & 8/8 & 5/5 (AP) & 0/7 $\rightarrow$ 7/7 \\
-    WZC Riethove & 75 & 75/75 & n.v.t. & 0/74 $\rightarrow$ 57/74\,$^{*}$ \\
+    Ridefort               & 8  & 5/8 $\rightarrow$ 8/8   & 7/8 $\rightarrow$ 8/8   & 4/7 $\rightarrow$ 7/7 \\
+    Deleers Go4tech        & 61 & 61/61 $\rightarrow$ 61/61 & 8/11 $\rightarrow$ 11/11 & geen drift \\
+    Koninklijke Stallingen & 8  & 8/8 $\rightarrow$ 8/8   & 8/8 $\rightarrow$ 8/8   & 0/7 $\rightarrow$ 7/7 \\
+    WZC Riethove           & 75 & 75/75 $\rightarrow$ 75/75 & n.v.t.                  & 0/74 $\rightarrow$ 57/74\,$^{*}$ \\
     \bottomrule
   \end{tabular}
-  \captionof{table}{Voor/na-synthese over de vier sites (voor $\rightarrow$ na). $^{*}$\,17 AP-relaties hingen vast aan één fysiek offline switch en worden bij een volgende discovery aangevuld.}
+  \captionof{table}{Voor/na-synthese over de vier sites: aantal correcte items vóór $\rightarrow$ na discovery met \texttt{NetworkTool}. Device-type betreft AP-types (Ridefort, Koninklijke Stallingen) of switch-types (Deleers Go4tech). Bij Deleers waren de kabelrelaties al gedocumenteerd en trad geen drift op. $^{*}$\,17 van de 70 AP-relaties hingen vast aan één fysiek offline switch en worden bij een volgende discovery aangevuld.}
 \end{center}
 
 Daarnaast haalt de vSZ-koppeling per RUCKUS-AP zes velden automatisch op (naam, serienummer, MAC-adres, fabrikant, type en IP-adres).
